@@ -253,7 +253,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 	}
 
 	// configurable address map
-	// addresses := make(map[string]string)
+	addresses := make(map[string]string)
 
 	files := make([]*FileWrapper, 0)
 	{
@@ -720,19 +720,18 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 							} else {
 								panic(account)
 							}
+						} else if account.Address != "" {
+							//def := Qual(PkgSolanaGo, "Meta").Call(Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(account.Address)))
+							def := Qual(PkgSolanaGo, "Meta").Call(Id("Addresses").Index(Lit(account.Address)))
+							addresses[account.Address] = account.Address
+							if account.Writable {
+								def.Dot("WRITE").Call()
+							}
+							if account.Signer {
+								def.Dot("SIGNER").Call()
+							}
+							body.Id("nd").Dot("AccountMetaSlice").Index(Lit(index)).Op("=").Add(def)
 						}
-						// else if account.Address != "" {
-						// 	//def := Qual(PkgSolanaGo, "Meta").Call(Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(account.Address)))
-						// 	def := Qual(PkgSolanaGo, "Meta").Call(Id("Addresses").Index(Lit(account.Address)))
-						// 	addresses[account.Address] = account.Address
-						// 	if account.Writable {
-						// 		def.Dot("WRITE").Call()
-						// 	}
-						// 	if account.Signer {
-						// 		def.Dot("SIGNER").Call()
-						// 	}
-						// 	body.Id("nd").Dot("AccountMetaSlice").Index(Lit(index)).Op("=").Add(def)
-						// }
 						return true
 					})
 
@@ -931,7 +930,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 						exportedAccountName,
 						lowerAccountName,
 						instruction.Accounts,
-						// addresses,
+						addresses,
 						instruction.Args,
 						constantsCode,
 						constantsCodeMap,
@@ -1456,20 +1455,20 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 		Name: "constants",
 		File: constantsFile,
 	})
-	// // add configurable address map file
-	// {
-	// 	file := NewGoFile(idl.Metadata.Name, false)
-	// 	code := Empty().Var().Id("Addresses").Op("=").Map(String()).Qual(PkgSolanaGo, "PublicKey").Values(DictFunc(func(dict Dict) {
-	// 		for address, _ := range addresses {
-	// 			dict[Lit(address)] = Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(address))
-	// 		}
-	// 	}))
-	// 	file.Add(code)
-	// 	files = append(files, &FileWrapper{
-	// 		Name: "addresses",
-	// 		File: file,
-	// 	})
-	// }
+	// add configurable address map file
+	{
+		file := NewGoFile(idl.Metadata.Name, false)
+		code := Empty().Var().Id("Addresses").Op("=").Map(String()).Qual(PkgSolanaGo, "PublicKey").Values(DictFunc(func(dict Dict) {
+			for address, _ := range addresses {
+				dict[Lit(address)] = Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(address))
+			}
+		}))
+		file.Add(code)
+		files = append(files, &FileWrapper{
+			Name: "addresses",
+			File: file,
+		})
+	}
 	// //add utils file
 	{
 		file := NewGoFile(idl.Metadata.Name, false)
@@ -1519,7 +1518,7 @@ func genAccountGettersSetters(
 	exportedAccountName string,
 	lowerAccountName string,
 	accounts []IdlAccountItem,
-	// addresses map[string]string,
+	addresses map[string]string,
 	args []IdlField,
 	constantsCode *Statement,
 	constantsCodeMap map[string]struct{},
@@ -1765,7 +1764,7 @@ func genAccountGettersSetters(
 							//})))
 							address := solana.PublicKeyFromBytes(*seedProgramValue).String()
 							body.Add(Id("programID").Op(":=").Id("Addresses").Index(Lit(address)))
-							// addresses[address] = address
+							addresses[address] = address
 						}
 
 						body.Line()
