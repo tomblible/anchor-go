@@ -39,12 +39,12 @@ Anchor is a framework for Solana's Sealevel runtime providing several convenient
 ## I have an anchor program; how do I generate a Go client for it? (step by step)
 
 ### example 1: metaplex nft candy machine
+```convert
+anchor idl convert  6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P_266791762.json >pump.json
+```
 
 ```bash
-git clone https://github.com/metaplex-foundation/metaplex-program-library.git
-cd metaplex-program-library
-anchor idl parse -f candy-machine/program/src/lib.rs -o nft_candy_machine_v2.json
-anchor-go --src=nft_candy_machine_v2.json
+make build
 ```
 
 Note

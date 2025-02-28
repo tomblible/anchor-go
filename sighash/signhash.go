@@ -47,10 +47,11 @@ func (r *reader) Move() bool {
 }
 
 // #[cfg(feature = "unicode")]
-// fn get_iterator(s: &str) -> unicode_segmentation::UnicodeWords {
-//     use unicode_segmentation::UnicodeSegmentation;
-//     s.unicode_words()
-// }
+//
+//	fn get_iterator(s: &str) -> unicode_segmentation::UnicodeWords {
+//	    use unicode_segmentation::UnicodeSegmentation;
+//	    s.unicode_words()
+//	}
 func splitByUnicode(s string) []string {
 	parts := strings.FieldsFunc(s, func(r rune) bool {
 		// TODO: see https://unicode.org/reports/tr29/#Word_Boundaries

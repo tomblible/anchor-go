@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	. "github.com/dave/jennifer/jen"
 	"github.com/davecgh/go-spew/spew"
 	bin "github.com/gagliardetto/binary"
@@ -52,8 +54,12 @@ func typeStringToType(ts IdlTypeAsString) *Statement {
 		stat.Index().Byte()
 	case IdlTypeString:
 		stat.String()
-	case IdlTypePublicKey:
+	case IdlTypePubkey:
 		stat.Qual(PkgSolanaGo, "PublicKey")
+	case IdlTypeF32:
+		stat.Float32()
+	case IdlTypeF64:
+		stat.Float64()
 
 	// Custom:
 	case IdlTypeUnixTimestamp:
@@ -106,12 +112,12 @@ func genTypeName(idlTypeEnv IdlType) Code {
 		}
 	case idlTypeEnv.IsIdlTypeDefined():
 		{
-			st.Add(Id(idlTypeEnv.GetIdlTypeDefined().Defined))
+			st.Add(Id(idlTypeEnv.GetIdlTypeDefined().Defined.Name))
 		}
 	case idlTypeEnv.IsArray():
 		{
 			arr := idlTypeEnv.GetArray()
-			st.Index(Id(Itoa(arr.Num))).Add(genTypeName(arr.Thing))
+			st.Index(Id(Itoa(arr.Num))).Add(genTypeName(arr.Elem))
 		}
 	default:
 		panic(spew.Sdump(idlTypeEnv))
@@ -128,7 +134,7 @@ var typeRegistryComplexEnum = make(map[string]struct{})
 
 func isComplexEnum(envel IdlType) bool {
 	if envel.IsIdlTypeDefined() {
-		_, ok := typeRegistryComplexEnum[envel.GetIdlTypeDefined().Defined]
+		_, ok := typeRegistryComplexEnum[envel.GetIdlTypeDefined().Defined.Name]
 		return ok
 	}
 	return false
@@ -148,15 +154,18 @@ func registerComplexEnums(idl *IDL, def IdlTypeDef) {
 	}
 }
 
-func genTypeDef(idl *IDL, withDiscriminator bool, def IdlTypeDef) Code {
+func genTypeDef(idl *IDL, withDiscriminator *[8]byte, def IdlTypeDef) Code {
 
 	st := newStatement()
 	switch def.Type.Kind {
 	case IdlTypeDefTyKindStruct:
 		code := Empty()
 		code.Type().Id(def.Name).StructFunc(func(fieldsGroup *Group) {
+			if def.Type.Fields == nil {
+				emptyFields := []IdlField{}
+				def.Type.Fields = (*IdlStructFieldSlice)(&emptyFields)
+			}
 			for fieldIndex, field := range *def.Type.Fields {
-
 				for docIndex, doc := range field.Docs {
 					if docIndex == 0 && fieldIndex > 0 {
 						fieldsGroup.Line()
@@ -182,14 +191,16 @@ func genTypeDef(idl *IDL, withDiscriminator bool, def IdlTypeDef) Code {
 				code := Empty()
 				exportedAccountName := ToCamel(def.Name)
 
-				toBeHashed := ToCamel(def.Name)
+				//toBeHashed := ToCamel(def.Name)
 
-				if withDiscriminator {
+				if withDiscriminator != nil {
 					discriminatorName := exportedAccountName + "Discriminator"
-					if GetConfig().Debug {
-						code.Comment(Sf(`hash("%s:%s")`, bin.SIGHASH_ACCOUNT_NAMESPACE, toBeHashed)).Line()
-					}
-					sighash := bin.SighashTypeID(bin.SIGHASH_ACCOUNT_NAMESPACE, toBeHashed)
+					//if GetConfig().Debug {
+					//	code.Comment(Sf(`hash("%s:%s")`, bin.SIGHASH_ACCOUNT_NAMESPACE, toBeHashed)).Line()
+					//}
+					//sighash := bin.SighashTypeID(bin.SIGHASH_ACCOUNT_NAMESPACE, toBeHashed)
+
+					sighash := bin.TypeID(*withDiscriminator)
 					code.Var().Id(discriminatorName).Op("=").Index(Lit(8)).Byte().Op("{").ListFunc(func(byteGroup *Group) {
 						for _, byteVal := range sighash[:] {
 							byteGroup.Lit(int(byteVal))
@@ -252,7 +263,7 @@ func genTypeDef(idl *IDL, withDiscriminator bool, def IdlTypeDef) Code {
 		if def.Type.Variants.IsSimpleEnum() {
 			code.Type().Id(enumTypeName).Qual(PkgDfuseBinary, "BorshEnum")
 			code.Line().Const().Parens(DoGroup(func(gr *Group) {
-				for variantIndex, variant := range def.Type.Variants {
+				for variantIndex, variant := range *def.Type.Variants {
 
 					for docIndex, doc := range variant.Docs {
 						if docIndex == 0 {
@@ -277,7 +288,7 @@ func genTypeDef(idl *IDL, withDiscriminator bool, def IdlTypeDef) Code {
 				Params(String()).
 				BlockFunc(func(body *Group) {
 					body.Switch(Id("value")).BlockFunc(func(switchBlock *Group) {
-						for _, variant := range def.Type.Variants {
+						for _, variant := range *def.Type.Variants {
 							switchBlock.Case(Id(formatSimpleEnumVariantName(variant.Name, enumTypeName))).Line().Return(Lit(variant.Name))
 						}
 						switchBlock.Default().Line().Return(Lit(""))
@@ -302,13 +313,13 @@ func genTypeDef(idl *IDL, withDiscriminator bool, def IdlTypeDef) Code {
 						"borsh_enum": "true",
 					})
 
-					for _, variant := range def.Type.Variants {
+					for _, variant := range *def.Type.Variants {
 						structGroup.Id(ToCamel(variant.Name)).Id(formatComplexEnumVariantTypeName(enumTypeName, variant.Name))
 					}
 				},
 			).Line().Line()
 
-			for _, variant := range def.Type.Variants {
+			for _, variant := range *def.Type.Variants {
 				// Name of the variant type if the enum is a complex enum (i.e. enum variants are inline structs):
 				variantTypeNameComplex := formatComplexEnumVariantTypeName(enumTypeName, variant.Name)
 
@@ -333,8 +344,21 @@ func genTypeDef(idl *IDL, withDiscriminator bool, def IdlTypeDef) Code {
 										}())
 								}
 							default:
-								// TODO: handle tuples
-								panic("not handled: " + Sdump(variant.Fields))
+								for i, variantTupleItem := range *variant.Fields.IdlEnumFieldsTuple {
+									variantField := IdlField{
+										Name: fmt.Sprintf("Elem_%d", i),
+										Type: variantTupleItem,
+									}
+									structGroup.Add(genField(variantField, variantField.Type.IsIdlTypeOption())).
+										Add(func() Code {
+											if variantField.Type.IsIdlTypeOption() {
+												return Tag(map[string]string{
+													"bin": "optional",
+												})
+											}
+											return nil
+										}())
+								}
 							}
 						},
 					).Line().Line()
@@ -407,9 +431,10 @@ func genTypeDef(idl *IDL, withDiscriminator bool, def IdlTypeDef) Code {
 
 				// Declare the method to implement the parent enum interface:
 				if variant.IsUint8() {
-					code.Func().Params(Id("_").Op("*").Id(variantTypeNameComplex)).Id(interfaceMethodName).Params().Block().Line().Line()
+					code.Func().Params(Id("_").Id(variantTypeNameComplex)).Id(interfaceMethodName).Params().Block().Line().Line()
 				} else {
-					code.Func().Params(Id("_").Op("*").Id(variantTypeNameComplex)).Id(interfaceMethodName).Params().Block().Line().Line()
+					// .Op("*") why had used pointer receiver?
+					code.Func().Params(Id("_").Id(variantTypeNameComplex)).Id(interfaceMethodName).Params().Block().Line().Line()
 				}
 			}
 
@@ -478,14 +503,14 @@ func genMarshalWithEncoder_struct(
 					}
 
 					if isComplexEnum(field.Type) {
-						enumTypeName := field.Type.GetIdlTypeDefined().Defined
+						enumTypeName := field.Type.GetIdlTypeDefined().Defined.Name
 						body.BlockFunc(func(argBody *Group) {
 							argBody.List(Id("tmp")).Op(":=").Id(formatEnumContainerName(enumTypeName)).Block()
 							argBody.Switch(Id("realvalue").Op(":=").Id("obj").Dot(exportedArgName).Op(".").Parens(Type())).
 								BlockFunc(func(switchGroup *Group) {
 									// TODO: maybe it's from idl.Accounts ???
 									interfaceType := idl.Types.GetByName(enumTypeName)
-									for variantIndex, variant := range interfaceType.Type.Variants {
+									for variantIndex, variant := range *interfaceType.Type.Variants {
 										variantTypeNameStruct := formatComplexEnumVariantTypeName(enumTypeName, variant.Name)
 
 										switchGroup.Case(Op("*").Id(variantTypeNameStruct)).
@@ -613,7 +638,7 @@ func genUnmarshalWithDecoder_struct(
 
 					if isComplexEnum(field.Type) {
 						// TODO:
-						enumName := field.Type.GetIdlTypeDefined().Defined
+						enumName := field.Type.GetIdlTypeDefined().Defined.Name
 						body.BlockFunc(func(argBody *Group) {
 
 							argBody.List(Id("tmp")).Op(":=").New(Id(formatEnumContainerName(enumName)))
@@ -629,7 +654,7 @@ func genUnmarshalWithDecoder_struct(
 							argBody.Switch(Id("tmp").Dot("Enum")).
 								BlockFunc(func(switchGroup *Group) {
 									interfaceType := idl.Types.GetByName(enumName)
-									for variantIndex, variant := range interfaceType.Type.Variants {
+									for variantIndex, variant := range *interfaceType.Type.Variants {
 										variantTypeNameComplex := formatComplexEnumVariantTypeName(enumName, variant.Name)
 
 										if variant.IsUint8() {
@@ -679,6 +704,10 @@ func genUnmarshalWithDecoder_struct(
 						}
 					}
 
+					//body.If(Op("!").Id("decoder").Dot("HasRemaining").Call()).Block(
+					//	Return(Nil()),
+					//)
+
 				}
 
 				body.Return(Nil())
@@ -688,7 +717,7 @@ func genUnmarshalWithDecoder_struct(
 }
 
 func formatComplexEnumVariantTypeName(enumTypeName string, variantName string) string {
-	return ToCamel(Sf("%s_%s", enumTypeName, variantName))
+	return ToCamel(Sf("%s_%s_Tuple", enumTypeName, variantName))
 }
 
 func formatSimpleEnumVariantName(variantName string, enumTypeName string) string {
