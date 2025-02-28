@@ -1033,7 +1033,7 @@ func decodeErrorCode(rpcErr error) (errorCode int, ok bool) {
 				).
 				BlockFunc(func(body *Group) {
 					// Body:
-					body.Return(Id("inst").Dot("AccountMetaSlice").Index(Lit(16), Id("len").Call(Id("inst").Dot("AccountMetaSlice"))))
+					body.Return(Id("inst").Dot("AccountMetaSlice").Index(Lit(instruction.Accounts.NumAccounts()), Id("len").Call(Id("inst").Dot("AccountMetaSlice"))))
 				})
 			file.Add(code.Line())
 		}

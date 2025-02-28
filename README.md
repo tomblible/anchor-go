@@ -40,7 +40,7 @@ Anchor is a framework for Solana's Sealevel runtime providing several convenient
 
 ### example 1: metaplex nft candy machine
 ```convert
-anchor idl convert  6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P_266791762.json >pump.json
+anchor idl convert  old.json >new.json
 ```
 
 ```bash
