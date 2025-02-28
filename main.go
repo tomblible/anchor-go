@@ -1751,170 +1751,171 @@ func genAccountGettersSetters(
 					})
 				constantsCode.Line().Line()
 			}
-
-			accessorName2 := accessorName + "WithBumpSeed"
-			code.Commentf("%s calculates %s account address with given seeds and a known bump seed.", accessorName2, exportedAccountName).Line()
-			code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id(accessorName2).
-				Params(
-					ListFunc(func(params *Group) {
-						// Parameters:
-						for i, seedRef := range seedRefs {
-							if seedRef != "" {
-								if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-									params.Id(seedRef).Index(Lit(32)).Byte()
-								} else if seedTypes[i].asString == "i64" {
-									params.Id(seedRef).Index(Lit(8)).Byte()
-								} else {
-									params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+			/*
+				accessorName2 := accessorName + "WithBumpSeed"
+				code.Commentf("%s calculates %s account address with given seeds and a known bump seed.", accessorName2, exportedAccountName).Line()
+				code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id(accessorName2).
+					Params(
+						ListFunc(func(params *Group) {
+							// Parameters:
+							for i, seedRef := range seedRefs {
+								if seedRef != "" {
+									if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+										params.Id(seedRef).Index(Lit(32)).Byte()
+									} else if seedTypes[i].asString == "i64" {
+										params.Id(seedRef).Index(Lit(8)).Byte()
+									} else {
+										params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+									}
 								}
 							}
-						}
-						params.Id("bumpSeed").Uint8()
-					}),
-				).
-				Params(
-					ListFunc(func(results *Group) {
-						// Results:
-						results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
-						results.Id("err").Error()
-					}),
-				).
-				BlockFunc(func(body *Group) {
-					body.Add(List(Id("pda"), Id("_"), Id("err")).Op("=").Id(internalAccessorName).CallFunc(func(group *Group) {
-						for _, seedRef := range seedRefs {
-							if seedRef != "" {
-								group.Add(Id(seedRef))
-							}
-						}
-						group.Add(Id("bumpSeed"))
-						return
-					}))
-
-					body.Return()
-				})
-
-			code.Line().Line()
-			code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id("Must" + accessorName2).
-				Params(
-					ListFunc(func(params *Group) {
-						// Parameters:
-						for i, seedRef := range seedRefs {
-							if seedRef != "" {
-								if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-									params.Id(seedRef).Index(Lit(32)).Byte()
-								} else if seedTypes[i].asString == "i64" {
-									params.Id(seedRef).Index(Lit(8)).Byte()
-								} else {
-									params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+							params.Id("bumpSeed").Uint8()
+						}),
+					).
+					Params(
+						ListFunc(func(results *Group) {
+							// Results:
+							results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
+							results.Id("err").Error()
+						}),
+					).
+					BlockFunc(func(body *Group) {
+						body.Add(List(Id("pda"), Id("_"), Id("err")).Op("=").Id(internalAccessorName).CallFunc(func(group *Group) {
+							for _, seedRef := range seedRefs {
+								if seedRef != "" {
+									group.Add(Id(seedRef))
 								}
 							}
-						}
-						params.Id("bumpSeed").Uint8()
-					}),
-				).
-				Params(
-					ListFunc(func(results *Group) {
-						// Results:
-						results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
-					}),
-				).
-				BlockFunc(func(body *Group) {
-					body.Add(List(Id("pda"), Id("_"), Id("err")).Op(":=").Id(internalAccessorName).CallFunc(func(group *Group) {
-						for _, seedRef := range seedRefs {
-							if seedRef != "" {
-								group.Add(Id(seedRef))
-							}
-						}
-						group.Add(Id("bumpSeed"))
-						return
-					}))
+							group.Add(Id("bumpSeed"))
+							return
+						}))
 
-					body.Add(If(Id("err").Op("!=").Nil()).Block(Panic(Id("err"))))
+						body.Return()
+					})
 
-					body.Return()
-				})
-
-			code.Line().Line()
-			accessorName3 := accessorName
-			code.Commentf("%s finds %s account address with given seeds.", accessorName3, exportedAccountName).Line()
-			code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id(accessorName3).
-				Params(
-					ListFunc(func(params *Group) {
-						// Parameters:
-						for i, seedRef := range seedRefs {
-							if seedRef != "" {
-								if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-									params.Id(seedRef).Index(Lit(32)).Byte()
-								} else if seedTypes[i].asString == "i64" {
-									params.Id(seedRef).Index(Lit(8)).Byte()
-								} else {
-									params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+				code.Line().Line()
+				code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id("Must" + accessorName2).
+					Params(
+						ListFunc(func(params *Group) {
+							// Parameters:
+							for i, seedRef := range seedRefs {
+								if seedRef != "" {
+									if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+										params.Id(seedRef).Index(Lit(32)).Byte()
+									} else if seedTypes[i].asString == "i64" {
+										params.Id(seedRef).Index(Lit(8)).Byte()
+									} else {
+										params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+									}
 								}
 							}
-						}
-					}),
-				).
-				Params(
-					ListFunc(func(results *Group) {
-						// Results:
-						results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
-						results.Id("bumpSeed").Uint8()
-						results.Id("err").Error()
-					}),
-				).
-				BlockFunc(func(body *Group) {
-					body.Add(List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Id(internalAccessorName).CallFunc(func(group *Group) {
-						for _, seedRef := range seedRefs {
-							if seedRef != "" {
-								group.Add(Id(seedRef))
-							}
-						}
-						group.Add(Lit(0))
-						return
-					}))
-
-					body.Return()
-				})
-
-			code.Line().Line()
-			code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id("Must" + accessorName3).
-				Params(
-					ListFunc(func(params *Group) {
-						// Parameters:
-						for i, seedRef := range seedRefs {
-							if seedRef != "" {
-								if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-									params.Id(seedRef).Index(Lit(32)).Byte()
-								} else if seedTypes[i].asString == "i64" {
-									params.Id(seedRef).Index(Lit(8)).Byte()
-								} else {
-									params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+							params.Id("bumpSeed").Uint8()
+						}),
+					).
+					Params(
+						ListFunc(func(results *Group) {
+							// Results:
+							results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
+						}),
+					).
+					BlockFunc(func(body *Group) {
+						body.Add(List(Id("pda"), Id("_"), Id("err")).Op(":=").Id(internalAccessorName).CallFunc(func(group *Group) {
+							for _, seedRef := range seedRefs {
+								if seedRef != "" {
+									group.Add(Id(seedRef))
 								}
 							}
-						}
-					}),
-				).
-				Params(
-					ListFunc(func(results *Group) {
-						// Results:
-						results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
-					}),
-				).
-				BlockFunc(func(body *Group) {
-					body.Add(List(Id("pda"), Id("_"), Id("err")).Op(":=").Id(internalAccessorName).CallFunc(func(group *Group) {
-						for _, seedRef := range seedRefs {
-							if seedRef != "" {
-								group.Add(Id(seedRef))
+							group.Add(Id("bumpSeed"))
+							return
+						}))
+
+						body.Add(If(Id("err").Op("!=").Nil()).Block(Panic(Id("err"))))
+
+						body.Return()
+					})
+
+				code.Line().Line()
+				accessorName3 := accessorName
+				code.Commentf("%s finds %s account address with given seeds.", accessorName3, exportedAccountName).Line()
+				code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id(accessorName3).
+					Params(
+						ListFunc(func(params *Group) {
+							// Parameters:
+							for i, seedRef := range seedRefs {
+								if seedRef != "" {
+									if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+										params.Id(seedRef).Index(Lit(32)).Byte()
+									} else if seedTypes[i].asString == "i64" {
+										params.Id(seedRef).Index(Lit(8)).Byte()
+									} else {
+										params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+									}
+								}
 							}
-						}
-						group.Add(Lit(0))
-						return
-					}))
+						}),
+					).
+					Params(
+						ListFunc(func(results *Group) {
+							// Results:
+							results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
+							results.Id("bumpSeed").Uint8()
+							results.Id("err").Error()
+						}),
+					).
+					BlockFunc(func(body *Group) {
+						body.Add(List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Id(internalAccessorName).CallFunc(func(group *Group) {
+							for _, seedRef := range seedRefs {
+								if seedRef != "" {
+									group.Add(Id(seedRef))
+								}
+							}
+							group.Add(Lit(0))
+							return
+						}))
 
-					body.Add(If(Id("err").Op("!=").Nil()).Block(Panic(Id("err"))))
+						body.Return()
+					})
 
-					body.Return()
-				})
+				code.Line().Line()
+				code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id("Must" + accessorName3).
+					Params(
+						ListFunc(func(params *Group) {
+							// Parameters:
+							for i, seedRef := range seedRefs {
+								if seedRef != "" {
+									if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+										params.Id(seedRef).Index(Lit(32)).Byte()
+									} else if seedTypes[i].asString == "i64" {
+										params.Id(seedRef).Index(Lit(8)).Byte()
+									} else {
+										params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+									}
+								}
+							}
+						}),
+					).
+					Params(
+						ListFunc(func(results *Group) {
+							// Results:
+							results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
+						}),
+					).
+					BlockFunc(func(body *Group) {
+						body.Add(List(Id("pda"), Id("_"), Id("err")).Op(":=").Id(internalAccessorName).CallFunc(func(group *Group) {
+							for _, seedRef := range seedRefs {
+								if seedRef != "" {
+									group.Add(Id(seedRef))
+								}
+							}
+							group.Add(Lit(0))
+							return
+						}))
+
+						body.Add(If(Id("err").Op("!=").Nil()).Block(Panic(Id("err"))))
+
+						body.Return()
+					})
+			*/
 		}
 	}
 
