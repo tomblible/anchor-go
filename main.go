@@ -17,7 +17,6 @@ import (
 	"github.com/gagliardetto/anchor-go/sighash"
 	"github.com/gagliardetto/solana-go"
 
-	"github.com/dave/jennifer/jen"
 	. "github.com/dave/jennifer/jen"
 	bin "github.com/gagliardetto/binary"
 	. "github.com/gagliardetto/utilz"
@@ -944,25 +943,25 @@ func decodeErrorCode(rpcErr error) (errorCode int, ok bool) {
 
 			file.Add(code.Line())
 		}
-		{
-			// Declare `AddRemainingAccounts` method on instruction:
-			code := Empty()
+		// {
+		// 	// Declare `AddRemainingAccounts` method on instruction:
+		// 	code := Empty()
 
-			code.Line().Line().Func().Params(Id("inst").Op("*").Id(insExportedName)).Id("AddRemainingAccounts").Params(
-				Id("remainingAccounts").Index().Qual(PkgSolanaGo, "PublicKey"),
-			).Params(Op("*").Id(insExportedName)).
-				Block(
-					jen.Id("accounts").Op(":=").Lit(instruction.Accounts.NumAccounts()),
-					jen.For(
-						jen.Id("i").Op(":=").Range().Id("remainingAccounts"),
-					).Block(
-						jen.Id("index").Op(":=").Id("accounts").Op("+").Id("i"),
-						jen.Id("inst").Dot("AccountMetaSlice").Index(jen.Id("index")).Op("=").Qual(PkgSolanaGo, "Meta").Call(jen.Id("remainingAccounts").Index(jen.Id("i"))).Dot("WRITE").Call(),
-					),
-					Return(Id("inst")),
-				)
-			file.Add(code.Line())
-		}
+		// 	code.Line().Line().Func().Params(Id("inst").Op("*").Id(insExportedName)).Id("AddRemainingAccounts").Params(
+		// 		Id("remainingAccounts").Index().Qual(PkgSolanaGo, "PublicKey"),
+		// 	).Params(Op("*").Id(insExportedName)).
+		// 		Block(
+		// 			jen.Id("accounts").Op(":=").Lit(instruction.Accounts.NumAccounts()),
+		// 			jen.For(
+		// 				jen.Id("i").Op(":=").Range().Id("remainingAccounts"),
+		// 			).Block(
+		// 				jen.Id("index").Op(":=").Id("accounts").Op("+").Id("i"),
+		// 				jen.Id("inst").Dot("AccountMetaSlice").Index(jen.Id("index")).Op("=").Qual(PkgSolanaGo, "Meta").Call(jen.Id("remainingAccounts").Index(jen.Id("i"))).Dot("WRITE").Call(),
+		// 			),
+		// 			Return(Id("inst")),
+		// 		)
+		// 	file.Add(code.Line())
+		// }
 		// SetAccounts 设置账户列表
 		{
 			code := Empty()
