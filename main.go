@@ -525,7 +525,42 @@ func decodeErrorCode(rpcErr error) (errorCode int, ok bool) {
 			File: file,
 		})
 	}
+	constantsFile := NewGoFile(idl.Metadata.Name, false)
+	constantsCode := Empty()
+	constantsCodeMap := make(map[string]struct{}, 0)
+	// add constants file
+	{
+		// file := NewGoFile(idl.Metadata.Name, false)
+		// code := Empty()
+		for _, c := range idl.Constants {
+			constantsCode.Line().Var().Id(fmt.Sprintf("CONST_%s", c.Name)).Op("=")
+			typ := c.Type.GetString()
+			switch typ {
+			case "string":
+				v, err := strconv.Unquote(c.Value)
+				if err != nil {
+					panic(fmt.Sprintf("failed to parse constant: %s", spew.Sdump(c)))
+				}
+				constantsCode.Lit(v)
+			case "u16":
+				v, err := strconv.ParseInt(c.Value, 10, 16)
+				if err != nil {
+					panic(fmt.Sprintf("failed to parse constant: %s", spew.Sdump(c)))
+				}
+				constantsCode.Lit(int(v))
+			case "pubkey":
+				constantsCode.Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(c.Value))
+			default:
+				panic(fmt.Sprintf("unsupportd constant: %s", spew.Sdump(c)))
+			}
 
+		}
+		// constantsFile.Add(constantsCode)
+		// files = append(files, &FileWrapper{
+		// 	Name: "constants",
+		// 	File: constantsFile,
+		// })
+	}
 	// Instructions:
 	for _, instruction := range idl.Instructions {
 		file := NewGoFile(idl.Metadata.Name, true)
@@ -898,6 +933,8 @@ func decodeErrorCode(rpcErr error) (errorCode int, ok bool) {
 						instruction.Accounts,
 						addresses,
 						instruction.Args,
+						constantsCode,
+						constantsCodeMap,
 						&idl,
 					))
 					groupMemberIndex++
@@ -1405,12 +1442,16 @@ func decodeErrorCode(rpcErr error) (errorCode int, ok bool) {
 
 			file.Add(code.Line())
 		}
-		////
 		files = append(files, &FileWrapper{
 			Name: strings.ToLower(insExportedName),
 			File: file,
 		})
 	}
+	constantsFile.Add(constantsCode)
+	files = append(files, &FileWrapper{
+		Name: "constants",
+		File: constantsFile,
+	})
 	// add configurable address map file
 	{
 		file := NewGoFile(idl.Metadata.Name, false)
@@ -1422,40 +1463,6 @@ func decodeErrorCode(rpcErr error) (errorCode int, ok bool) {
 		file.Add(code)
 		files = append(files, &FileWrapper{
 			Name: "addresses",
-			File: file,
-		})
-	}
-
-	// add constants file
-	{
-		file := NewGoFile(idl.Metadata.Name, false)
-		code := Empty()
-		for _, c := range idl.Constants {
-			code.Line().Var().Id(fmt.Sprintf("CONST_%s", c.Name)).Op("=")
-			typ := c.Type.GetString()
-			switch typ {
-			case "string":
-				v, err := strconv.Unquote(c.Value)
-				if err != nil {
-					panic(fmt.Sprintf("failed to parse constant: %s", spew.Sdump(c)))
-				}
-				code.Lit(v)
-			case "u16":
-				v, err := strconv.ParseInt(c.Value, 10, 16)
-				if err != nil {
-					panic(fmt.Sprintf("failed to parse constant: %s", spew.Sdump(c)))
-				}
-				code.Lit(int(v))
-			case "pubkey":
-				code.Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(c.Value))
-			default:
-				panic(fmt.Sprintf("unsupportd constant: %s", spew.Sdump(c)))
-			}
-
-		}
-		file.Add(code)
-		files = append(files, &FileWrapper{
-			Name: "constants",
 			File: file,
 		})
 	}
@@ -1480,6 +1487,8 @@ func genAccountGettersSetters(
 	accounts []IdlAccountItem,
 	addresses map[string]string,
 	args []IdlField,
+	constantsCode *Statement,
+	constantsCodeMap map[string]struct{},
 	idl *IDL,
 ) Code {
 	code := Empty()
@@ -1656,90 +1665,93 @@ func genAccountGettersSetters(
 				}
 			}
 
-			internalAccessorName := "find" + accessorName
-			code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id(internalAccessorName).
-				Params(
-					ListFunc(func(params *Group) {
-						// Parameters:
-						for i, seedRef := range seedRefs {
-							if seedRef != "" {
-								if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-									params.Id(seedRef).Index(Lit(32)).Byte()
-								} else if seedTypes[i].asString == "i64" {
-									params.Id(seedRef).Index(Lit(8)).Byte()
-								} else {
-									params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+			internalAccessorName := "Find" + accessorName
+			if _, isExist := constantsCodeMap[internalAccessorName]; !isExist {
+				constantsCodeMap[internalAccessorName] = struct{}{}
+				constantsCode.Func().Id(internalAccessorName).
+					Params(
+						ListFunc(func(params *Group) {
+							// Parameters:
+							for i, seedRef := range seedRefs {
+								if seedRef != "" {
+									if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+										params.Id(seedRef).Index(Lit(32)).Byte()
+									} else if seedTypes[i].asString == "i64" {
+										params.Id(seedRef).Index(Lit(8)).Byte()
+									} else {
+										params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+									}
 								}
 							}
-						}
-						params.Id("knownBumpSeed").Uint8()
-					}),
-				).
-				Params(
-					ListFunc(func(results *Group) {
-						// Results:
-						results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
-						results.Id("bumpSeed").Uint8()
-						results.Id("err").Error()
-					}),
-				).
-				BlockFunc(func(body *Group) {
-					// Body:
-					body.Add(Var().Id("seeds").Index().Index().Byte())
-
-					for i, seedValue := range seedValues {
-						if seedValue != nil {
-							//body.Commentf("const: %s", string(seedValue))
-							body.Commentf("const: 0x%s", hex.EncodeToString(seedValue))
-							body.Add(Id("seeds").Op("=").Append(Id("seeds"), Index().Byte().ValuesFunc(func(group *Group) {
-								for _, v := range seedValue {
-									group.LitByte(v)
-								}
-							})))
-						} else {
-							seedRef := seedRefs[i]
-							body.Commentf("path: %s", seedRef)
-							if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-								body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":")))) // Just pass the byte array directly
-							} else if seedTypes[i].asString == "i64" {
-								body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":"))))
-							} else {
-								body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Dot("Bytes").Call()))
-							}
-						}
-					}
-
-					body.Line()
-
-					seedProgramRef := Id("ProgramID")
-					if seedProgramValue != nil {
-						seedProgramRef = Id("programID")
-						//body.Add(Id("programID").Op(":=").Qual(PkgSolanaGo, "PublicKey").Call(Index().Byte().ValuesFunc(func(group *Group) {
-						//	for _, v := range *seedProgramValue {
-						//		group.LitByte(v)
-						//	}
-						//})))
-						address := solana.PublicKeyFromBytes(*seedProgramValue).String()
-						body.Add(Id("programID").Op(":=").Id("Addresses").Index(Lit(address)))
-						addresses[address] = address
-					}
-
-					body.Line()
-
-					body.Add(
-						If(Id("knownBumpSeed").Op("!=").Lit(0)).BlockFunc(func(group *Group) {
-							group.Add(Id("seeds").Op("=").Append(Id("seeds"), Index().Byte().Values(Byte().Call(Id("bumpSeed")))))
-							group.Add(List(Id("pda"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "CreateProgramAddress").Call(Id("seeds"), seedProgramRef)))
-						}).
-							Else().BlockFunc(func(group *Group) {
-							group.Add(List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "FindProgramAddress").Call(Id("seeds"), seedProgramRef)))
+							params.Id("knownBumpSeed").Uint8()
 						}),
-					)
+					).
+					Params(
+						ListFunc(func(results *Group) {
+							// Results:
+							results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
+							results.Id("bumpSeed").Uint8()
+							results.Id("err").Error()
+						}),
+					).
+					BlockFunc(func(body *Group) {
+						// Body:
+						body.Add(Var().Id("seeds").Index().Index().Byte())
 
-					body.Return()
-				})
+						for i, seedValue := range seedValues {
+							if seedValue != nil {
+								//body.Commentf("const: %s", string(seedValue))
+								body.Commentf("const: 0x%s", hex.EncodeToString(seedValue))
+								body.Add(Id("seeds").Op("=").Append(Id("seeds"), Index().Byte().ValuesFunc(func(group *Group) {
+									for _, v := range seedValue {
+										group.LitByte(v)
+									}
+								})))
+							} else {
+								seedRef := seedRefs[i]
+								body.Commentf("path: %s", seedRef)
+								if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+									body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":")))) // Just pass the byte array directly
+								} else if seedTypes[i].asString == "i64" {
+									body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":"))))
+								} else {
+									body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Dot("Bytes").Call()))
+								}
+							}
+						}
 
-			code.Line().Line()
+						body.Line()
+
+						seedProgramRef := Id("ProgramID")
+						if seedProgramValue != nil {
+							seedProgramRef = Id("programID")
+							//body.Add(Id("programID").Op(":=").Qual(PkgSolanaGo, "PublicKey").Call(Index().Byte().ValuesFunc(func(group *Group) {
+							//	for _, v := range *seedProgramValue {
+							//		group.LitByte(v)
+							//	}
+							//})))
+							address := solana.PublicKeyFromBytes(*seedProgramValue).String()
+							body.Add(Id("programID").Op(":=").Id("Addresses").Index(Lit(address)))
+							addresses[address] = address
+						}
+
+						body.Line()
+
+						body.Add(
+							If(Id("knownBumpSeed").Op("!=").Lit(0)).BlockFunc(func(group *Group) {
+								group.Add(Id("seeds").Op("=").Append(Id("seeds"), Index().Byte().Values(Byte().Call(Id("bumpSeed")))))
+								group.Add(List(Id("pda"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "CreateProgramAddress").Call(Id("seeds"), seedProgramRef)))
+							}).
+								Else().BlockFunc(func(group *Group) {
+								group.Add(List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "FindProgramAddress").Call(Id("seeds"), seedProgramRef)))
+							}),
+						)
+
+						body.Return()
+					})
+				constantsCode.Line().Line()
+			}
+
 			accessorName2 := accessorName + "WithBumpSeed"
 			code.Commentf("%s calculates %s account address with given seeds and a known bump seed.", accessorName2, exportedAccountName).Line()
 			code.Func().Params(Id("inst").Op("*").Id(receiverTypeName)).Id(accessorName2).
@@ -1768,7 +1780,7 @@ func genAccountGettersSetters(
 					}),
 				).
 				BlockFunc(func(body *Group) {
-					body.Add(List(Id("pda"), Id("_"), Id("err")).Op("=").Id("inst").Dot(internalAccessorName).CallFunc(func(group *Group) {
+					body.Add(List(Id("pda"), Id("_"), Id("err")).Op("=").Id(internalAccessorName).CallFunc(func(group *Group) {
 						for _, seedRef := range seedRefs {
 							if seedRef != "" {
 								group.Add(Id(seedRef))
@@ -1807,7 +1819,7 @@ func genAccountGettersSetters(
 					}),
 				).
 				BlockFunc(func(body *Group) {
-					body.Add(List(Id("pda"), Id("_"), Id("err")).Op(":=").Id("inst").Dot(internalAccessorName).CallFunc(func(group *Group) {
+					body.Add(List(Id("pda"), Id("_"), Id("err")).Op(":=").Id(internalAccessorName).CallFunc(func(group *Group) {
 						for _, seedRef := range seedRefs {
 							if seedRef != "" {
 								group.Add(Id(seedRef))
@@ -1851,7 +1863,7 @@ func genAccountGettersSetters(
 					}),
 				).
 				BlockFunc(func(body *Group) {
-					body.Add(List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Id("inst").Dot(internalAccessorName).CallFunc(func(group *Group) {
+					body.Add(List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Id(internalAccessorName).CallFunc(func(group *Group) {
 						for _, seedRef := range seedRefs {
 							if seedRef != "" {
 								group.Add(Id(seedRef))
@@ -1889,7 +1901,7 @@ func genAccountGettersSetters(
 					}),
 				).
 				BlockFunc(func(body *Group) {
-					body.Add(List(Id("pda"), Id("_"), Id("err")).Op(":=").Id("inst").Dot(internalAccessorName).CallFunc(func(group *Group) {
+					body.Add(List(Id("pda"), Id("_"), Id("err")).Op(":=").Id(internalAccessorName).CallFunc(func(group *Group) {
 						for _, seedRef := range seedRefs {
 							if seedRef != "" {
 								group.Add(Id(seedRef))
