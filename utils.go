@@ -15,6 +15,7 @@ import (
 func ToPackageName(s string) string {
 	return sighash.ToRustSnakeCase(ToCamel(s))
 }
+
 func NewGoFile(programName string, includeBoilerplace bool) *File {
 	file := NewFile(ToPackageName(programName))
 	// Set a prefix to avoid collision between variable names and packages:
@@ -67,6 +68,7 @@ func DoGroupMultiline(f func(*Group)) *Statement {
 	*s = append(*s, g)
 	return s
 }
+
 func newStatement() *Statement {
 	return &Statement{}
 }
@@ -111,4 +113,69 @@ func CodeIf(condition bool, code Code) Code {
 		return code
 	}
 	return Null()
+}
+
+var systemPrograms = map[solana.PublicKey]string{
+	solana.WrappedSol:                    "WSOL",
+	solana.SystemProgramID:               "SystemProgram",
+	solana.ConfigProgramID:               "ConfigProgram",
+	solana.StakeProgramID:                "StakeProgram",
+	solana.VoteProgramID:                 "VoteProgram",
+	solana.BPFLoaderDeprecatedProgramID:  "BPFLoaderDeprecatedProgram",
+	solana.BPFLoaderProgramID:            "BPFLoaderProgram",
+	solana.BPFLoaderUpgradeableProgramID: "BPFLoaderUpgradeableProgram",
+	solana.Secp256k1ProgramID:            "Secp256k1Program",
+	solana.FeatureProgramID:              "FeatureProgram",
+	solana.ComputeBudget:                 "ComputeBudgetProgram",
+	solana.SysVarClockPubkey:             "ClockProgram",
+	solana.SysVarEpochSchedulePubkey:     "EpochProgram",
+	solana.SysVarFeesPubkey:              "FeesProgram",
+	solana.SysVarInstructionsPubkey:      "InstructionsProgram",
+	solana.SysVarRecentBlockHashesPubkey: "RecentProgram",
+	solana.SysVarRentPubkey:              "RentProgram",
+	solana.SysVarSlotHashesPubkey:        "SlotHashesProgram",
+	solana.SysVarSlotHistoryPubkey:       "SlotHistoryProgram",
+	solana.SysVarStakeHistoryPubkey:      "StakeHistoryProgram",
+	solana.SysVarRewardsPubkey:           "RewardsProgram",
+	solana.MustPublicKeyFromBase58("AddressLookupTab1e1111111111111111111111111"):  "AddressLookupProgram",
+	solana.MustPublicKeyFromBase58("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"): "AssociatedTokenProgram",
+	solana.MustPublicKeyFromBase58("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"):  "TokenMetadataProgram",
+	solana.MustPublicKeyFromBase58("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"):  "TokenProgram",
+	solana.MustPublicKeyFromBase58("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"):  "Token22Program",
+	solana.MustPublicKeyFromBase58("Memo1UhkJRfHyvLMcVucJwxXeuD728EqVDDwQDxFMNo"):  "MemoV1Program",
+	solana.MustPublicKeyFromBase58("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"):  "MemoProgram",
+	solana.MustPublicKeyFromBase58("675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"): "RaydiumAmmV4Program",
+	solana.MustPublicKeyFromBase58("srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX"):  "SerumDexProgram",
+	solana.MustPublicKeyFromBase58("5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1"): "RaydiumAmmV4Authority",
+	solana.MustPublicKeyFromBase58("CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK"): "RaydiumCLMMProgram",
+	solana.MustPublicKeyFromBase58("CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C"): "RaydiumCPMMProgram",
+	solana.MustPublicKeyFromBase58("GpMZbSM2GgvTKHJirzeGfMFoaZ8UR2X7F4v8vHTvxFbL"): "RaydiumCPMMAuthority",
+	solana.MustPublicKeyFromBase58("whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc"):  "WhirlpoolProgram",
+	solana.MustPublicKeyFromBase58("LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo"):  "MeteoraDLMMProgram",
+	solana.MustPublicKeyFromBase58("D1ZN9Wj1fRSUQfCjhvnu1hqDMT7hzjzBBpi12nVniYD6"): "MeteoraDLMMAuthority",
+	solana.MustPublicKeyFromBase58("Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB"): "MeteoraPoolsProgram",
+	solana.MustPublicKeyFromBase58("24Uqj9JCLxUeoC3hGfh5W3s9FM9uCHDS2SG3LYwBpyTi"): "MeteoraVaultProgram",
+	solana.MustPublicKeyFromBase58("4FqThZWv3QKWkSyXCDmATpWkpEiCHq5yhkdGWpSEDAZM"): "DaoFunv1Program",
+	solana.MustPublicKeyFromBase58("5jnapfrAN47UYkLkEf7HnprPPBCQLvkYWGZDeKkaP5hv"): "DaoFunDaoVirtualXYKProgram",
+	solana.MustPublicKeyFromBase58("Daosz93P15uZ1aTFTrBUAJyU1KERmZm3XQ5u4hbfHVQS"): "DaoFunFounderProgram",
+	solana.MustPublicKeyFromBase58("CurvyB2V1gJVsSb7Zb112ScicJbUmQ7jyHLn8UHNYf6B"): "DaoFunPumpXYKProgram",
+	solana.MustPublicKeyFromBase58("2GhmcVV5MUwmfaChwMtJJQjPrWCTTrkYdvvVhVRvudX2"): "DaoFunVestProgram",
+	solana.MustPublicKeyFromBase58("FVcBE8tRXSHo87bP3bxifaKBMcfHWoMMfYpW5onqVd2B"): "DaoFunOTCProgram",
+}
+
+func getDefProgram(name string, address string) string {
+	puk := solana.MustPublicKeyFromBase58(address)
+	if n, ok := systemPrograms[puk]; ok {
+		return n
+	}
+	// 不存在,公钥是否存在
+	for _, n := range systemPrograms {
+		// 存在这个名字，需要别名
+		if name == n {
+			name = name + address[:2]
+			break
+		}
+	}
+	systemPrograms[puk] = name
+	return name
 }

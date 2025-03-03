@@ -6,3 +6,6 @@ swap-proxy:build
 
 temp:build
 	./anchor-go -type-id=uint8 -src=./temp.json -pkg=temp -dst=./generated/temp
+
+run:
+	go run ./ -src=D:\project\anchor-go\idl\temp.json
