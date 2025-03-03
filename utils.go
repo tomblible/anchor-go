@@ -179,3 +179,13 @@ func getDefProgram(name string, address string) string {
 	systemPrograms[puk] = name
 	return name
 }
+
+func getProgramAccount(name string) solana.PublicKey {
+	for address, n := range systemPrograms {
+		// 存在这个名字，需要别名
+		if name == n {
+			return address
+		}
+	}
+	return solana.PublicKey{}
+}

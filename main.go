@@ -1153,6 +1153,35 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 				).
 				BlockFunc(func(body *Group) {
 					// Body:
+					{
+						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
+							accountMap := make(map[string]struct{})
+							if account.PDA != nil {
+								seeds := account.PDA.Seeds
+								params := make([]jen.Code, len(seeds))
+								for _, seed := range seeds {
+									if seed.Kind == "account" {
+										// 如果种子是账户引用
+										params = append(params, Id(ToLowerCamel(seed.Path)))
+									}
+								}
+								address := getProgramAccount(account.Name)
+								if address.Equals(solana.PublicKey{}) {
+									exportedAccountName := ToCamel(account.Name)
+									accessorName := strings.TrimSuffix(formatAccountAccessorName("MustFind", exportedAccountName), "Account") + "Address"
+									body.Id(ToLowerCamel(account.Name)).Op(":=").Id(accessorName).Call(params...)
+								} else {
+									//solana.MustPublicKeyFromBase58(address)
+									body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(address))
+								}
+							}
+							if account.Address != "" {
+								body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(account.Address))
+							}
+							accountMap[account.Name] = struct{}{}
+							return true
+						})
+					}
 					builder := body.Return().Id(formatBuilderFuncName(insExportedName)).Call()
 					{
 						for _, arg := range args {
@@ -1165,27 +1194,9 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 						declaredReceivers := []string{}
 
 						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
-							setAccount := Empty()
-							isSetAccount := false
-							if account.Address != "" || account.PDA != nil {
-								isSetAccount = true
-								if account.PDA != nil {
-									seeds := account.PDA.Seeds
-									params := make([]jen.Code, len(seeds))
-									for _, seed := range seeds {
-										if seed.Kind == "account" {
-											// 如果种子是账户引用
-											params = append(params, Id(ToLowerCamel(seed.Path)))
-										}
-									}
-									exportedAccountName := ToCamel(account.Name)
-									accessorName := strings.TrimSuffix(formatAccountAccessorName("MustFind", exportedAccountName), "Account") + "Address"
-									setAccount.Add(Id(accessorName).Call(params...))
-								}
-								if account.Address != "" {
-									setAccount.Add(Id(ToCamel(account.Name)))
-								}
-							}
+							// if account.Address != "" || account.PDA != nil {
+							// 	return true
+							// }
 							var accountName string
 							if parentGroupPath == "" {
 								accountName = ToLowerCamel(account.Name)
@@ -1229,12 +1240,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 							}
 
 							if !hasNestedParent {
-								if isSetAccount {
-									builder.Op(".").Line().Id(formatAccountAccessorName("Set", ToCamel(account.Name))).Call(setAccount)
-								} else {
-									builder.Op(".").Line().Id(formatAccountAccessorName("Set", ToCamel(account.Name))).Call(Id(accountName))
-								}
-
+								builder.Op(".").Line().Id(formatAccountAccessorName("Set", ToCamel(account.Name))).Call(Id(accountName))
 							}
 
 							return true
