@@ -44,7 +44,7 @@ anchor idl convert  old.json >new.json
 ```
 
 ```bash
-make build
+make swap-proxy
 ```
 
 Note

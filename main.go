@@ -1469,36 +1469,6 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 			File: file,
 		})
 	}
-	// //add utils file
-	{
-		file := NewGoFile(idl.Metadata.Name, false)
-		file.Add(Id(`
-		import "github.com/gagliardetto/solana-go"
-		var (
-	ConfigSeed = []byte("config")
-	VaultSeed  = []byte("vault")
-)
-
-func FindConfigPublicKey(payer solana.PublicKey) solana.PublicKey {
-	address, _, _ := solana.FindProgramAddress([][]byte{ConfigSeed[:], payer[:]}, ProgramID)
-	return address
-}
-
-func FindVaultPublicKey(payer solana.PublicKey, mint solana.PublicKey) solana.PublicKey {
-	address, _, _ := solana.FindProgramAddress([][]byte{VaultSeed[:], payer[:], mint[:]}, ProgramID)
-	return address
-}
-
-func FindVaultBumpPublicKey(payer solana.PublicKey, mint solana.PublicKey) (solana.PublicKey, uint8) {
-	address, bump, _ := solana.FindProgramAddress([][]byte{VaultSeed[:], payer[:], mint[:]}, ProgramID)
-	return address, bump
-}
-`))
-		files = append(files, &FileWrapper{
-			Name: "utils",
-			File: file,
-		})
-	}
 
 	{
 		testFiles, err := genTestingFuncs(idl)
