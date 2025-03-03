@@ -1155,7 +1155,14 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 					// Body:
 					{
 						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
-							accountMap := make(map[string]struct{})
+							if account.Address != "" {
+								body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(account.Address))
+							}
+							return true
+						})
+					}
+					{
+						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
 							if account.PDA != nil {
 								seeds := account.PDA.Seeds
 								params := make([]jen.Code, len(seeds))
@@ -1175,10 +1182,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(address))
 								}
 							}
-							if account.Address != "" {
-								body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(account.Address))
-							}
-							accountMap[account.Name] = struct{}{}
+
 							return true
 						})
 					}
