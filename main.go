@@ -16,6 +16,7 @@ import (
 	"github.com/gagliardetto/anchor-go/sighash"
 	"github.com/gagliardetto/solana-go"
 
+	"github.com/dave/jennifer/jen"
 	. "github.com/dave/jennifer/jen"
 	bin "github.com/gagliardetto/binary"
 	. "github.com/gagliardetto/utilz"
@@ -1162,9 +1163,28 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 
 					{
 						declaredReceivers := []string{}
+
 						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
+							setAccount := Empty()
+							isSetAccount := false
 							if account.Address != "" || account.PDA != nil {
-								return true
+								isSetAccount = true
+								if account.PDA != nil {
+									seeds := account.PDA.Seeds
+									params := make([]jen.Code, len(seeds))
+									for _, seed := range seeds {
+										if seed.Kind == "account" {
+											// 如果种子是账户引用
+											params = append(params, Id(ToLowerCamel(seed.Path)))
+										}
+									}
+									exportedAccountName := ToCamel(account.Name)
+									accessorName := strings.TrimSuffix(formatAccountAccessorName("MustFind", exportedAccountName), "Account") + "Address"
+									setAccount.Add(Id(accessorName).Call(params...))
+								}
+								if account.Address != "" {
+									setAccount.Add(Id(ToCamel(account.Name)))
+								}
 							}
 							var accountName string
 							if parentGroupPath == "" {
@@ -1209,7 +1229,12 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 							}
 
 							if !hasNestedParent {
-								builder.Op(".").Line().Id(formatAccountAccessorName("Set", ToCamel(account.Name))).Call(Id(accountName))
+								if isSetAccount {
+									builder.Op(".").Line().Id(formatAccountAccessorName("Set", ToCamel(account.Name))).Call(setAccount)
+								} else {
+									builder.Op(".").Line().Id(formatAccountAccessorName("Set", ToCamel(account.Name))).Call(Id(accountName))
+								}
+
 							}
 
 							return true
