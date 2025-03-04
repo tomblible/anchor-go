@@ -1217,7 +1217,6 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 						})
 					}
 
-					fmt.Println(instruction.Name, " Before :", createdAccounts)
 					for i := 0; i < len(instruction.Accounts)-len(createdAccounts); i++ {
 						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
 							if _, isExist := createdAccounts[account.Name]; isExist {
