@@ -296,11 +296,11 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 	for _, instruction := range idl.Instructions {
 		for _, account := range instruction.Accounts {
 			if account.IdlAccount.PDA != nil {
-				if _, isExist := pdaSeedAccounts[account.IdlAccount.Name]; !isExist {
-					pdaSeedAccounts[account.IdlAccount.Name] = account.IdlAccount.Name
+				if _, isExist := pdaSeedAccounts[ToLowerCamel(account.IdlAccount.Name)]; !isExist {
+					pdaSeedAccounts[ToLowerCamel(account.IdlAccount.Name)] = ToLowerCamel(account.IdlAccount.Name)
 				}
 				if account.IdlAccount.PDA.Program != nil && account.IdlAccount.PDA.Program.Kind == "account" {
-					pdaSeedAccounts[account.IdlAccount.Name] = account.IdlAccount.PDA.Program.Path
+					pdaSeedAccounts[ToLowerCamel(account.IdlAccount.Name)] = ToLowerCamel(account.IdlAccount.PDA.Program.Path)
 				}
 			}
 		}
@@ -1138,22 +1138,22 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 								// 	return true
 								// }
 								if account.Address != "" {
-									addressMap[account.Name] = account.Address
+									addressMap[ToLowerCamel(account.Name)] = account.Address
 									return true
 								}
 								if account.PDA != nil {
 									if account.PDA.Program != nil && account.PDA.Program.Kind == "const" {
-										if pdaSeedAccounts[account.Name] != account.Name {
+										if pdaSeedAccounts[ToLowerCamel(account.Name)] != ToLowerCamel(account.Name) {
 											if _, isExist := createdAccounts[pdaSeedAccounts[account.Name]]; isExist {
 												return true
 											}
-											fmt.Println("pdaSeedAccounts[account.Name]", pdaSeedAccounts[account.Name])
 											params.Add(Id(ToLowerCamel(pdaSeedAccounts[account.Name])).Qual(PkgSolanaGo, "PublicKey"))
 											createdAccounts[pdaSeedAccounts[account.Name]] = pdaSeedAccounts[account.Name]
 										}
 									}
 									return true
 								}
+								addressMap[ToLowerCamel(account.Name)] = account.Address
 								var accountName string
 								if parentGroupPath == "" {
 									accountName = ToLowerCamel(account.Name)
@@ -1164,7 +1164,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 								if SliceContains(paramNames, accountName) {
 									accountName = accountName + "Account"
 								}
-								if _, isExist := createdAccounts[accountName]; isExist {
+								if _, isExist := createdAccounts[ToLowerCamel(account.Name)]; isExist {
 									return true
 								}
 								params.Add(func() Code {
@@ -1173,7 +1173,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									}
 									return Line()
 								}()).Id(accountName).Qual(PkgSolanaGo, "PublicKey")
-								createdAccounts[accountName] = accountName
+								createdAccounts[ToLowerCamel(account.Name)] = ToLowerCamel(account.Name)
 								return true
 							})
 						}
@@ -1184,12 +1184,11 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									seeds := account.PDA.Seeds
 									for _, seed := range seeds {
 										if seed.Kind == "account" {
-											_, isExist := createdAccounts[seed.Path]
-											_, isExist2 := addressMap[seed.Path]
+											_, isExist := createdAccounts[ToLowerCamel(seed.Path)]
+											_, isExist2 := addressMap[ToLowerCamel(seed.Path)]
 											if !isExist && !isExist2 {
-												// params.Add(Line())
 												params.Add(Line().Id(ToLowerCamel(seed.Path)).Qual(PkgSolanaGo, "PublicKey"))
-												createdAccounts[seed.Path] = seed.Path
+												createdAccounts[ToLowerCamel(seed.Path)] = ToLowerCamel(seed.Path)
 											}
 										}
 									}
@@ -1211,15 +1210,14 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
 							if account.Address != "" {
 								body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(account.Address))
-								createdAccounts[account.Name] = account.Address
+								createdAccounts[ToLowerCamel(account.Name)] = account.Address
 							}
 							return true
 						})
 					}
-
 					for i := 0; i < len(instruction.Accounts)-len(createdAccounts); i++ {
 						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
-							if _, isExist := createdAccounts[account.Name]; isExist {
+							if _, isExist := createdAccounts[ToLowerCamel(account.Name)]; isExist {
 								return true
 							}
 							if account.PDA != nil {
@@ -1227,7 +1225,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 								params := make([]jen.Code, len(seeds))
 								for _, seed := range seeds {
 									if seed.Kind == "account" {
-										if _, isExist := createdAccounts[seed.Path]; !isExist {
+										if _, isExist := createdAccounts[ToLowerCamel(seed.Path)]; !isExist {
 											return true
 										}
 										// 如果种子引用是账户
@@ -1236,7 +1234,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 								}
 								if account.PDA.Program != nil {
 									if account.PDA.Program.Kind == "account" {
-										if _, isExist := createdAccounts[account.PDA.Program.Path]; !isExist {
+										if _, isExist := createdAccounts[ToLowerCamel(account.PDA.Program.Path)]; !isExist {
 											return true
 										}
 										// 如果程序引用是账户
@@ -1256,7 +1254,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									//solana.MustPublicKeyFromBase58(address)
 									body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(address))
 								}
-								createdAccounts[account.Name] = account.Name
+								createdAccounts[ToLowerCamel(account.Name)] = account.Name
 							}
 							return true
 						})
