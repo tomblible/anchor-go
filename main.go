@@ -291,8 +291,20 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 
 	constantsFile := NewGoFile(idl.Metadata.Name, false)
 	constantsCode := Empty()
-	constantsCodeMap := make(map[string]struct{})
-
+	constantsCodeMap := make(map[string][]*Statement)
+	pdaSeedAccounts := make(map[string]string) //记录PDA账户的创建方式
+	for _, instruction := range idl.Instructions {
+		for _, account := range instruction.Accounts {
+			if account.IdlAccount.PDA != nil {
+				if _, isExist := pdaSeedAccounts[account.IdlAccount.Name]; !isExist {
+					pdaSeedAccounts[account.IdlAccount.Name] = account.IdlAccount.Name
+				}
+				if account.IdlAccount.PDA.Program != nil && account.IdlAccount.PDA.Program.Kind == "account" {
+					pdaSeedAccounts[account.IdlAccount.Name] = account.IdlAccount.PDA.Program.Path
+				}
+			}
+		}
+	}
 	// Instructions:
 	for _, instruction := range idl.Instructions {
 		file := NewGoFile(idl.Metadata.Name, true)
@@ -586,9 +598,9 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 						exportedAccountName,
 						lowerAccountName,
 						instruction.Accounts,
-						addresses,
+						// addresses,
 						instruction.Args,
-						constantsCode,
+						// constantsCode,
 						constantsCodeMap,
 						&idl,
 					))
@@ -1095,6 +1107,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 
 		// 新增初始化函数
 		{
+			createdAccounts := make(map[string]string) //记录已经创建的账户
 			paramNames := []string{}
 			for _, arg := range args {
 				paramNames = append(paramNames, arg.Name)
@@ -1106,6 +1119,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 			code.Func().Id(name).
 				Params(
 					ListFunc(func(params *Group) {
+						addressMap := make(map[string]string)
 						// Parameters:
 						{
 							for argIndex, arg := range args {
@@ -1120,7 +1134,24 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 						}
 						{
 							instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
-								if account.Address != "" || account.PDA != nil {
+								// if account.Address != "" || account.PDA != nil {
+								// 	return true
+								// }
+								if account.Address != "" {
+									addressMap[account.Name] = account.Address
+									return true
+								}
+								if account.PDA != nil {
+									if account.PDA.Program != nil && account.PDA.Program.Kind == "const" {
+										if pdaSeedAccounts[account.Name] != account.Name {
+											if _, isExist := createdAccounts[pdaSeedAccounts[account.Name]]; isExist {
+												return true
+											}
+											fmt.Println("pdaSeedAccounts[account.Name]", pdaSeedAccounts[account.Name])
+											params.Add(Id(ToLowerCamel(pdaSeedAccounts[account.Name])).Qual(PkgSolanaGo, "PublicKey"))
+											createdAccounts[pdaSeedAccounts[account.Name]] = pdaSeedAccounts[account.Name]
+										}
+									}
 									return true
 								}
 								var accountName string
@@ -1133,13 +1164,36 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 								if SliceContains(paramNames, accountName) {
 									accountName = accountName + "Account"
 								}
-
+								if _, isExist := createdAccounts[accountName]; isExist {
+									return true
+								}
 								params.Add(func() Code {
 									if index == 0 {
 										return Line().Comment("Accounts:").Line()
 									}
 									return Line()
 								}()).Id(accountName).Qual(PkgSolanaGo, "PublicKey")
+								createdAccounts[accountName] = accountName
+								return true
+							})
+						}
+
+						{
+							instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
+								if account.PDA != nil {
+									seeds := account.PDA.Seeds
+									for _, seed := range seeds {
+										if seed.Kind == "account" {
+											_, isExist := createdAccounts[seed.Path]
+											_, isExist2 := addressMap[seed.Path]
+											if !isExist && !isExist2 {
+												// params.Add(Line())
+												params.Add(Line().Id(ToLowerCamel(seed.Path)).Qual(PkgSolanaGo, "PublicKey"))
+												createdAccounts[seed.Path] = seed.Path
+											}
+										}
+									}
+								}
 								return true
 							})
 						}
@@ -1157,19 +1211,41 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
 							if account.Address != "" {
 								body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(account.Address))
+								createdAccounts[account.Name] = account.Address
 							}
 							return true
 						})
 					}
-					{
+
+					fmt.Println(instruction.Name, " Before :", createdAccounts)
+					for i := 0; i < len(instruction.Accounts)-len(createdAccounts); i++ {
 						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
+							if _, isExist := createdAccounts[account.Name]; isExist {
+								return true
+							}
 							if account.PDA != nil {
 								seeds := account.PDA.Seeds
 								params := make([]jen.Code, len(seeds))
 								for _, seed := range seeds {
 									if seed.Kind == "account" {
-										// 如果种子是账户引用
+										if _, isExist := createdAccounts[seed.Path]; !isExist {
+											return true
+										}
+										// 如果种子引用是账户
 										params = append(params, Id(ToLowerCamel(seed.Path)))
+									}
+								}
+								if account.PDA.Program != nil {
+									if account.PDA.Program.Kind == "account" {
+										if _, isExist := createdAccounts[account.PDA.Program.Path]; !isExist {
+											return true
+										}
+										// 如果程序引用是账户
+										params = append(params, Id(ToLowerCamel(account.PDA.Program.Path)))
+									} else {
+										if pdaSeedAccounts[account.Name] != account.Name {
+											params = append(params, Id(ToLowerCamel(pdaSeedAccounts[account.Name])))
+										}
 									}
 								}
 								address := getProgramAccount(account.Name)
@@ -1181,11 +1257,15 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									//solana.MustPublicKeyFromBase58(address)
 									body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(address))
 								}
+								createdAccounts[account.Name] = account.Name
 							}
-
 							return true
 						})
+						if len(createdAccounts) == len(instruction.Accounts) {
+							break
+						}
 					}
+
 					builder := body.Return().Id(formatBuilderFuncName(insExportedName)).Call()
 					{
 						for _, arg := range args {
@@ -1262,7 +1342,12 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 			File: file,
 		})
 	}
-
+	for _, codes := range constantsCodeMap {
+		for _, code := range codes {
+			constantsCode.Func().Add(code)
+			constantsCode.Line().Line()
+		}
+	}
 	constantsFile.Add(constantsCode)
 
 	files = append(files, &FileWrapper{
@@ -1301,10 +1386,10 @@ func genAccountGettersSetters(
 	exportedAccountName string,
 	lowerAccountName string,
 	accounts []IdlAccountItem,
-	addresses map[string]string,
+	// addresses map[string]string,
 	args []IdlField,
-	constantsCode *Statement,
-	constantsCodeMap map[string]struct{},
+	// constantsCode *Statement,
+	constantsCodeMap map[string][]*Statement,
 	idl *IDL,
 ) Code {
 	code := Empty()
@@ -1435,139 +1520,136 @@ func genAccountGettersSetters(
 					panic(fmt.Sprintf("cannot find related account or argument path %q", seedDef.Path))
 				}
 			}
-
 			internalAccessorName := accessorName
-
-			if _, isExist := constantsCodeMap[internalAccessorName]; !isExist {
-				constantsCodeMap[internalAccessorName] = struct{}{}
-
-				constantsCode.Func().Id(internalAccessorName).
-					Params(
-						ListFunc(func(params *Group) {
-							// Parameters:
-							for i, seedRef := range seedRefs {
-								if seedRef != "" {
-									if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-										params.Id(seedRef).Index(Lit(32)).Byte()
-									} else if seedTypes[i].asString == "i64" {
-										params.Id(seedRef).Index(Lit(8)).Byte()
-									} else {
-										params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
-									}
-								}
-							}
-							if seedProgramPath != "" {
-								params.Id(seedProgramPath).Qual(PkgSolanaGo, "PublicKey")
-							}
-						}),
-					).
-					Params(
-						ListFunc(func(results *Group) {
-							// Results:
-							results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
-							results.Id("bumpSeed").Uint8()
-							results.Id("err").Error()
-						}),
-					).
-					BlockFunc(func(body *Group) {
-						// Body:
-						body.Add(Var().Id("seeds").Index().Index().Byte())
-
-						for i, seedValue := range seedValues {
-							if seedValue != nil {
-								//body.Commentf("const: %s", string(seedValue))
-								body.Commentf("const: 0x%s", hex.EncodeToString(seedValue))
-								body.Add(Id("seeds").Op("=").Append(Id("seeds"), Index().Byte().ValuesFunc(func(group *Group) {
-									for _, v := range seedValue {
-										group.LitByte(v)
-									}
-								})))
-							} else {
-								seedRef := seedRefs[i]
-								body.Commentf("path: %s", seedRef)
-								if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-									body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":")))) // Just pass the byte array directly
-								} else if seedTypes[i].asString == "i64" {
-									body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":"))))
-								} else {
-									body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Dot("Bytes").Call()))
-								}
-							}
-						}
-
-						body.Line()
-
-						seedProgramRef := Id("ProgramID")
-						if seedProgramValue != nil {
-							seedProgramRef = Id(getDefProgram("", solana.PublicKeyFromBytes(*seedProgramValue).String()))
-						}
-
-						body.Line()
-						if seedProgramPath != "" {
-							body.Add(
-								List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "FindProgramAddress").Call(Id("seeds"), Id(seedProgramPath))),
-							)
-						} else {
-							body.Add(
-								List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "FindProgramAddress").Call(Id("seeds"), seedProgramRef)),
-							)
-						}
-
-						body.Return()
-					})
-
-				constantsCode.Line().Line()
-
-				constantsCode.Func().Id("Must" + internalAccessorName).
-					Params(
-						ListFunc(func(params *Group) {
-							for i, seedRef := range seedRefs {
-								if seedRef != "" {
-									if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-										params.Id(seedRef).Index(Lit(32)).Byte()
-									} else if seedTypes[i].asString == "i64" {
-										params.Id(seedRef).Index(Lit(8)).Byte()
-									} else {
-										params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
-									}
-								}
-							}
-							if seedProgramPath != "" {
-								params.Id(seedProgramPath).Qual(PkgSolanaGo, "PublicKey")
-							}
-						}),
-					).
-					Params(
-						ListFunc(func(results *Group) {
-							// Results:
-							results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
-						}),
-					).
-					BlockFunc(func(body *Group) {
-						// Body:
-						body.Add(
-							List(Id("pda"), Id("_"), Id("_")).Op("=").Add(Id(internalAccessorName).CallFunc(func(group *Group) {
+			_, isExist := constantsCodeMap[internalAccessorName]
+			if !isExist || (isExist && seedProgramPath != "") { //这个pda的code还没有生成,或者pda的program是一个account,需要传参
+				if isExist && seedProgramPath != "" {
+					constantsCodeMap[internalAccessorName] = make([]*Statement, 0) //重新生成需要传参的PDA
+				}
+				constantsCodeMap[internalAccessorName] = append(constantsCodeMap[internalAccessorName],
+					Id(internalAccessorName).
+						Params(
+							ListFunc(func(params *Group) {
+								// Parameters:
 								for i, seedRef := range seedRefs {
 									if seedRef != "" {
 										if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-											group.Id(seedRef)
+											params.Id(seedRef).Index(Lit(32)).Byte()
 										} else if seedTypes[i].asString == "i64" {
-											group.Id(seedRef)
+											params.Id(seedRef).Index(Lit(8)).Byte()
 										} else {
-											group.Id(seedRef)
+											params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
 										}
 									}
-
 								}
 								if seedProgramPath != "" {
-									group.Id(seedProgramPath)
+									params.Id(seedProgramPath).Qual(PkgSolanaGo, "PublicKey")
 								}
-							})),
-						)
-						body.Return()
-					})
+							}),
+						).
+						Params(
+							ListFunc(func(results *Group) {
+								// Results:
+								results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
+								results.Id("bumpSeed").Uint8()
+								results.Id("err").Error()
+							}),
+						).
+						BlockFunc(func(body *Group) {
+							// Body:
+							body.Add(Var().Id("seeds").Index().Index().Byte())
 
-				constantsCode.Line().Line()
+							for i, seedValue := range seedValues {
+								if seedValue != nil {
+									//body.Commentf("const: %s", string(seedValue))
+									body.Commentf("const: 0x%s", hex.EncodeToString(seedValue))
+									body.Add(Id("seeds").Op("=").Append(Id("seeds"), Index().Byte().ValuesFunc(func(group *Group) {
+										for _, v := range seedValue {
+											group.LitByte(v)
+										}
+									})))
+								} else {
+									seedRef := seedRefs[i]
+									body.Commentf("path: %s", seedRef)
+									if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+										body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":")))) // Just pass the byte array directly
+									} else if seedTypes[i].asString == "i64" {
+										body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":"))))
+									} else {
+										body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Dot("Bytes").Call()))
+									}
+								}
+							}
+
+							body.Line()
+
+							seedProgramRef := Id("ProgramID")
+							if seedProgramValue != nil {
+								seedProgramRef = Id(getDefProgram("", solana.PublicKeyFromBytes(*seedProgramValue).String()))
+							}
+
+							body.Line()
+							if seedProgramPath != "" {
+								body.Add(
+									List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "FindProgramAddress").Call(Id("seeds"), Id(seedProgramPath))),
+								)
+							} else {
+								body.Add(
+									List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "FindProgramAddress").Call(Id("seeds"), seedProgramRef)),
+								)
+							}
+
+							body.Return()
+						}))
+				constantsCodeMap[internalAccessorName] = append(constantsCodeMap[internalAccessorName],
+					Id("Must"+internalAccessorName).
+						Params(
+							ListFunc(func(params *Group) {
+								for i, seedRef := range seedRefs {
+									if seedRef != "" {
+										if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+											params.Id(seedRef).Index(Lit(32)).Byte()
+										} else if seedTypes[i].asString == "i64" {
+											params.Id(seedRef).Index(Lit(8)).Byte()
+										} else {
+											params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+										}
+									}
+								}
+								if seedProgramPath != "" {
+									params.Id(seedProgramPath).Qual(PkgSolanaGo, "PublicKey")
+								}
+							}),
+						).
+						Params(
+							ListFunc(func(results *Group) {
+								// Results:
+								results.Id("pda").Qual(PkgSolanaGo, "PublicKey")
+							}),
+						).
+						BlockFunc(func(body *Group) {
+							// Body:
+							body.Add(
+								List(Id("pda"), Id("_"), Id("_")).Op("=").Add(Id(internalAccessorName).CallFunc(func(group *Group) {
+									for i, seedRef := range seedRefs {
+										if seedRef != "" {
+											if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+												group.Id(seedRef)
+											} else if seedTypes[i].asString == "i64" {
+												group.Id(seedRef)
+											} else {
+												group.Id(seedRef)
+											}
+										}
+
+									}
+									if seedProgramPath != "" {
+										group.Id(seedProgramPath)
+									}
+								})),
+							)
+							body.Return()
+						}))
 			}
 		}
 	}
