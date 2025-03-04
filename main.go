@@ -260,7 +260,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 		for _, typ := range idl.Types {
 			defs[typ.Name] = typ
 			file.Add(genTypeDef(&idl, nil, IdlTypeDef{
-				Name: typ.Name,
+				Name: ToCamel(typ.Name),
 				Type: typ.Type,
 			}))
 		}
@@ -276,7 +276,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 		for _, acc := range idl.Accounts {
 			if _, ok := defs[acc.Name]; ok {
 				file.Add(genTypeDef(&idl, acc.Discriminator, IdlTypeDef{
-					Name: defs[acc.Name].Name + "Account",
+					Name: ToCamel(defs[acc.Name].Name) + "Account",
 					Type: defs[acc.Name].Type,
 				}))
 			} else {
@@ -1355,8 +1355,11 @@ func genAccountGettersSetters(
 			seedRefs := make([]string, len(account.PDA.Seeds))
 			seedTypes := make([]IdlType, len(account.PDA.Seeds))
 			var seedProgramValue *[]byte
+			var seedProgramPath string
 			if account.PDA.Program != nil {
-				if account.PDA.Program.Value == nil {
+				if account.PDA.Program.Kind == "account" {
+					seedProgramPath = account.PDA.Program.Path
+				} else if account.PDA.Program.Value == nil {
 					panic("cannot handle non-const type program value in PDA seeds" + account.Address)
 				}
 				seedProgramValue = &account.PDA.Program.Value
@@ -1453,6 +1456,9 @@ func genAccountGettersSetters(
 									}
 								}
 							}
+							if seedProgramPath != "" {
+								params.Id(seedProgramPath).Qual(PkgSolanaGo, "PublicKey")
+							}
 						}),
 					).
 					Params(
@@ -1497,9 +1503,15 @@ func genAccountGettersSetters(
 						}
 
 						body.Line()
-						body.Add(
-							List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "FindProgramAddress").Call(Id("seeds"), seedProgramRef)),
-						)
+						if seedProgramPath != "" {
+							body.Add(
+								List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "FindProgramAddress").Call(Id("seeds"), Id(seedProgramPath))),
+							)
+						} else {
+							body.Add(
+								List(Id("pda"), Id("bumpSeed"), Id("err")).Op("=").Add(Qual(PkgSolanaGo, "FindProgramAddress").Call(Id("seeds"), seedProgramRef)),
+							)
+						}
 
 						body.Return()
 					})
@@ -1519,6 +1531,9 @@ func genAccountGettersSetters(
 										params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
 									}
 								}
+							}
+							if seedProgramPath != "" {
+								params.Id(seedProgramPath).Qual(PkgSolanaGo, "PublicKey")
 							}
 						}),
 					).
@@ -1542,6 +1557,10 @@ func genAccountGettersSetters(
 											group.Id(seedRef)
 										}
 									}
+
+								}
+								if seedProgramPath != "" {
+									group.Id(seedProgramPath)
 								}
 							})),
 						)

@@ -112,7 +112,7 @@ func genTypeName(idlTypeEnv IdlType) Code {
 		}
 	case idlTypeEnv.IsIdlTypeDefined():
 		{
-			st.Add(Id(idlTypeEnv.GetIdlTypeDefined().Defined.Name))
+			st.Add(Id(ToCamel(idlTypeEnv.GetIdlTypeDefined().Defined.Name)))
 		}
 	case idlTypeEnv.IsArray():
 		{
