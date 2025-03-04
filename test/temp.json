@@ -1,0 +1,870 @@
+{
+    "address": "Daosz93P15uZ1aTFTrBUAJyU1KERmZm3XQ5u4hbfHVQS",
+    "metadata": {
+      "name": "founder_dao",
+      "version": "0.1.0",
+      "spec": "0.1.0",
+      "description": "Created with Anchor"
+    },
+    "instructions": [
+      {
+        "name": "claim_team_allo",
+        "discriminator": [
+          161,
+          175,
+          254,
+          133,
+          117,
+          239,
+          65,
+          216
+        ],
+        "accounts": [
+          {
+            "name": "payer",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "name": "founder",
+            "signer": true
+          },
+          {
+            "name": "dao_mint",
+            "writable": true
+          },
+          {
+            "name": "state",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    115,
+                    116,
+                    97,
+                    116,
+                    101
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "dao_mint"
+                }
+              ]
+            }
+          },
+          {
+            "name": "party_mint",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    112,
+                    97,
+                    114,
+                    116,
+                    121,
+                    95,
+                    109,
+                    105,
+                    110,
+                    116
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "dao_mint"
+                }
+              ]
+            }
+          },
+          {
+            "name": "dao_mint_vault",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "account",
+                  "path": "state"
+                },
+                {
+                  "kind": "account",
+                  "path": "token_program"
+                },
+                {
+                  "kind": "account",
+                  "path": "dao_mint"
+                }
+              ],
+              "program": {
+                "kind": "const",
+                "value": [
+                  140,
+                  151,
+                  37,
+                  143,
+                  78,
+                  36,
+                  137,
+                  241,
+                  187,
+                  61,
+                  16,
+                  41,
+                  20,
+                  142,
+                  13,
+                  131,
+                  11,
+                  90,
+                  19,
+                  153,
+                  218,
+                  255,
+                  16,
+                  132,
+                  4,
+                  142,
+                  123,
+                  216,
+                  219,
+                  233,
+                  248,
+                  89
+                ]
+              }
+            }
+          },
+          {
+            "name": "founder_party_ata",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "account",
+                  "path": "founder"
+                },
+                {
+                  "kind": "account",
+                  "path": "token_program"
+                },
+                {
+                  "kind": "account",
+                  "path": "party_mint"
+                }
+              ],
+              "program": {
+                "kind": "const",
+                "value": [
+                  140,
+                  151,
+                  37,
+                  143,
+                  78,
+                  36,
+                  137,
+                  241,
+                  187,
+                  61,
+                  16,
+                  41,
+                  20,
+                  142,
+                  13,
+                  131,
+                  11,
+                  90,
+                  19,
+                  153,
+                  218,
+                  255,
+                  16,
+                  132,
+                  4,
+                  142,
+                  123,
+                  216,
+                  219,
+                  233,
+                  248,
+                  89
+                ]
+              }
+            }
+          },
+          {
+            "name": "vest_schedule",
+            "writable": true
+          },
+          {
+            "name": "schedule_dao_mint_account",
+            "writable": true
+          },
+          {
+            "name": "vest_program",
+            "address": "2GhmcVV5MUwmfaChwMtJJQjPrWCTTrkYdvvVhVRvudX2"
+          },
+          {
+            "name": "token_program",
+            "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+          },
+          {
+            "name": "associated_token_program",
+            "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+          },
+          {
+            "name": "system_program",
+            "address": "11111111111111111111111111111111"
+          }
+        ],
+        "args": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "init",
+        "discriminator": [
+          220,
+          59,
+          207,
+          236,
+          108,
+          250,
+          47,
+          100
+        ],
+        "accounts": [
+          {
+            "name": "payer",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "name": "founder",
+            "signer": true
+          },
+          {
+            "name": "state",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    115,
+                    116,
+                    97,
+                    116,
+                    101
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "dao_mint"
+                }
+              ]
+            }
+          },
+          {
+            "name": "dao_mint",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "name": "funding_mint"
+          },
+          {
+            "name": "dao_vault",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "account",
+                  "path": "state"
+                },
+                {
+                  "kind": "account",
+                  "path": "token_program"
+                },
+                {
+                  "kind": "account",
+                  "path": "dao_mint"
+                }
+              ],
+              "program": {
+                "kind": "const",
+                "value": [
+                  140,
+                  151,
+                  37,
+                  143,
+                  78,
+                  36,
+                  137,
+                  241,
+                  187,
+                  61,
+                  16,
+                  41,
+                  20,
+                  142,
+                  13,
+                  131,
+                  11,
+                  90,
+                  19,
+                  153,
+                  218,
+                  255,
+                  16,
+                  132,
+                  4,
+                  142,
+                  123,
+                  216,
+                  219,
+                  233,
+                  248,
+                  89
+                ]
+              }
+            }
+          },
+          {
+            "name": "token_program",
+            "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+          },
+          {
+            "name": "associated_token_program",
+            "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+          },
+          {
+            "name": "system_program",
+            "address": "11111111111111111111111111111111"
+          }
+        ],
+        "args": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "name": "initial_raise_valuation",
+            "type": "u64"
+          },
+          {
+            "name": "team_allocation",
+            "type": "u64"
+          },
+          {
+            "name": "curve_allocation",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "start_curve",
+        "discriminator": [
+          145,
+          211,
+          49,
+          178,
+          173,
+          221,
+          188,
+          0
+        ],
+        "accounts": [
+          {
+            "name": "payer",
+            "signer": true
+          },
+          {
+            "name": "founder"
+          },
+          {
+            "name": "dao_mint"
+          },
+          {
+            "name": "funding_mint"
+          },
+          {
+            "name": "state",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    115,
+                    116,
+                    97,
+                    116,
+                    101
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "dao_mint"
+                }
+              ]
+            }
+          },
+          {
+            "name": "dao_vault",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "account",
+                  "path": "state"
+                },
+                {
+                  "kind": "account",
+                  "path": "token_program"
+                },
+                {
+                  "kind": "account",
+                  "path": "dao_mint"
+                }
+              ],
+              "program": {
+                "kind": "const",
+                "value": [
+                  140,
+                  151,
+                  37,
+                  143,
+                  78,
+                  36,
+                  137,
+                  241,
+                  187,
+                  61,
+                  16,
+                  41,
+                  20,
+                  142,
+                  13,
+                  131,
+                  11,
+                  90,
+                  19,
+                  153,
+                  218,
+                  255,
+                  16,
+                  132,
+                  4,
+                  142,
+                  123,
+                  216,
+                  219,
+                  233,
+                  248,
+                  89
+                ]
+              }
+            }
+          },
+          {
+            "name": "curve",
+            "writable": true
+          },
+          {
+            "name": "token_vault",
+            "writable": true
+          },
+          {
+            "name": "funding_token_program"
+          },
+          {
+            "name": "associated_token_program",
+            "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+          },
+          {
+            "name": "system_program",
+            "address": "11111111111111111111111111111111"
+          },
+          {
+            "name": "token_program",
+            "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+          },
+          {
+            "name": "curve_program",
+            "address": "CurvyB2V1gJVsSb7Zb112ScicJbUmQ7jyHLn8UHNYf6B"
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "start_vest",
+        "discriminator": [
+          238,
+          39,
+          119,
+          161,
+          224,
+          205,
+          66,
+          46
+        ],
+        "accounts": [
+          {
+            "name": "payer",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "name": "dao_mint"
+          },
+          {
+            "name": "state",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    115,
+                    116,
+                    97,
+                    116,
+                    101
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "dao_mint"
+                }
+              ]
+            }
+          },
+          {
+            "name": "curve",
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    99,
+                    117,
+                    114,
+                    118,
+                    101
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "state"
+                }
+              ]
+            }
+          },
+          {
+            "name": "vest",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    118,
+                    101,
+                    115,
+                    116
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "state"
+                },
+                {
+                  "kind": "const",
+                  "value": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "vest_program",
+            "address": "2GhmcVV5MUwmfaChwMtJJQjPrWCTTrkYdvvVhVRvudX2"
+          }
+        ],
+        "args": []
+      }
+    ],
+    "accounts": [
+      {
+        "name": "PumpCurve",
+        "discriminator": [
+          122,
+          170,
+          6,
+          108,
+          145,
+          24,
+          200,
+          172
+        ]
+      },
+      {
+        "name": "Schedule",
+        "discriminator": [
+          217,
+          243,
+          116,
+          56,
+          73,
+          82,
+          207,
+          51
+        ]
+      },
+      {
+        "name": "State",
+        "discriminator": [
+          216,
+          146,
+          107,
+          94,
+          104,
+          75,
+          182,
+          177
+        ]
+      }
+    ],
+    "errors": [
+      {
+        "code": 6000,
+        "name": "InvalidAllocation",
+        "msg": "Invalid allocation"
+      },
+      {
+        "code": 6001,
+        "name": "InvalidMint",
+        "msg": "Invalid mint"
+      },
+      {
+        "code": 6002,
+        "name": "Unauthorized",
+        "msg": "Unauthorized"
+      },
+      {
+        "code": 6003,
+        "name": "InvalidState",
+        "msg": "Invalid state"
+      },
+      {
+        "code": 6004,
+        "name": "RaiseNotStarted",
+        "msg": "Curve can only be started after raise"
+      },
+      {
+        "code": 6005,
+        "name": "VestNotReady",
+        "msg": "Vest cannot yet begin"
+      },
+      {
+        "code": 6006,
+        "name": "FundingSlippageExceeded",
+        "msg": "Funding slippage exceeded"
+      },
+      {
+        "code": 6007,
+        "name": "InvalidRaiseParams",
+        "msg": "Invalid raise params"
+      }
+    ],
+    "types": [
+      {
+        "name": "PumpCurve",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "token_mint",
+              "type": "pubkey"
+            },
+            {
+              "name": "funding_mint",
+              "type": "pubkey"
+            },
+            {
+              "name": "token_amount",
+              "type": "u64"
+            },
+            {
+              "name": "funding_amount",
+              "type": "u64"
+            },
+            {
+              "name": "virtual_token_amount",
+              "type": "u64"
+            },
+            {
+              "name": "virtual_funding_amount",
+              "type": "u64"
+            },
+            {
+              "name": "initial_token_supply",
+              "type": "u64"
+            },
+            {
+              "name": "total_fee_amount",
+              "type": "u64"
+            },
+            {
+              "name": "total_fee_collected",
+              "type": "u64"
+            },
+            {
+              "name": "fee_recipient",
+              "type": "pubkey"
+            },
+            {
+              "name": "daos_lp_admin",
+              "type": "pubkey"
+            },
+            {
+              "name": "bond_complete",
+              "type": "bool"
+            },
+            {
+              "name": "bond_complete_timestamp",
+              "type": "i64"
+            },
+            {
+              "name": "daos_pool_migrated",
+              "type": "bool"
+            },
+            {
+              "name": "raydium_pool_migrated",
+              "type": "bool"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Schedule",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "dao_mint",
+              "type": "pubkey"
+            },
+            {
+              "name": "party_mint",
+              "type": "pubkey"
+            },
+            {
+              "name": "start_timestamp",
+              "type": {
+                "option": "i64"
+              }
+            },
+            {
+              "name": "available_amount",
+              "type": "u64"
+            },
+            {
+              "name": "cliff_duration_seconds",
+              "type": "u64"
+            },
+            {
+              "name": "vest_duration_seconds",
+              "type": "u64"
+            },
+            {
+              "name": "vest_amount",
+              "type": "u64"
+            }
+          ]
+        }
+      },
+      {
+        "name": "State",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "founder",
+              "type": "pubkey"
+            },
+            {
+              "name": "dao_mint",
+              "type": "pubkey"
+            },
+            {
+              "name": "funding_mint",
+              "type": "pubkey"
+            },
+            {
+              "name": "initial_raise_valuation",
+              "type": "u64"
+            },
+            {
+              "name": "team_allocation",
+              "type": "u64"
+            },
+            {
+              "name": "raise_allocation",
+              "type": "u64"
+            },
+            {
+              "name": "raise_distributed",
+              "type": "u64"
+            },
+            {
+              "name": "team_allocation_claimed",
+              "type": "bool"
+            },
+            {
+              "name": "curve_started",
+              "type": "bool"
+            },
+            {
+              "name": "raise_idx",
+              "type": "u32"
+            },
+            {
+              "name": "curve_token_sale_percent",
+              "type": "u8"
+            }
+          ]
+        }
+      }
+    ]
+  }
+  
+  

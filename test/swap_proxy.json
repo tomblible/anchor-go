@@ -1,0 +1,1154 @@
+{
+  "address": "2eRJBK8bkcsK3WfAG8D3K4p6PsWDQtdyv67j3Tudkpw1",
+  "metadata": {
+    "name": "swap_proxy",
+    "version": "1.0.0",
+    "spec": "0.1.0"
+  },
+  "instructions": [
+    {
+      "name": "create_config",
+      "discriminator": [
+        201,
+        207,
+        243,
+        114,
+        75,
+        111,
+        47,
+        189
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "system"
+        }
+      ],
+      "args": [
+        {
+          "name": "bump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "close_config",
+      "discriminator": [
+        145,
+        9,
+        72,
+        157,
+        95,
+        125,
+        61,
+        85
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "close_ata",
+      "discriminator": [
+        142,
+        37,
+        164,
+        216,
+        10,
+        157,
+        224,
+        224
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "token"
+        },
+        {
+          "name": "token2022"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "recharge",
+      "discriminator": [
+        24,
+        185,
+        26,
+        126,
+        177,
+        122,
+        171,
+        66
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "fee_payer",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "program_amount",
+          "type": "u64"
+        },
+        {
+          "name": "fee_payer_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdraw",
+      "discriminator": [
+        183,
+        18,
+        70,
+        156,
+        148,
+        109,
+        161,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "fee_payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set_fee_payer",
+      "discriminator": [
+        203,
+        56,
+        219,
+        202,
+        46,
+        205,
+        134,
+        205
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "to",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "nonce",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "set_authority",
+      "discriminator": [
+        133,
+        250,
+        37,
+        21,
+        110,
+        163,
+        26,
+        121
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "source",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "crate_ata",
+      "discriminator": [
+        48,
+        213,
+        204,
+        74,
+        243,
+        150,
+        213,
+        31
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "new_ata",
+          "writable": true
+        },
+        {
+          "name": "owner"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "associated_token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "bump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "reserved8",
+      "discriminator": [
+        90,
+        111,
+        171,
+        224,
+        63,
+        43,
+        154,
+        22
+      ],
+      "accounts": [],
+      "args": []
+    },
+    {
+      "name": "reserved9",
+      "discriminator": [
+        216,
+        123,
+        245,
+        239,
+        170,
+        159,
+        106,
+        101
+      ],
+      "accounts": [],
+      "args": []
+    },
+    {
+      "name": "amm",
+      "discriminator": [
+        113,
+        194,
+        89,
+        100,
+        234,
+        181,
+        255,
+        19
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "validator",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "source",
+          "writable": true
+        },
+        {
+          "name": "destination",
+          "writable": true
+        },
+        {
+          "name": "router"
+        },
+        {
+          "name": "pair",
+          "writable": true
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "coin_vault",
+          "writable": true
+        },
+        {
+          "name": "pc_vault",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "associated_token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "SwapParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cpmm",
+      "discriminator": [
+        119,
+        69,
+        197,
+        98,
+        88,
+        163,
+        35,
+        166
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "validator",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "source",
+          "writable": true
+        },
+        {
+          "name": "destination",
+          "writable": true
+        },
+        {
+          "name": "router"
+        },
+        {
+          "name": "pair",
+          "writable": true
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "input_vault",
+          "writable": true
+        },
+        {
+          "name": "output_vault",
+          "writable": true
+        },
+        {
+          "name": "amm_config"
+        },
+        {
+          "name": "observation_state",
+          "writable": true
+        },
+        {
+          "name": "input_token_mint"
+        },
+        {
+          "name": "output_token_mint"
+        },
+        {
+          "name": "input_token_program"
+        },
+        {
+          "name": "output_token_program"
+        },
+        {
+          "name": "associated_token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "SwapParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "pools",
+      "discriminator": [
+        4,
+        37,
+        224,
+        120,
+        227,
+        212,
+        136,
+        69
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "validator",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "source",
+          "writable": true
+        },
+        {
+          "name": "destination",
+          "writable": true
+        },
+        {
+          "name": "router"
+        },
+        {
+          "name": "pair",
+          "writable": true
+        },
+        {
+          "name": "admin_token_fee",
+          "writable": true
+        },
+        {
+          "name": "a_vault",
+          "writable": true
+        },
+        {
+          "name": "b_vault",
+          "writable": true
+        },
+        {
+          "name": "a_token_vault",
+          "writable": true
+        },
+        {
+          "name": "b_token_vault",
+          "writable": true
+        },
+        {
+          "name": "a_vault_lp_mint",
+          "writable": true
+        },
+        {
+          "name": "b_vault_lp_mint",
+          "writable": true
+        },
+        {
+          "name": "a_vault_lp",
+          "writable": true
+        },
+        {
+          "name": "b_vault_lp",
+          "writable": true
+        },
+        {
+          "name": "sell_admin_token_fee",
+          "writable": true
+        },
+        {
+          "name": "vault_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "associated_token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "SwapParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "whirlpool",
+      "discriminator": [
+        76,
+        241,
+        25,
+        74,
+        248,
+        8,
+        101,
+        144
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "validator",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "user_a",
+          "writable": true
+        },
+        {
+          "name": "user_b",
+          "writable": true
+        },
+        {
+          "name": "router"
+        },
+        {
+          "name": "pair",
+          "writable": true
+        },
+        {
+          "name": "oracle",
+          "writable": true
+        },
+        {
+          "name": "vault_a",
+          "writable": true
+        },
+        {
+          "name": "vault_b",
+          "writable": true
+        },
+        {
+          "name": "mint_a"
+        },
+        {
+          "name": "mint_b"
+        },
+        {
+          "name": "token_program_a"
+        },
+        {
+          "name": "token_program_b"
+        },
+        {
+          "name": "memo_program"
+        },
+        {
+          "name": "associated_token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "SwapParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "dlmm",
+      "discriminator": [
+        11,
+        16,
+        103,
+        192,
+        143,
+        1,
+        136,
+        166
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "validator",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "source",
+          "writable": true
+        },
+        {
+          "name": "destination",
+          "writable": true
+        },
+        {
+          "name": "router"
+        },
+        {
+          "name": "pair",
+          "writable": true
+        },
+        {
+          "name": "oracle",
+          "writable": true
+        },
+        {
+          "name": "reserve_x",
+          "writable": true
+        },
+        {
+          "name": "reserve_y",
+          "writable": true
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "token_x_mint",
+          "writable": true
+        },
+        {
+          "name": "token_y_mint",
+          "writable": true
+        },
+        {
+          "name": "token_x_program"
+        },
+        {
+          "name": "token_y_program"
+        },
+        {
+          "name": "associated_token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "SwapParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "clmm",
+      "discriminator": [
+        22,
+        22,
+        128,
+        120,
+        5,
+        158,
+        250,
+        219
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "validator",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "source",
+          "writable": true
+        },
+        {
+          "name": "destination",
+          "writable": true
+        },
+        {
+          "name": "router"
+        },
+        {
+          "name": "pair",
+          "writable": true
+        },
+        {
+          "name": "amm_config"
+        },
+        {
+          "name": "input_vault",
+          "writable": true
+        },
+        {
+          "name": "output_vault",
+          "writable": true
+        },
+        {
+          "name": "observation_state",
+          "writable": true
+        },
+        {
+          "name": "tick_bitmap_extension",
+          "writable": true
+        },
+        {
+          "name": "input_vault_mint"
+        },
+        {
+          "name": "output_vault_mint"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "token_program_2022"
+        },
+        {
+          "name": "memo_program"
+        },
+        {
+          "name": "associated_token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "SwapParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "dao",
+      "discriminator": [
+        224,
+        172,
+        94,
+        26,
+        151,
+        166,
+        146,
+        4
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "validator",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "funding_ata",
+          "writable": true
+        },
+        {
+          "name": "token_ata",
+          "writable": true
+        },
+        {
+          "name": "admin_funding_ata",
+          "writable": true
+        },
+        {
+          "name": "router"
+        },
+        {
+          "name": "pair"
+        },
+        {
+          "name": "curve",
+          "writable": true
+        },
+        {
+          "name": "token_vault",
+          "writable": true
+        },
+        {
+          "name": "funding_vault",
+          "writable": true
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "funding_mint"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "funding_token_program"
+        },
+        {
+          "name": "associated_token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "SwapParams"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "Condition",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "reserve",
+            "type": "u64"
+          },
+          {
+            "name": "amount",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "percent",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Indexes",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool_funding_vault_index",
+            "type": "u8"
+          },
+          {
+            "name": "pool_token_vault_index",
+            "type": "u8"
+          },
+          {
+            "name": "input_vault_index",
+            "type": "u8"
+          },
+          {
+            "name": "output_vault_index",
+            "type": "u8"
+          },
+          {
+            "name": "token_mint_index",
+            "type": "u8"
+          },
+          {
+            "name": "token_program_index",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SwapParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "require_success",
+            "type": "bool"
+          },
+          {
+            "name": "buy_type",
+            "type": "u8"
+          },
+          {
+            "name": "a_to_b",
+            "type": "bool"
+          },
+          {
+            "name": "wait_trade",
+            "type": "bool"
+          },
+          {
+            "name": "token_ata_bump",
+            "type": "u8"
+          },
+          {
+            "name": "tip_limit",
+            "type": "u8"
+          },
+          {
+            "name": "max_fee",
+            "type": "u16"
+          },
+          {
+            "name": "nonce",
+            "type": "u64"
+          },
+          {
+            "name": "amount_in",
+            "type": "u64"
+          },
+          {
+            "name": "minimum_amount_out",
+            "type": "u64"
+          },
+          {
+            "name": "tip",
+            "type": "u64"
+          },
+          {
+            "name": "sell_tip",
+            "type": "u64"
+          },
+          {
+            "name": "min_token_reserve",
+            "type": "u64"
+          },
+          {
+            "name": "max_token_reserve",
+            "type": "u64"
+          },
+          {
+            "name": "indexes",
+            "type": {
+              "defined": {
+                "name": "Indexes"
+              }
+            }
+          },
+          {
+            "name": "conditions",
+            "type": {
+              "option": {
+                "vec": {
+                  "defined": {
+                    "name": "Condition"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "auto_sell",
+            "type": {
+              "option": {
+                "vec": {
+                  "defined": {
+                    "name": "Condition"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Config",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "buy_type",
+            "type": "u8"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u8",
+                2
+              ]
+            }
+          },
+          {
+            "name": "tip_num",
+            "type": "u32"
+          },
+          {
+            "name": "tip_slot",
+            "type": "u64"
+          },
+          {
+            "name": "nonce",
+            "type": "u64"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "trader",
+            "type": "pubkey"
+          }
+        ]
+      }
+    }
+  ]
+}
