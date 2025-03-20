@@ -1033,19 +1033,21 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 										return true
 									}
 								}
-								if account.PDA != nil && account.PDA.Program == nil {
-									isOnlyConst := true
-									for _, seed := range account.PDA.Seeds {
-										if seed.Value == nil { //Kind == "account"
-											isOnlyConst = false
-											break
-										}
-									}
-									if !isOnlyConst {
-										return true
-									}
-
-								}
+								// if account.PDA != nil && account.PDA.Program == nil {
+								// 	isOnlyConst := true
+								// 	for _, seed := range account.PDA.Seeds {
+								// 		if seed.Kind == "arg" { //Kind == "arg"
+								// 			continue
+								// 		}
+								// 		if seed.Value == nil { //Kind == "account"
+								// 			isOnlyConst = false
+								// 			break
+								// 		}
+								// 	}
+								// 	if !isOnlyConst {
+								// 		return true
+								// 	}
+								// }
 								var accountName string
 								if parentGroupPath == "" {
 									accountName = ToLowerCamel(account.Name)
@@ -1097,18 +1099,21 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									return true
 								}
 							}
-							if account.PDA != nil && account.PDA.Program == nil {
-								isOnlyConst := true
-								for _, seed := range account.PDA.Seeds {
-									if seed.Value == nil { //Kind == "account"
-										isOnlyConst = false
-										break
-									}
-								}
-								if !isOnlyConst {
-									return true
-								}
-							}
+							// if account.PDA != nil && account.PDA.Program == nil {
+							// 	isOnlyConst := true
+							// 	for _, seed := range account.PDA.Seeds {
+							// 		if seed.Kind == "arg" { //Kind == "arg"
+							// 			continue
+							// 		}
+							// 		if seed.Value == nil { //Kind == "account"
+							// 			isOnlyConst = false
+							// 			break
+							// 		}
+							// 	}
+							// 	if !isOnlyConst {
+							// 		return true
+							// 	}
+							// }
 							var accountName string
 							if parentGroupPath == "" {
 								accountName = ToLowerCamel(account.Name)
