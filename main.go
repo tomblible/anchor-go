@@ -415,6 +415,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 			file.Add(code.Line())
 		}
 
+		//NewInstructionBuilder
 		{
 			builderFuncName := formatBuilderFuncName(insExportedName)
 			code := Empty()
@@ -432,12 +433,37 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 					instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
 						if account.Name == "program" {
 							body.Id("nd").Dot("AccountMetaSlice").Index(Lit(index)).Op("=").Qual(PkgSolanaGo, "Meta").Call(Op("ProgramID"))
+							return true
 						}
 						if account.Address == "" {
+							if account.PDA != nil && account.PDA.Program == nil {
+								isOnlyConst := true
+								var constSeeds [][]byte
+								for _, seed := range account.PDA.Seeds { //看这个种子的参数是否都是const,如果都是const,放入addresses,在instruction.go中直接定义变量
+									if seed.Value == nil {
+										isOnlyConst = false
+										break
+									}
+									constSeeds = append(constSeeds, seed.Value)
+								}
+								if isOnlyConst { //这个PDA是一个唯一账户，没有使用其他交易账户
+									address, _, _ := solana.FindProgramAddress(constSeeds, solana.MustPublicKeyFromBase58(idl.Address))
+									addresses[ToCamel(account.Name)+"Pda"] = address.String() //小写的，大写开头的驼峰会和types冲突
+									def := Qual(PkgSolanaGo, "Meta").Call(Op(ToCamel(account.Name) + "Pda"))
+									if account.Writable {
+										def.Dot("WRITE").Call()
+									}
+									if account.Signer {
+										def.Dot("SIGNER").Call()
+									}
+									body.Id("nd").Dot("AccountMetaSlice").Index(Lit(index)).Op("=").Add(def)
+								}
+							}
 							return true
 						}
 						programName := getDefProgram(ToCamel(account.Name), account.Address)
 						addresses[programName] = account.Address
+						// fmt.Println("global pda:", programName)
 						def := Qual(PkgSolanaGo, "Meta").Call(Op(programName))
 						if account.Writable {
 							def.Dot("WRITE").Call()
@@ -452,6 +478,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 				})
 			file.Add(code.Line())
 		}
+
 		// 创建Set函数,set账户列表前的参数
 		{
 			// Declare methods that set the parameters of the instruction:
@@ -1006,6 +1033,19 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 										return true
 									}
 								}
+								if account.PDA != nil && account.PDA.Program == nil {
+									isOnlyConst := true
+									for _, seed := range account.PDA.Seeds {
+										if seed.Value == nil { //Kind == "account"
+											isOnlyConst = false
+											break
+										}
+									}
+									if !isOnlyConst {
+										return true
+									}
+
+								}
 								var accountName string
 								if parentGroupPath == "" {
 									accountName = ToLowerCamel(account.Name)
@@ -1054,6 +1094,18 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 							if account.Address != "" {
 								if getDefProgram(ToLowerCamel(account.Name), account.Address) != "" {
 									//在instructionBuilder中已经设置的账户
+									return true
+								}
+							}
+							if account.PDA != nil && account.PDA.Program == nil {
+								isOnlyConst := true
+								for _, seed := range account.PDA.Seeds {
+									if seed.Value == nil { //Kind == "account"
+										isOnlyConst = false
+										break
+									}
+								}
+								if !isOnlyConst {
 									return true
 								}
 							}
@@ -1150,33 +1202,33 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 								if account.Name == "program" {
 									return true
 								}
+								accountLower := ToLowerCamel(account.Name)
 								if account.Address != "" {
-									if getDefProgram(ToLowerCamel(account.Name), account.Address) != "" {
+									if getDefProgram(accountLower, account.Address) != "" {
 										//在instructionBuilder中已经设置的账户
 										return true
 									}
 								}
-								key := ToLowerCamel(account.Name)
 								if account.PDA != nil {
 									if account.PDA.Program != nil {
-										params.Add(Line().Id(ToLowerCamel(account.Name)).Qual(PkgSolanaGo, "PublicKey"))
+										params.Add(Line().Id(accountLower).Qual(PkgSolanaGo, "PublicKey"))
 										createdAccounts[account.Name] = account.Name
 									} else {
 										seeds := account.PDA.Seeds
 										// if account.PDA.Program == nil { //pda的program没有
 										isOnlyConst := true
-										var constSeeds [][]byte
+										// var constSeeds [][]byte
 										for _, seed := range seeds { //看这个种子的参数是否都是const,如果都是const,放入addresses,在instruction.go中直接定义变量
 											if seed.Value == nil {
 												isOnlyConst = false
 												break
 											}
-											constSeeds = append(constSeeds, seed.Value)
+											// constSeeds = append(constSeeds, seed.Value)
 										}
 										if isOnlyConst { //这个PDA是一个唯一账户，没有使用其他交易账户
-											address, _, _ := solana.FindProgramAddress(constSeeds, solana.MustPublicKeyFromBase58(idl.Address))
-											addresses[ToLowerCamel(account.Name)] = address.String() //小写的，大写开头的驼峰会和types冲突
-											createdAccounts[ToLowerCamel(account.Name)] = account.Name
+											// address, _, _ := solana.FindProgramAddress(constSeeds, solana.MustPublicKeyFromBase58(idl.Address))
+											// addresses[accountLower] = address.String() //小写的，大写开头的驼峰会和types冲突
+											createdAccounts[accountLower] = account.Name
 											return true
 										}
 										//这个种子的参数有交易账户，下面就直接调用constant.go的MustFind函数
@@ -1186,15 +1238,15 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 
 								var accountName string
 								if parentGroupPath == "" {
-									accountName = key
+									accountName = accountLower
 								} else {
-									accountName = ToLowerCamel(parentGroupPath + "/" + key)
+									accountName = ToLowerCamel(parentGroupPath + "/" + accountLower)
 								}
 
 								if SliceContains(paramNames, accountName) {
 									accountName = accountName + "Account"
 								}
-								if _, isExist := createdAccounts[key]; isExist {
+								if _, isExist := createdAccounts[accountLower]; isExist {
 									return true
 								}
 								params.Add(func() Code {
@@ -1203,7 +1255,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									}
 									return Line()
 								}()).Id(accountName).Qual(PkgSolanaGo, "PublicKey")
-								createdAccounts[key] = key
+								createdAccounts[accountLower] = accountLower
 								return true
 							})
 						}
@@ -1243,6 +1295,10 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 								params := make([]jen.Code, len(seeds))
 								for _, seed := range seeds {
 									if seed.Value == nil { //Kind == "account"
+										if seed.Kind == "arg" {
+											params = append(params, Id(ToLowerCamel(seed.Path)))
+											continue
+										}
 										if _, isExist := createdAccounts[ToLowerCamel(seed.Path)]; !isExist {
 											return true
 										}
@@ -1294,6 +1350,18 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									return true
 								}
 							}
+							if account.PDA != nil && account.PDA.Program == nil {
+								isOnlyConst := true
+								for _, seed := range account.PDA.Seeds {
+									if seed.Value == nil { //Kind == "account"
+										isOnlyConst = false
+										break
+									}
+								}
+								if isOnlyConst {
+									return true
+								}
+							}
 							var accountName string
 							if parentGroupPath == "" {
 								accountName = ToLowerCamel(account.Name)
@@ -1335,7 +1403,6 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 										),
 								)
 							}
-
 							if !hasNestedParent {
 								builder.Op(".").Line().Id(formatAccountAccessorName("Set", ToCamel(account.Name))).Call(Id(accountName))
 							}
@@ -1462,7 +1529,6 @@ func genAccountGettersSetters(
 				}
 				seedProgramValue = &account.PDA.Program.Value
 			}
-
 		OUTER:
 			for i, seedDef := range account.PDA.Seeds {
 				if seedDef.Value != nil { // type: const
@@ -1538,7 +1604,7 @@ func genAccountGettersSetters(
 			if !isExist && account.PDA.Program == nil { //constants.go 只要程序ID为自己的程序ID的PDA,也就是没有program的PDA
 				var kindIsAccount bool
 				for _, seed := range account.PDA.Seeds {
-					if seed.Value == nil { //如果是account
+					if seed.Value == nil { //如果kind是account/arg
 						kindIsAccount = true
 					}
 				}
@@ -1550,11 +1616,18 @@ func genAccountGettersSetters(
 									// Parameters:
 									for i, seedRef := range seedRefs {
 										if seedRef != "" {
-											if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-												params.Id(seedRef).Index(Lit(32)).Byte()
-											} else if seedTypes[i].asString == "i64" {
-												params.Id(seedRef).Index(Lit(8)).Byte()
-											} else {
+											// if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+											// 	params.Id(seedRef).Index(Lit(32)).Byte()
+											// } else if seedTypes[i].asString == "i64" {
+											// 	params.Id(seedRef).Index(Lit(8)).Byte()
+											// } else {
+											// 	params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+											// }
+											switch seedTypes[i].asString {
+											case IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeString:
+												//是什么类型就是什么类型
+												params.Id(seedRef).Add(genTypeName(seedTypes[i]))
+											default:
 												params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
 											}
 										}
@@ -1588,11 +1661,21 @@ func genAccountGettersSetters(
 									} else {
 										seedRef := seedRefs[i]
 										body.Commentf("path: %s", seedRef)
-										if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":")))) // Just pass the byte array directly
-										} else if seedTypes[i].asString == "i64" {
-											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":"))))
-										} else {
+										// if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+										// 	body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":")))) // Just pass the byte array directly
+										// } else if seedTypes[i].asString == "i64" {
+										// 	body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":"))))
+										// } else {
+										// 	body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Dot("Bytes").Call()))
+										// }
+										switch seedTypes[i].asString {
+										case IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64:
+											//argBytes, _ := ag_binary.MarshalBin(index)
+											body.Add(Id("argBytes").Id(",_").Op(":=").Qual(PkgDfuseBinary, "MarshalBin").Call(Id(seedRef)))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+										case IdlTypeString:
+											body.Add(Id("seeds").Op("=").Index().Byte().Call(Id(seedRef)))
+										default:
 											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Dot("Bytes").Call()))
 										}
 									}
@@ -1624,11 +1707,18 @@ func genAccountGettersSetters(
 								ListFunc(func(params *Group) {
 									for i, seedRef := range seedRefs {
 										if seedRef != "" {
-											if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-												params.Id(seedRef).Index(Lit(32)).Byte()
-											} else if seedTypes[i].asString == "i64" {
-												params.Id(seedRef).Index(Lit(8)).Byte()
-											} else {
+											// if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+											// 	params.Id(seedRef).Index(Lit(32)).Byte()
+											// } else if seedTypes[i].asString == "i64" {
+											// 	params.Id(seedRef).Index(Lit(8)).Byte()
+											// } else {
+											// 	params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+											// }
+											switch seedTypes[i].asString {
+											case IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeString:
+												//是什么类型就是什么类型
+												params.Id(seedRef).Add(genTypeName(seedTypes[i]))
+											default:
 												params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
 											}
 										}

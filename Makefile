@@ -16,3 +16,4 @@ test:build
 	./anchor-go -type-id=uint8 -src=./test/cookMeme.json -pkg=cookMeme -dst=./generated/test/cookMeme
 	./anchor-go -type-id=uint8 -src=./test/jup_new.json -pkg=jupiter -dst=./generated/test/jupiter
 	./anchor-go -type-id=uint8 -src=./test/stabble_new.json -pkg=stabble -dst=./generated/test/stabble
+	./anchor-go -type-id=uint8 -src=./test/pump_amm.json -pkg=pump_amm -dst=./generated/test/pump_amm
