@@ -1623,16 +1623,16 @@ func genAccountGettersSetters(
 										if seedRef != "" {
 											if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
 												params.Id(seedRef).Index(Lit(32)).Byte()
-											} else {
-												switch seedTypes[i].asString {
-												case IdlTypeBool, IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeF32, IdlTypeF64, IdlTypeString:
-													//是什么类型就是什么类型
-													params.Id(seedRef).Add(genTypeName(seedTypes[i]))
-												case IdlTypeI128, IdlTypeU128: //[16]byte
-													params.Id(seedRef).Index(Lit(16)).Byte()
-												default:
-													params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
-												}
+												continue
+											}
+											switch seedTypes[i].asString {
+											case IdlTypeBool, IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeF32, IdlTypeF64, IdlTypeString:
+												//是什么类型就是什么类型
+												params.Id(seedRef).Add(genTypeName(seedTypes[i]))
+											case IdlTypeI128, IdlTypeU128: //[16]byte
+												params.Id(seedRef).Index(Lit(16)).Byte()
+											default:
+												params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
 											}
 
 										}
@@ -1735,17 +1735,18 @@ func genAccountGettersSetters(
 										if seedRef != "" {
 											if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
 												params.Id(seedRef).Index(Lit(32)).Byte()
-											} else {
-												switch seedTypes[i].asString {
-												case IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeString:
-													//是什么类型就是什么类型
-													params.Id(seedRef).Add(genTypeName(seedTypes[i]))
-												case IdlTypeI128, IdlTypeU128:
-													params.Id(seedRef).Index(Lit(16)).Byte()
-												default:
-													params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
-												}
+												continue
 											}
+											switch seedTypes[i].asString {
+											case IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeString:
+												//是什么类型就是什么类型
+												params.Id(seedRef).Add(genTypeName(seedTypes[i]))
+											case IdlTypeI128, IdlTypeU128:
+												params.Id(seedRef).Index(Lit(16)).Byte()
+											default:
+												params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+											}
+
 										}
 									}
 									if seedProgramPath != "" {
