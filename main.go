@@ -1621,20 +1621,20 @@ func genAccountGettersSetters(
 									// Parameters:
 									for i, seedRef := range seedRefs {
 										if seedRef != "" {
-											// if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-											// 	params.Id(seedRef).Index(Lit(32)).Byte()
-											// } else if seedTypes[i].asString == "i64" {
-											// 	params.Id(seedRef).Index(Lit(8)).Byte()
-											// } else {
-											// 	params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
-											// }
-											switch seedTypes[i].asString {
-											case IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeString:
-												//是什么类型就是什么类型
-												params.Id(seedRef).Add(genTypeName(seedTypes[i]))
-											default:
-												params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+											if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+												params.Id(seedRef).Index(Lit(32)).Byte()
+											} else {
+												switch seedTypes[i].asString {
+												case IdlTypeBool, IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeF32, IdlTypeF64, IdlTypeString:
+													//是什么类型就是什么类型
+													params.Id(seedRef).Add(genTypeName(seedTypes[i]))
+												case IdlTypeI128, IdlTypeU128: //[16]byte
+													params.Id(seedRef).Index(Lit(16)).Byte()
+												default:
+													params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+												}
 											}
+
 										}
 									}
 									if seedProgramPath != "" {
@@ -1666,20 +1666,41 @@ func genAccountGettersSetters(
 									} else {
 										seedRef := seedRefs[i]
 										body.Commentf("path: %s", seedRef)
-										// if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-										// 	body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":")))) // Just pass the byte array directly
-										// } else if seedTypes[i].asString == "i64" {
-										// 	body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":"))))
-										// } else {
-										// 	body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Dot("Bytes").Call()))
-										// }
+										if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":")))) // Just pass the byte array directly
+											continue
+										}
 										switch seedTypes[i].asString {
-										case IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64:
-											//argBytes, _ := ag_binary.MarshalBin(index)
-											body.Add(Id("argBytes").Id(",_").Op(":=").Qual(PkgDfuseBinary, "MarshalBin").Call(Id(seedRef)))
+										case IdlTypeBool:
+											body.Add(If(Id(seedRef).Block(
+												Id("argBytes").Op(":=").Index().Byte().Values(Lit(1)),
+											).Else().Block(
+												Id("argBytes").Op(":=").Index().Byte().Values(Lit(0)),
+											)))
 											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+										case IdlTypeI8, IdlTypeU8:
+											body.Add(Id("argBytes").Op(":=").Index().Byte().Values(Byte().Call(Id(seedRef)))) //[]byte{byte(arg)}
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+										case IdlTypeI16, IdlTypeU16:
+											body.Add(Id("argBytes").Op(":=").Make(Index().Byte(), Lit(2)))
+											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint16").Call(Id("argBytes"), Uint16().Call(Id(seedRef))))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+										case IdlTypeI32, IdlTypeU32:
+											body.Add(Id("argBytes").Op(":=").Make(Index().Byte(), Lit(4)))
+											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint32").Call(Id("argBytes"), Uint32().Call(Id(seedRef))))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+										case IdlTypeI64, IdlTypeU64:
+											body.Add(Id("argBytes").Op(":=").Make(Index().Byte(), Lit(8)))
+											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint64").Call(Id("argBytes"), Uint64().Call(Id(seedRef))))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+										case IdlTypeF32, IdlTypeF64:
+											body.Add(Id("argBytes").Op(":=").Make(Index().Byte(), Lit(8)))
+											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint64").Call(Id("argBytes"), Uint64().Call(Qual(PkgMath, "Float64bits").Call(Float64().Call(Id(seedRef))))))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+										case IdlTypeI128, IdlTypeU128:
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":"))))
 										case IdlTypeString:
-											body.Add(Id("seeds").Op("=").Index().Byte().Call(Id(seedRef)))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef)))
 										default:
 											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Dot("Bytes").Call()))
 										}
@@ -1712,19 +1733,18 @@ func genAccountGettersSetters(
 								ListFunc(func(params *Group) {
 									for i, seedRef := range seedRefs {
 										if seedRef != "" {
-											// if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
-											// 	params.Id(seedRef).Index(Lit(32)).Byte()
-											// } else if seedTypes[i].asString == "i64" {
-											// 	params.Id(seedRef).Index(Lit(8)).Byte()
-											// } else {
-											// 	params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
-											// }
-											switch seedTypes[i].asString {
-											case IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeString:
-												//是什么类型就是什么类型
-												params.Id(seedRef).Add(genTypeName(seedTypes[i]))
-											default:
-												params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+											if seedTypes[i].IsArray() && seedTypes[i].GetArray().Elem.GetString() == "u8" {
+												params.Id(seedRef).Index(Lit(32)).Byte()
+											} else {
+												switch seedTypes[i].asString {
+												case IdlTypeI8, IdlTypeI16, IdlTypeI32, IdlTypeI64, IdlTypeU8, IdlTypeU16, IdlTypeU32, IdlTypeU64, IdlTypeString:
+													//是什么类型就是什么类型
+													params.Id(seedRef).Add(genTypeName(seedTypes[i]))
+												case IdlTypeI128, IdlTypeU128:
+													params.Id(seedRef).Index(Lit(16)).Byte()
+												default:
+													params.Id(seedRef).Qual(PkgSolanaGo, "PublicKey")
+												}
 											}
 										}
 									}

@@ -17,6 +17,9 @@ const (
 	PkgFormat         = "github.com/gagliardetto/solana-go/text/format"
 	PkgGoFuzz         = "github.com/gagliardetto/gofuzz"
 	PkgTestifyRequire = "github.com/stretchr/testify/require"
+
+	PkgBinary = "encoding/binary"
+	PkgMath   = "math"
 )
 
 type FileWrapper struct {
