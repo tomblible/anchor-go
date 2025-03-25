@@ -252,12 +252,19 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 			registerComplexEnums(&idl, typ)
 		}
 	}
-
+	//遍历指令的名称，首字母大写驼峰命名格式
+	typesMap := make(map[string]string)
+	for _, instruction := range idl.Instructions {
+		typesMap[ToCamel(instruction.Name)] = instruction.Name
+	}
 	defs := make(map[string]IdlTypeDef)
 	{
 		file := NewGoFile(idl.Metadata.Name, true)
 		// Declare types from IDL:
 		for _, typ := range idl.Types {
+			if _, isExist := typesMap[ToCamel(typ.Name)]; isExist {
+				continue
+			}
 			defs[typ.Name] = typ
 			file.Add(genTypeDef(&idl, nil, IdlTypeDef{
 				Name: ToCamel(typ.Name),
