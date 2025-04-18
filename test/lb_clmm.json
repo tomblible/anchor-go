@@ -4106,7 +4106,7 @@
   ],
   "accounts": [
     {
-      "name": "BinArrayBitmapExtension",
+      "name": "binArrayBitmapExtension",
       "type": {
         "kind": "struct",
         "fields": [
@@ -4152,7 +4152,7 @@
       }
     },
     {
-      "name": "BinArray",
+      "name": "binArray",
       "docs": [
         "An account to contain a range of bin. For example: Bin 100 <-> 200.",
         "For example:",
@@ -4201,7 +4201,7 @@
       }
     },
     {
-      "name": "ClaimFeeOperator",
+      "name": "claimFeeOperator",
       "docs": [
         "Parameter that set by the protocol"
       ],
@@ -4231,7 +4231,7 @@
       }
     },
     {
-      "name": "LbPair",
+      "name": "lbPair",
       "type": {
         "kind": "struct",
         "fields": [
@@ -4514,7 +4514,7 @@
       }
     },
     {
-      "name": "Oracle",
+      "name": "oracle",
       "type": {
         "kind": "struct",
         "fields": [
@@ -4543,7 +4543,7 @@
       }
     },
     {
-      "name": "Position",
+      "name": "position",
       "type": {
         "kind": "struct",
         "fields": [
@@ -4664,7 +4664,7 @@
       }
     },
     {
-      "name": "PositionV2",
+      "name": "positionV2",
       "type": {
         "kind": "struct",
         "fields": [
@@ -4813,7 +4813,7 @@
       }
     },
     {
-      "name": "PresetParameter2",
+      "name": "presetParameter2",
       "type": {
         "kind": "struct",
         "fields": [
@@ -4910,7 +4910,7 @@
       }
     },
     {
-      "name": "PresetParameter",
+      "name": "presetParameter",
       "type": {
         "kind": "struct",
         "fields": [
@@ -4988,7 +4988,7 @@
       }
     },
     {
-      "name": "TokenBadge",
+      "name": "tokenBadge",
       "docs": [
         "Parameter that set by the protocol"
       ],

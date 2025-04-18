@@ -19,7 +19,7 @@ test:build
 	./anchor-go -type-id=uint8 -src=./test/jup_new.json -pkg=jupiter -dst=./generated/test/jupiter
 	./anchor-go -type-id=uint8 -src=./test/stabble_new.json -pkg=stabble -dst=./generated/test/stabble
 	./anchor-go -type-id=uint8 -src=./test/pump_amm.json -pkg=pump_amm -dst=./generated/test/pump_amm
-	./anchor-go -type-id=uint8 -src=./test/lb_clmm.json -pkg=lb_clmm -dst=./generated/test/lb_clmm
+	./anchor-go -type-id=uint8 -src=./test/lb_clmm_new.json -pkg=lb_clmm -dst=./generated/test/lb_clmm
 
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 

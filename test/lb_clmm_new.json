@@ -3795,133 +3795,133 @@
   ],
   "accounts": [
     {
-      "name": "BinArrayBitmapExtension",
+      "name": "binArrayBitmapExtension",
       "discriminator": [
-        80,
-        111,
-        124,
-        113,
-        55,
-        237,
-        18,
-        5
+        141,
+        207,
+        226,
+        19,
+        241,
+        119,
+        83,
+        103
       ]
     },
     {
-      "name": "BinArray",
+      "name": "binArray",
       "discriminator": [
-        92,
+        94,
+        14,
+        99,
+        185,
+        40,
+        116,
+        243,
+        142
+      ]
+    },
+    {
+      "name": "claimFeeOperator",
+      "discriminator": [
+        225,
+        155,
+        165,
+        246,
+        242,
+        192,
         142,
-        92,
-        220,
-        5,
-        148,
-        70,
-        181
+        35
       ]
     },
     {
-      "name": "ClaimFeeOperator",
-      "discriminator": [
-        166,
-        48,
-        134,
-        86,
-        34,
-        200,
-        188,
-        150
-      ]
-    },
-    {
-      "name": "LbPair",
+      "name": "lbPair",
       "discriminator": [
         33,
-        11,
-        49,
-        98,
-        181,
-        101,
-        177,
-        13
+        152,
+        254,
+        90,
+        7,
+        16,
+        250,
+        160
       ]
     },
     {
-      "name": "Oracle",
+      "name": "oracle",
       "discriminator": [
-        139,
-        194,
-        131,
-        179,
-        140,
-        179,
-        229,
-        244
-      ]
-    },
-    {
-      "name": "Position",
-      "discriminator": [
-        170,
-        188,
-        143,
-        228,
-        122,
-        64,
-        247,
-        208
-      ]
-    },
-    {
-      "name": "PositionV2",
-      "discriminator": [
-        117,
-        176,
-        212,
-        199,
-        245,
-        180,
-        133,
-        182
-      ]
-    },
-    {
-      "name": "PresetParameter2",
-      "discriminator": [
-        171,
-        236,
-        148,
-        115,
-        162,
-        113,
-        222,
-        174
-      ]
-    },
-    {
-      "name": "PresetParameter",
-      "discriminator": [
-        242,
         62,
-        244,
-        34,
-        181,
-        112,
-        58,
-        170
+        83,
+        212,
+        176,
+        195,
+        24,
+        202,
+        163
       ]
     },
     {
-      "name": "TokenBadge",
+      "name": "position",
       "discriminator": [
-        116,
+        162,
+        191,
+        156,
+        34,
+        151,
+        131,
+        65,
+        140
+      ]
+    },
+    {
+      "name": "positionV2",
+      "discriminator": [
+        11,
+        63,
+        195,
+        142,
+        210,
+        167,
+        44,
+        86
+      ]
+    },
+    {
+      "name": "presetParameter2",
+      "discriminator": [
+        79,
+        142,
+        16,
+        103,
         219,
-        204,
-        229,
-        249,
-        116,
-        255,
-        150
+        207,
+        128,
+        0
+      ]
+    },
+    {
+      "name": "presetParameter",
+      "discriminator": [
+        248,
+        133,
+        101,
+        27,
+        180,
+        101,
+        10,
+        122
+      ]
+    },
+    {
+      "name": "tokenBadge",
+      "discriminator": [
+        207,
+        72,
+        36,
+        189,
+        30,
+        58,
+        175,
+        215
       ]
     }
   ],
@@ -5972,7 +5972,7 @@
       }
     },
     {
-      "name": "BinArrayBitmapExtension",
+      "name": "binArrayBitmapExtension",
       "type": {
         "kind": "struct",
         "fields": [
@@ -6018,7 +6018,7 @@
       }
     },
     {
-      "name": "BinArray",
+      "name": "binArray",
       "docs": [
         "An account to contain a range of bin. For example: Bin 100 <-> 200.",
         "For example:",
@@ -6069,7 +6069,7 @@
       }
     },
     {
-      "name": "ClaimFeeOperator",
+      "name": "claimFeeOperator",
       "docs": [
         "Parameter that set by the protocol"
       ],
@@ -6099,7 +6099,7 @@
       }
     },
     {
-      "name": "LbPair",
+      "name": "lbPair",
       "type": {
         "kind": "struct",
         "fields": [
@@ -6390,7 +6390,7 @@
       }
     },
     {
-      "name": "Oracle",
+      "name": "oracle",
       "type": {
         "kind": "struct",
         "fields": [
@@ -6419,7 +6419,7 @@
       }
     },
     {
-      "name": "Position",
+      "name": "position",
       "type": {
         "kind": "struct",
         "fields": [
@@ -6544,7 +6544,7 @@
       }
     },
     {
-      "name": "PositionV2",
+      "name": "positionV2",
       "type": {
         "kind": "struct",
         "fields": [
@@ -6697,7 +6697,7 @@
       }
     },
     {
-      "name": "PresetParameter2",
+      "name": "presetParameter2",
       "type": {
         "kind": "struct",
         "fields": [
@@ -6794,7 +6794,7 @@
       }
     },
     {
-      "name": "PresetParameter",
+      "name": "presetParameter",
       "type": {
         "kind": "struct",
         "fields": [
@@ -6872,7 +6872,7 @@
       }
     },
     {
-      "name": "TokenBadge",
+      "name": "tokenBadge",
       "docs": [
         "Parameter that set by the protocol"
       ],
