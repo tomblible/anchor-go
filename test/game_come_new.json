@@ -1,0 +1,1644 @@
+{
+  "address": "GamE4YGnRbnH3cMGY34cw9E9BaxoPYc4pNXiAciG2hEy",
+  "metadata": {
+    "name": "game_pump",
+    "version": "0.1.0",
+    "spec": "0.1.0"
+  },
+  "instructions": [
+    {
+      "name": "initialize_config",
+      "docs": [
+        "Initialize program config"
+      ],
+      "discriminator": [
+        208,
+        127,
+        21,
+        1,
+        194,
+        190,
+        196,
+        70
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "program_config",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "InitializeConfigArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "update_config",
+      "docs": [
+        "Update program config"
+      ],
+      "discriminator": [
+        29,
+        158,
+        252,
+        191,
+        10,
+        83,
+        219,
+        99
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "program_config",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "UpdateConfigArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "add_quote_token",
+      "docs": [
+        "Add new quote token"
+      ],
+      "discriminator": [
+        69,
+        207,
+        131,
+        186,
+        12,
+        49,
+        186,
+        51
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "quote_mint"
+        },
+        {
+          "name": "program_config"
+        },
+        {
+          "name": "fee_recipient_account"
+        },
+        {
+          "name": "fee_recipient_quote",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "associated_token_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create",
+      "docs": [
+        "Creator creates new token"
+      ],
+      "discriminator": [
+        24,
+        30,
+        200,
+        40,
+        5,
+        28,
+        7,
+        119
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "program_config"
+        },
+        {
+          "name": "fee_recipient",
+          "writable": true
+        },
+        {
+          "name": "quote_mint"
+        },
+        {
+          "name": "base_mint",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "metadata",
+          "writable": true
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true
+        },
+        {
+          "name": "bonding_curve_quote",
+          "writable": true
+        },
+        {
+          "name": "bonding_curve_base",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "token_metadata_program"
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "CreateArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "buy",
+      "docs": [
+        "Buy token on the bonding curve"
+      ],
+      "discriminator": [
+        102,
+        6,
+        61,
+        18,
+        1,
+        218,
+        235,
+        234
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "quote_mint"
+        },
+        {
+          "name": "program_config"
+        },
+        {
+          "name": "fee_recipient_account",
+          "writable": true
+        },
+        {
+          "name": "fee_recipient_quote",
+          "writable": true
+        },
+        {
+          "name": "base_mint"
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true
+        },
+        {
+          "name": "bonding_curve_quote",
+          "writable": true
+        },
+        {
+          "name": "bonding_curve_base",
+          "writable": true
+        },
+        {
+          "name": "user_quote_account",
+          "writable": true
+        },
+        {
+          "name": "user_base_account",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "associated_token_program"
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "BuyArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "sell",
+      "docs": [
+        "Sell token on the bonding curve"
+      ],
+      "discriminator": [
+        51,
+        230,
+        133,
+        164,
+        1,
+        127,
+        131,
+        173
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "quote_mint"
+        },
+        {
+          "name": "program_config"
+        },
+        {
+          "name": "fee_recipient_account",
+          "writable": true
+        },
+        {
+          "name": "fee_recipient_quote",
+          "writable": true
+        },
+        {
+          "name": "base_mint"
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true
+        },
+        {
+          "name": "bonding_curve_quote",
+          "writable": true
+        },
+        {
+          "name": "bonding_curve_base",
+          "writable": true
+        },
+        {
+          "name": "user_quote_account",
+          "writable": true
+        },
+        {
+          "name": "user_base_account",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "associated_token_program"
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "SellArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "permit",
+      "docs": [
+        "Creator permits launching when token is set"
+      ],
+      "discriminator": [
+        195,
+        207,
+        253,
+        183,
+        164,
+        24,
+        131,
+        7
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "quote_mint"
+        },
+        {
+          "name": "base_mint"
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "withdraw",
+      "docs": [
+        "Withdraw liquidity of bonding curve"
+      ],
+      "discriminator": [
+        183,
+        18,
+        70,
+        156,
+        148,
+        109,
+        161,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "platform",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "program_config"
+        },
+        {
+          "name": "quote_mint"
+        },
+        {
+          "name": "base_mint"
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true
+        },
+        {
+          "name": "bonding_curve_quote",
+          "writable": true
+        },
+        {
+          "name": "bonding_curve_base",
+          "writable": true
+        },
+        {
+          "name": "platform_quote_account",
+          "writable": true
+        },
+        {
+          "name": "platform_base_account",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "associated_token_program"
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deposit",
+      "docs": [
+        "Deposit token to account specified in the program config"
+      ],
+      "discriminator": [
+        242,
+        35,
+        198,
+        137,
+        82,
+        225,
+        242,
+        182
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "user_token_account",
+          "writable": true
+        },
+        {
+          "name": "program_config"
+        },
+        {
+          "name": "deposit_account",
+          "writable": true
+        },
+        {
+          "name": "deposit_token_account",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "associated_token_program"
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "DepositArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "deposit2",
+      "docs": [
+        "Deposit two tokens to account specified in the program config"
+      ],
+      "discriminator": [
+        118,
+        10,
+        180,
+        201,
+        126,
+        99,
+        157,
+        155
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint1"
+        },
+        {
+          "name": "mint2"
+        },
+        {
+          "name": "user_token_account1",
+          "writable": true
+        },
+        {
+          "name": "user_token_account2",
+          "writable": true
+        },
+        {
+          "name": "program_config"
+        },
+        {
+          "name": "deposit_account",
+          "writable": true
+        },
+        {
+          "name": "deposit_token_account1",
+          "writable": true
+        },
+        {
+          "name": "deposit_token_account2",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "associated_token_program"
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "DepositArgs2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "withdraw2",
+      "docs": [
+        "When user claime token from center user asset, System account with call this method"
+      ],
+      "discriminator": [
+        80,
+        6,
+        111,
+        73,
+        174,
+        211,
+        66,
+        132
+      ],
+      "accounts": [
+        {
+          "name": "system_account",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "system_token_account",
+          "writable": true
+        },
+        {
+          "name": "receiver_account",
+          "writable": true
+        },
+        {
+          "name": "receiver_token_account",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "associated_token_program"
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "Withdraw2Args"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "ProgramConfig",
+      "discriminator": [
+        196,
+        210,
+        90,
+        231,
+        144,
+        149,
+        140,
+        63
+      ]
+    },
+    {
+      "name": "CurveInfo",
+      "discriminator": [
+        113,
+        131,
+        15,
+        223,
+        248,
+        122,
+        101,
+        47
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "CreateEvent",
+      "discriminator": [
+        27,
+        114,
+        169,
+        77,
+        222,
+        235,
+        99,
+        118
+      ]
+    },
+    {
+      "name": "TradeEvent",
+      "discriminator": [
+        189,
+        219,
+        127,
+        211,
+        78,
+        230,
+        97,
+        238
+      ]
+    },
+    {
+      "name": "WithdrawEvent",
+      "discriminator": [
+        22,
+        9,
+        133,
+        26,
+        160,
+        44,
+        71,
+        192
+      ]
+    },
+    {
+      "name": "PermitEvent",
+      "discriminator": [
+        139,
+        11,
+        131,
+        59,
+        172,
+        244,
+        212,
+        230
+      ]
+    },
+    {
+      "name": "DepositEvent",
+      "discriminator": [
+        120,
+        248,
+        61,
+        83,
+        31,
+        142,
+        107,
+        144
+      ]
+    },
+    {
+      "name": "DepositEvent2",
+      "discriminator": [
+        174,
+        137,
+        98,
+        74,
+        124,
+        157,
+        106,
+        192
+      ]
+    },
+    {
+      "name": "Withdraw2Event",
+      "discriminator": [
+        32,
+        198,
+        49,
+        10,
+        1,
+        160,
+        16,
+        65
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidAdmin",
+      "msg": "Invalid admin."
+    },
+    {
+      "code": 6001,
+      "name": "InvalidParameters",
+      "msg": "Invalid parameters."
+    },
+    {
+      "code": 6002,
+      "name": "InvalidInputUpdateParam",
+      "msg": "Invalid input update param."
+    },
+    {
+      "code": 6003,
+      "name": "QuoteTokenDeleted",
+      "msg": "Quote token is deleted."
+    },
+    {
+      "code": 6004,
+      "name": "InvalidInputSupply",
+      "msg": "Invalid input supply."
+    },
+    {
+      "code": 6005,
+      "name": "OnRaydium",
+      "msg": "This token is on the raydium, please swap on the raydium"
+    },
+    {
+      "code": 6006,
+      "name": "ExceededSlippage",
+      "msg": "Exceeds desired slippage limit"
+    },
+    {
+      "code": 6007,
+      "name": "NotEnoughTokens",
+      "msg": "Not enough tokens to sell"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidCreator",
+      "msg": "Invalid creator"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidPlatform",
+      "msg": "Invalid platform"
+    },
+    {
+      "code": 6010,
+      "name": "OnBondingCurve",
+      "msg": "This token is on the bonding curve."
+    },
+    {
+      "code": 6011,
+      "name": "InvalidFeeBps",
+      "msg": "Invalid fee bps."
+    },
+    {
+      "code": 6012,
+      "name": "AlreadyInitialized",
+      "msg": "already initialized"
+    },
+    {
+      "code": 6013,
+      "name": "Unauthorized",
+      "msg": "Unauthorized for Collection"
+    },
+    {
+      "code": 6014,
+      "name": "NotInitialized",
+      "msg": "not initialized"
+    }
+  ],
+  "types": [
+    {
+      "name": "BuyArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "quote_cost",
+            "type": "u64"
+          },
+          {
+            "name": "min_base_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreateArgs",
+      "docs": [
+        "* coefficient 1.073, 0.3529412\n * TARGET: 85 SOL\n * SUPPLY: 1000000000\n * init_virtual_base_reserves = 1.073 * SUPPLY\n * init_virtual_quote_reserves = 0.3529412 * TARGET"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "name": "supply",
+            "type": "u64"
+          },
+          {
+            "name": "target",
+            "type": "u64"
+          },
+          {
+            "name": "init_virtual_quote_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "init_virtual_base_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u64"
+          },
+          {
+            "name": "create_fee",
+            "type": "u64"
+          },
+          {
+            "name": "is_launch_permitted",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DepositArgs2",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "order_id",
+            "type": "string"
+          },
+          {
+            "name": "command",
+            "type": "string"
+          },
+          {
+            "name": "extra_info",
+            "type": "string"
+          },
+          {
+            "name": "max_index",
+            "type": "u8"
+          },
+          {
+            "name": "index",
+            "type": "u8"
+          },
+          {
+            "name": "cost1",
+            "type": "u64"
+          },
+          {
+            "name": "cost2",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DepositArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "order_id",
+            "type": "string"
+          },
+          {
+            "name": "command",
+            "type": "string"
+          },
+          {
+            "name": "extra_info",
+            "type": "string"
+          },
+          {
+            "name": "max_index",
+            "type": "u8"
+          },
+          {
+            "name": "index",
+            "type": "u8"
+          },
+          {
+            "name": "cost",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InitializeConfigArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "platform",
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_recipient_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "deposit_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "base_min_supply",
+            "type": "u64"
+          },
+          {
+            "name": "base_max_supply",
+            "type": "u64"
+          },
+          {
+            "name": "create_fee",
+            "type": "u64"
+          },
+          {
+            "name": "base_min_fee_rate",
+            "type": "u64"
+          },
+          {
+            "name": "base_max_fee_rate",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SellArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "base_cost",
+            "type": "u64"
+          },
+          {
+            "name": "min_quote_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UpdateConfigArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "param",
+            "type": "u8"
+          },
+          {
+            "name": "value",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Withdraw2Args",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "order_id",
+            "type": "string"
+          },
+          {
+            "name": "cost",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProgramConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "is_initialized",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "platform",
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_recipient_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "deposit_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "base_min_supply",
+            "type": "u64"
+          },
+          {
+            "name": "base_max_supply",
+            "type": "u64"
+          },
+          {
+            "name": "create_fee",
+            "type": "u64"
+          },
+          {
+            "name": "base_min_fee_rate",
+            "type": "u64"
+          },
+          {
+            "name": "base_max_fee_rate",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CurveInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "quote_bump",
+            "type": "u8"
+          },
+          {
+            "name": "base_bump",
+            "type": "u8"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "target",
+            "type": "u64"
+          },
+          {
+            "name": "init_virtual_quote_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "init_virtual_base_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "init_supply",
+            "type": "u64"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u64"
+          },
+          {
+            "name": "quote_balance",
+            "type": "u64"
+          },
+          {
+            "name": "base_supply",
+            "type": "u64"
+          },
+          {
+            "name": "create_fee",
+            "type": "u64"
+          },
+          {
+            "name": "is_launch_permitted",
+            "type": "bool"
+          },
+          {
+            "name": "is_on_raydium",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreateEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "quote_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "base_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "name": "bonding_curve",
+            "type": "pubkey"
+          },
+          {
+            "name": "supply",
+            "type": "u64"
+          },
+          {
+            "name": "target",
+            "type": "u64"
+          },
+          {
+            "name": "init_virtual_quote_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "init_virtual_base_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u64"
+          },
+          {
+            "name": "create_fee",
+            "type": "u64"
+          },
+          {
+            "name": "is_launch_permitted",
+            "type": "bool"
+          },
+          {
+            "name": "timestamp",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "quote_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "base_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "quote_amount",
+            "type": "u64"
+          },
+          {
+            "name": "base_amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee_amount",
+            "type": "u64"
+          },
+          {
+            "name": "is_buy",
+            "type": "bool"
+          },
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "u64"
+          },
+          {
+            "name": "virtual_quote_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "virtual_base_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "new_quote_balance",
+            "type": "u64"
+          },
+          {
+            "name": "new_base_supply",
+            "type": "u64"
+          },
+          {
+            "name": "user_quote_balance",
+            "type": "u64"
+          },
+          {
+            "name": "user_base_balance",
+            "type": "u64"
+          },
+          {
+            "name": "supply",
+            "type": "u64"
+          },
+          {
+            "name": "target",
+            "type": "u64"
+          },
+          {
+            "name": "init_virtual_quote_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "init_virtual_base_reserves",
+            "type": "u64"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u64"
+          },
+          {
+            "name": "create_fee",
+            "type": "u64"
+          },
+          {
+            "name": "should2raydium",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WithdrawEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "quote_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "base_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "quote_amount",
+            "type": "u64"
+          },
+          {
+            "name": "base_amount",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "u64"
+          },
+          {
+            "name": "receiver",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PermitEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "base_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "quote_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "is_launch_permitted",
+            "type": "bool"
+          },
+          {
+            "name": "should2raydium",
+            "type": "bool"
+          },
+          {
+            "name": "timestamp",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DepositEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "cost",
+            "type": "u64"
+          },
+          {
+            "name": "order_id",
+            "type": "string"
+          },
+          {
+            "name": "command",
+            "type": "string"
+          },
+          {
+            "name": "extra_info",
+            "type": "string"
+          },
+          {
+            "name": "max_index",
+            "type": "u8"
+          },
+          {
+            "name": "index",
+            "type": "u8"
+          },
+          {
+            "name": "timestamp",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DepositEvent2",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint1",
+            "type": "pubkey"
+          },
+          {
+            "name": "cost1",
+            "type": "u64"
+          },
+          {
+            "name": "mint2",
+            "type": "pubkey"
+          },
+          {
+            "name": "cost2",
+            "type": "u64"
+          },
+          {
+            "name": "order_id",
+            "type": "string"
+          },
+          {
+            "name": "command",
+            "type": "string"
+          },
+          {
+            "name": "extra_info",
+            "type": "string"
+          },
+          {
+            "name": "max_index",
+            "type": "u8"
+          },
+          {
+            "name": "index",
+            "type": "u8"
+          },
+          {
+            "name": "timestamp",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Withdraw2Event",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "system_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "receiver_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "cost",
+            "type": "u64"
+          },
+          {
+            "name": "order_id",
+            "type": "string"
+          },
+          {
+            "name": "timestamp",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "PROGRAM_CONFIG_SEED",
+      "type": "string",
+      "value": "\"program_config\""
+    },
+    {
+      "name": "FEE_RECIPIENT",
+      "type": "string",
+      "value": "\"fee_recipient\""
+    },
+    {
+      "name": "QUOTE_TOKEN_INFO_SEED",
+      "type": "string",
+      "value": "\"quote_token_info\""
+    },
+    {
+      "name": "FEE_RECIPIENT_QUOTE_SEED",
+      "type": "string",
+      "value": "\"fee_recipient_quote\""
+    },
+    {
+      "name": "BONDING_CURVE_SEED",
+      "type": "string",
+      "value": "\"bonding_curve\""
+    },
+    {
+      "name": "BONDING_CURVE_QUOTE_SEED",
+      "type": "string",
+      "value": "\"bonding_curve_quote\""
+    },
+    {
+      "name": "BONDING_CURVE_BASE_SEED",
+      "type": "string",
+      "value": "\"bonding_curve_base\""
+    },
+    {
+      "name": "UPDATE_CONFIG_ACTION_ADMIN",
+      "type": "u8",
+      "value": "0"
+    },
+    {
+      "name": "UPDATE_CONFIG_ACTION_PLATFORM",
+      "type": "u8",
+      "value": "1"
+    },
+    {
+      "name": "UPDATE_CONFIG_ACTION_FEE_RECIPIENT",
+      "type": "u8",
+      "value": "2"
+    },
+    {
+      "name": "UPDATE_CONFIG_ACTION_DEPOSIT",
+      "type": "u8",
+      "value": "3"
+    }
+  ]
+}
