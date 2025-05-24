@@ -25,4 +25,5 @@ upgrade-anchor:
 	avm install 0.30.1 && anchor --version 
 
 convert:
-	anchor idl convert ./test/old.json >./test/new.json
+	# anchor idl convert ./test/old.json >./test/new.json
+	anchor idl convert ./test/raydium.json >./test/raydium_new.json
