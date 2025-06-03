@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	. "github.com/dave/jennifer/jen"
 	"github.com/davecgh/go-spew/spew"
@@ -81,7 +82,11 @@ func typeStringToType(ts IdlTypeAsString) *Statement {
 
 func genField(field IdlField, pointer bool) Code {
 	st := newStatement()
-	st.Id(ToCamel(field.Name)).
+	name := ToCamel(field.Name)
+	if strings.Contains(field.Name, "padding") {
+		name = field.Name
+	}
+	st.Id(name).
 		Add(func() Code {
 			if isComplexEnum(field.Type) {
 				return nil
@@ -443,7 +448,32 @@ func genTypeDef(idl *IDL, withDiscriminator *[8]byte, def IdlTypeDef) Code {
 
 			st.Add(code.Line().Line())
 		}
-
+	case IdlTypeDefTyKindType:
+		code := Empty()
+		if def.Type.Type != nil {
+			aliasType := def.Type.Type
+			// 数组类型
+			if aliasType.IsArray() {
+				array := aliasType.GetArray()
+				elemCode := genTypeName(array.Elem)
+				code.Type().Id(def.Name).Op("[").Lit(array.Num).Op("]").Add(elemCode)
+			} else if aliasType.IsString() {
+				// 直接别名
+				code.Const().Id(def.Name).Op("=").Add(genTypeName(*aliasType))
+			} else if aliasType.IsIdlTypeDefined() {
+				// 也是直接别名
+				code.Type().Id(def.Name).Op("=").Add(genTypeName(*aliasType))
+			} else if aliasType.IsIdlTypeVec() {
+				// 生成为slice
+				code.Type().Id(def.Name).Op("=").Add(genTypeName(*aliasType))
+			} else if aliasType.IsIdlTypeOption() {
+				// 生成为指针
+				code.Type().Id(def.Name).Op("=").Add(genTypeName(*aliasType))
+			} else {
+				panic(fmt.Sprintf("unsupported alias type: %+v", aliasType))
+			}
+			st.Add(code.Line())
+		}
 		// panic(Sf("not implemented: %s", spew.Sdump(def)))
 	default:
 		panic(Sf("not implemented: %s", spew.Sdump(def.Type.Kind)))
@@ -499,6 +529,10 @@ func genMarshalWithEncoder_struct(
 
 				for _, field := range fields {
 					exportedArgName := ToCamel(field.Name)
+					if strings.Contains(field.Name, "padding") {
+						// Skip padding fields.
+						exportedArgName = field.Name
+					}
 					if field.Type.IsIdlTypeOption() {
 						body.Commentf("Serialize `%s` param (optional):", exportedArgName)
 					} else {
@@ -633,6 +667,11 @@ func genUnmarshalWithDecoder_struct(
 
 				for _, field := range fields {
 					exportedArgName := ToCamel(field.Name)
+					if strings.Contains(field.Name, "padding") {
+						// Skip padding fields.
+						exportedArgName = field.Name
+					}
+
 					if field.Type.IsIdlTypeOption() {
 						body.Commentf("Deserialize `%s` (optional):", exportedArgName)
 					} else {

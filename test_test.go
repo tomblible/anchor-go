@@ -1,0 +1,207 @@
+package main
+
+import (
+	"encoding/json"
+	"flag"
+	"fmt"
+	"os"
+	"path"
+	"path/filepath"
+	"testing"
+	"time"
+
+	"github.com/gagliardetto/anchor-go/sighash"
+	. "github.com/gagliardetto/utilz"
+	"golang.org/x/mod/modfile"
+)
+
+func TestDebug(t *testing.T) {
+	conf.Encoding = EncodingBorsh
+	conf.TypeID = TypeIDAnchor
+	filenames := FlagStringArray{"./idl/fyd/raydium_clmm_new.json"}
+	conf.DstDir = "./generated/prd/raydium_clmm"
+	conf.Package = "raydium_clmm"
+	conf.Debug = false
+	conf.RemoveAccountSuffix = false
+	conf.Encoding = EncodingBorsh
+	conf.TypeID = TypeIDAnchor
+	conf.ModPath = ""
+	// filenames := FlagStringArray{}
+	flag.Var(&filenames, "src", "Path to source; can use multiple times.")
+	flag.StringVar(&conf.DstDir, "dst", generatedDir, "Destination folder")
+	flag.StringVar(&conf.Package, "pkg", "", "Set package name to generate, default value is metadata.name of the source IDL.")
+	flag.BoolVar(&conf.Debug, "debug", false, "debug mode")
+	flag.BoolVar(&conf.RemoveAccountSuffix, "remove-account-suffix", false, "Remove \"Account\" suffix from accessors (if leads to duplication, e.g. \"SetFooAccountAccount\")")
+
+	flag.StringVar((*string)(&conf.Encoding), "codec", string(EncodingBorsh), "Choose codec")
+	flag.StringVar((*string)(&conf.TypeID), "type-id", string(TypeIDAnchor), "Choose typeID kind")
+	flag.StringVar(&conf.ModPath, "mod", "", "Generate a go.mod file with the necessary dependencies, and this module")
+	flag.Parse()
+
+	if err := conf.Validate(); err != nil {
+		panic(fmt.Errorf("error while validating config: %w", err))
+	}
+
+	var ts time.Time
+	if GetConfig().Debug {
+		ts = time.Unix(0, 0)
+	} else {
+		ts = time.Now()
+	}
+	if len(filenames) == 0 {
+		Sfln(
+			"[%s] No IDL files provided",
+			Red(XMark),
+		)
+		os.Exit(1)
+	}
+	{
+		exists, err := DirExists(GetConfig().DstDir)
+		if err != nil {
+			panic(err)
+		}
+		if !exists {
+			MustCreateFolderIfNotExists(GetConfig().DstDir, os.ModePerm)
+		}
+	}
+
+	callbacks := make([]func(), 0)
+	defer func() {
+		for _, cb := range callbacks {
+			cb()
+		}
+	}()
+
+	for _, idlFilepath := range filenames {
+		Sfln(
+			"[%s] Generating client from IDL: %s",
+			Shakespeare("+"),
+			Shakespeare(idlFilepath),
+		)
+		idlFile, err := os.Open(idlFilepath)
+		if err != nil {
+			panic(err)
+		}
+
+		dec := json.NewDecoder(idlFile)
+
+		var idl IDL
+
+		err = dec.Decode(&idl)
+		if err != nil {
+			panic(err)
+		}
+		{
+			if idl.State != nil {
+				Sfln(
+					"%s idl.State is defined, but generator is not implemented yet.",
+					OrangeBG("[?]"),
+				)
+			}
+		}
+
+		// spew.Dump(idl)
+
+		// Create subfolder for package for generated assets:
+		packageAssetFolderName := sighash.ToRustSnakeCase(idl.Metadata.Name)
+		var dstDirForFiles string
+		if GetConfig().Debug {
+			packageAssetFolderPath := path.Join(GetConfig().DstDir, packageAssetFolderName)
+			MustCreateFolderIfNotExists(packageAssetFolderPath, os.ModePerm)
+			// Create folder for assets generated during this run:
+			thisRunAssetFolderName := ToLowerCamel(idl.Metadata.Name) + "_" + ts.Format(FilenameTimeFormat)
+			thisRunAssetFolderPath := path.Join(packageAssetFolderPath, thisRunAssetFolderName)
+			// Create a new assets folder inside the main assets folder:
+			MustCreateFolderIfNotExists(thisRunAssetFolderPath, os.ModePerm)
+			dstDirForFiles = thisRunAssetFolderPath
+		} else {
+			if GetConfig().DstDir == generatedDir {
+				dstDirForFiles = filepath.Join(GetConfig().DstDir, packageAssetFolderName)
+			} else {
+				dstDirForFiles = GetConfig().DstDir
+			}
+		}
+		MustCreateFolderIfNotExists(dstDirForFiles, os.ModePerm)
+
+		files, err := GenerateClientFromProgramIDL(idl)
+		if err != nil {
+			panic(err)
+		}
+
+		{
+			mdf := &modfile.File{}
+			mdf.AddModuleStmt(GetConfig().ModPath)
+
+			mdf.AddNewRequire("github.com/gagliardetto/solana-go", "v1.5.0", false)
+			mdf.AddNewRequire("github.com/fragmetric-labs/solana-binary-go", "v0.8.0", false)
+			mdf.AddNewRequire("github.com/gagliardetto/treeout", "v0.1.4", false)
+			mdf.AddNewRequire("github.com/gagliardetto/gofuzz", "v1.2.2", false)
+			mdf.AddNewRequire("github.com/stretchr/testify", "v1.6.1", false)
+			mdf.AddNewRequire("github.com/davecgh/go-spew", "v1.1.1", false)
+			mdf.Cleanup()
+
+			//callbacks = append(callbacks, func() {
+			//	Ln()
+			//	Ln(Bold("Don't forget to import the necessary dependencies!"))
+			//	Ln()
+			//	for _, v := range mdf.Require {
+			//		Sfln(
+			//			"	go get %s@%s",
+			//			v.Mod.Path,
+			//			v.Mod.Version,
+			//		)
+			//	}
+			//	Ln()
+			//})
+
+			if GetConfig().ModPath != "" {
+				mfBytes, err := mdf.Format()
+				if err != nil {
+					panic(err)
+				}
+				gomodFilepath := filepath.Join(dstDirForFiles, "go.mod")
+				Sfln(
+					"[%s] %s",
+					Lime(Checkmark),
+					MustAbs(gomodFilepath),
+				)
+				// Write `go.mod` file:
+				err = os.WriteFile(gomodFilepath, mfBytes, 0666)
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+
+		for _, file := range files {
+			// err := file.Render(os.Stdout)
+			// if err != nil {
+			// 	panic(err)
+			// }
+			file.File.HeaderComment("Code generated by https://github.com/zheng-lan/anchor-go. DO NOT EDIT.")
+			{
+				// Save assets:
+				assetFileName := file.Name + ".go"
+				assetFilepath := path.Join(dstDirForFiles, assetFileName)
+
+				// Create file:
+				goFile, err := os.Create(assetFilepath)
+				if err != nil {
+					panic(err)
+				}
+				defer goFile.Close()
+
+				// Write generated code file:
+				Sfln(
+					"[%s] %s",
+					Lime(Checkmark),
+					MustAbs(assetFilepath),
+				)
+				err = file.File.Render(goFile)
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+	}
+}

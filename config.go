@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	. "github.com/gagliardetto/utilz"
+	"github.com/gagliardetto/utilz"
 )
 
 var conf = &Config{}
@@ -29,7 +29,7 @@ func (cfg *Config) Validate() error {
 		return errors.New("cfg is nil")
 	}
 	if !isValidEncoder(cfg.Encoding) {
-		return fmt.Errorf("Encoder kind is not valid: %q", cfg.Encoding)
+		return fmt.Errorf("encoder kind is not valid: %q", cfg.Encoding)
 	}
 	if !isValidTypeIDName(cfg.TypeID) {
 		return fmt.Errorf("TypeID kind is not valid: %q", cfg.TypeID)
@@ -38,7 +38,7 @@ func (cfg *Config) Validate() error {
 }
 
 func isValidEncoder(enc EncoderName) bool {
-	return SliceContains(
+	return utilz.SliceContains(
 		[]string{
 			string(EncodingBorsh),
 			string(EncodingBin),
@@ -59,7 +59,7 @@ const (
 )
 
 func isValidTypeIDName(typeID TypeIDName) bool {
-	return SliceContains(
+	return utilz.SliceContains(
 		[]string{
 			string(TypeIDUvarint32),
 			string(TypeIDUint32),
