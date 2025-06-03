@@ -15,10 +15,10 @@ Generated Code will be generated and saved to `./generated/`.
 - [x] instructions
 - [x] accounts
 - [x] types
-- [ ] events
-- [ ] errors
-- [ ] handle tuple types
-- [ ] constants
+- [x] events
+- [x] errors
+- [x] handle tuple types
+- [x] constants
 
 ## Future Development
 
@@ -41,10 +41,6 @@ Anchor is a framework for Solana's Sealevel runtime providing several convenient
 ### example 1: metaplex nft candy machine
 ```convert
 anchor idl convert  old.json >new.json
-```
-
-```bash
-make swap-proxy
 ```
 
 Note
