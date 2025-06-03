@@ -1,0 +1,1138 @@
+{
+  "address": "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C",
+  "metadata": {
+    "name": "raydium_cp_swap",
+    "version": "0.1.0",
+    "spec": "0.1.0"
+  },
+  "instructions": [
+    {
+      "name": "create_amm_config",
+      "discriminator": [
+        137,
+        52,
+        237,
+        212,
+        215,
+        117,
+        108,
+        104
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "amm_config",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "index",
+          "type": "u16"
+        },
+        {
+          "name": "trade_fee_rate",
+          "type": "u64"
+        },
+        {
+          "name": "protocol_fee_rate",
+          "type": "u64"
+        },
+        {
+          "name": "fund_fee_rate",
+          "type": "u64"
+        },
+        {
+          "name": "create_pool_fee",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_amm_config",
+      "discriminator": [
+        49,
+        60,
+        174,
+        136,
+        154,
+        28,
+        116,
+        200
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "signer": true
+        },
+        {
+          "name": "amm_config",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "param",
+          "type": "u8"
+        },
+        {
+          "name": "value",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_pool_status",
+      "discriminator": [
+        130,
+        87,
+        108,
+        6,
+        46,
+        224,
+        117,
+        123
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "status",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "collect_protocol_fee",
+      "discriminator": [
+        136,
+        136,
+        252,
+        221,
+        194,
+        66,
+        126,
+        89
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "signer": true
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "amm_config"
+        },
+        {
+          "name": "token0_vault",
+          "writable": true
+        },
+        {
+          "name": "token1_vault",
+          "writable": true
+        },
+        {
+          "name": "vault0_mint"
+        },
+        {
+          "name": "vault1_mint"
+        },
+        {
+          "name": "recipient_token0_account",
+          "writable": true
+        },
+        {
+          "name": "recipient_token1_account",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "token_program2022"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount0_requested",
+          "type": "u64"
+        },
+        {
+          "name": "amount1_requested",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "collect_fund_fee",
+      "discriminator": [
+        167,
+        138,
+        78,
+        149,
+        223,
+        194,
+        6,
+        126
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "signer": true
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "amm_config"
+        },
+        {
+          "name": "token0_vault",
+          "writable": true
+        },
+        {
+          "name": "token1_vault",
+          "writable": true
+        },
+        {
+          "name": "vault0_mint"
+        },
+        {
+          "name": "vault1_mint"
+        },
+        {
+          "name": "recipient_token0_account",
+          "writable": true
+        },
+        {
+          "name": "recipient_token1_account",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "token_program2022"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount0_requested",
+          "type": "u64"
+        },
+        {
+          "name": "amount1_requested",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "amm_config"
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "token0_mint"
+        },
+        {
+          "name": "token1_mint"
+        },
+        {
+          "name": "lp_mint",
+          "writable": true
+        },
+        {
+          "name": "creator_token0",
+          "writable": true
+        },
+        {
+          "name": "creator_token1",
+          "writable": true
+        },
+        {
+          "name": "creator_lp_token",
+          "writable": true
+        },
+        {
+          "name": "token0_vault",
+          "writable": true
+        },
+        {
+          "name": "token1_vault",
+          "writable": true
+        },
+        {
+          "name": "create_pool_fee",
+          "writable": true
+        },
+        {
+          "name": "observation_state",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "token0_program"
+        },
+        {
+          "name": "token1_program"
+        },
+        {
+          "name": "associated_token_program"
+        },
+        {
+          "name": "system_program"
+        },
+        {
+          "name": "rent"
+        }
+      ],
+      "args": [
+        {
+          "name": "init_amount0",
+          "type": "u64"
+        },
+        {
+          "name": "init_amount1",
+          "type": "u64"
+        },
+        {
+          "name": "open_time",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "deposit",
+      "discriminator": [
+        242,
+        35,
+        198,
+        137,
+        82,
+        225,
+        242,
+        182
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "signer": true
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "owner_lp_token",
+          "writable": true
+        },
+        {
+          "name": "token0_account",
+          "writable": true
+        },
+        {
+          "name": "token1_account",
+          "writable": true
+        },
+        {
+          "name": "token0_vault",
+          "writable": true
+        },
+        {
+          "name": "token1_vault",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "token_program2022"
+        },
+        {
+          "name": "vault0_mint"
+        },
+        {
+          "name": "vault1_mint"
+        },
+        {
+          "name": "lp_mint",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "lp_token_amount",
+          "type": "u64"
+        },
+        {
+          "name": "maximum_token0_amount",
+          "type": "u64"
+        },
+        {
+          "name": "maximum_token1_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdraw",
+      "discriminator": [
+        183,
+        18,
+        70,
+        156,
+        148,
+        109,
+        161,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "signer": true
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "owner_lp_token",
+          "writable": true
+        },
+        {
+          "name": "token0_account",
+          "writable": true
+        },
+        {
+          "name": "token1_account",
+          "writable": true
+        },
+        {
+          "name": "token0_vault",
+          "writable": true
+        },
+        {
+          "name": "token1_vault",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "token_program2022"
+        },
+        {
+          "name": "vault0_mint"
+        },
+        {
+          "name": "vault1_mint"
+        },
+        {
+          "name": "lp_mint",
+          "writable": true
+        },
+        {
+          "name": "memo_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "lp_token_amount",
+          "type": "u64"
+        },
+        {
+          "name": "minimum_token0_amount",
+          "type": "u64"
+        },
+        {
+          "name": "minimum_token1_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "swap_base_input",
+      "discriminator": [
+        143,
+        190,
+        90,
+        218,
+        196,
+        30,
+        51,
+        222
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "signer": true
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "amm_config"
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "input_token_account",
+          "writable": true
+        },
+        {
+          "name": "output_token_account",
+          "writable": true
+        },
+        {
+          "name": "input_vault",
+          "writable": true
+        },
+        {
+          "name": "output_vault",
+          "writable": true
+        },
+        {
+          "name": "input_token_program"
+        },
+        {
+          "name": "output_token_program"
+        },
+        {
+          "name": "input_token_mint"
+        },
+        {
+          "name": "output_token_mint"
+        },
+        {
+          "name": "observation_state",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "amount_in",
+          "type": "u64"
+        },
+        {
+          "name": "minimum_amount_out",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "swap_base_output",
+      "discriminator": [
+        55,
+        217,
+        98,
+        86,
+        163,
+        74,
+        180,
+        173
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "signer": true
+        },
+        {
+          "name": "authority"
+        },
+        {
+          "name": "amm_config"
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "input_token_account",
+          "writable": true
+        },
+        {
+          "name": "output_token_account",
+          "writable": true
+        },
+        {
+          "name": "input_vault",
+          "writable": true
+        },
+        {
+          "name": "output_vault",
+          "writable": true
+        },
+        {
+          "name": "input_token_program"
+        },
+        {
+          "name": "output_token_program"
+        },
+        {
+          "name": "input_token_mint"
+        },
+        {
+          "name": "output_token_mint"
+        },
+        {
+          "name": "observation_state",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "max_amount_in",
+          "type": "u64"
+        },
+        {
+          "name": "amount_out",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "AmmConfig",
+      "discriminator": [
+        218,
+        244,
+        33,
+        104,
+        203,
+        203,
+        43,
+        111
+      ]
+    },
+    {
+      "name": "ObservationState",
+      "discriminator": [
+        122,
+        174,
+        197,
+        53,
+        129,
+        9,
+        165,
+        132
+      ]
+    },
+    {
+      "name": "PoolState",
+      "discriminator": [
+        247,
+        237,
+        227,
+        245,
+        215,
+        195,
+        222,
+        70
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "LpChangeEvent",
+      "discriminator": [
+        121,
+        163,
+        205,
+        201,
+        57,
+        218,
+        117,
+        60
+      ]
+    },
+    {
+      "name": "SwapEvent",
+      "discriminator": [
+        64,
+        198,
+        205,
+        232,
+        38,
+        8,
+        113,
+        226
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NotApproved",
+      "msg": "Not approved"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidOwner",
+      "msg": "Input account owner is not the program address"
+    },
+    {
+      "code": 6002,
+      "name": "EmptySupply",
+      "msg": "Input token account empty"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidInput",
+      "msg": "InvalidInput"
+    },
+    {
+      "code": 6004,
+      "name": "IncorrectLpMint",
+      "msg": "Address of the provided lp token mint is incorrect"
+    },
+    {
+      "code": 6005,
+      "name": "ExceededSlippage",
+      "msg": "Exceeds desired slippage limit"
+    },
+    {
+      "code": 6006,
+      "name": "ZeroTradingTokens",
+      "msg": "Given pool token amount results in zero trading tokens"
+    },
+    {
+      "code": 6007,
+      "name": "NotSupportMint",
+      "msg": "Not support token_2022 mint extension"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidVault",
+      "msg": "invaild vault"
+    },
+    {
+      "code": 6009,
+      "name": "InitLpAmountTooLess",
+      "msg": "Init lp amount is too less(Because 100 amount lp will be locked)"
+    }
+  ],
+  "types": [
+    {
+      "name": "Observation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "block_timestamp",
+            "type": "u64"
+          },
+          {
+            "name": "cumulative_token0_price_x32",
+            "type": "u128"
+          },
+          {
+            "name": "cumulative_token1_price_x32",
+            "type": "u128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeDirection",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "ZeroForOne"
+          },
+          {
+            "name": "OneForZero"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RoundDirection",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Floor"
+          },
+          {
+            "name": "Ceiling"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolStatusBitIndex",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Deposit"
+          },
+          {
+            "name": "Withdraw"
+          },
+          {
+            "name": "Swap"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolStatusBitFlag",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Enable"
+          },
+          {
+            "name": "Disable"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AmmConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "disable_create_pool",
+            "type": "bool"
+          },
+          {
+            "name": "index",
+            "type": "u16"
+          },
+          {
+            "name": "trade_fee_rate",
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fee_rate",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fee_rate",
+            "type": "u64"
+          },
+          {
+            "name": "create_pool_fee",
+            "type": "u64"
+          },
+          {
+            "name": "protocol_owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "fund_owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                16
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "ObservationState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "initialized",
+            "type": "bool"
+          },
+          {
+            "name": "observation_index",
+            "type": "u16"
+          },
+          {
+            "name": "pool_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "observations",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "Observation"
+                  }
+                },
+                100
+              ]
+            }
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                4
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amm_config",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "token0_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "token1_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "token0_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "token1_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "token0_program",
+            "type": "pubkey"
+          },
+          {
+            "name": "token1_program",
+            "type": "pubkey"
+          },
+          {
+            "name": "observation_key",
+            "type": "pubkey"
+          },
+          {
+            "name": "auth_bump",
+            "type": "u8"
+          },
+          {
+            "name": "status",
+            "type": "u8"
+          },
+          {
+            "name": "lp_mint_decimals",
+            "type": "u8"
+          },
+          {
+            "name": "mint0_decimals",
+            "type": "u8"
+          },
+          {
+            "name": "mint1_decimals",
+            "type": "u8"
+          },
+          {
+            "name": "lp_supply",
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fees_token0",
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fees_token1",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fees_token0",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fees_token1",
+            "type": "u64"
+          },
+          {
+            "name": "open_time",
+            "type": "u64"
+          },
+          {
+            "name": "recent_epoch",
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                31
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "LpChangeEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_amount_before",
+            "type": "u64"
+          },
+          {
+            "name": "token0_vault_before",
+            "type": "u64"
+          },
+          {
+            "name": "token1_vault_before",
+            "type": "u64"
+          },
+          {
+            "name": "token0_amount",
+            "type": "u64"
+          },
+          {
+            "name": "token1_amount",
+            "type": "u64"
+          },
+          {
+            "name": "token0_transfer_fee",
+            "type": "u64"
+          },
+          {
+            "name": "token1_transfer_fee",
+            "type": "u64"
+          },
+          {
+            "name": "change_type",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SwapEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "input_vault_before",
+            "type": "u64"
+          },
+          {
+            "name": "output_vault_before",
+            "type": "u64"
+          },
+          {
+            "name": "input_amount",
+            "type": "u64"
+          },
+          {
+            "name": "output_amount",
+            "type": "u64"
+          },
+          {
+            "name": "input_transfer_fee",
+            "type": "u64"
+          },
+          {
+            "name": "output_transfer_fee",
+            "type": "u64"
+          },
+          {
+            "name": "base_input",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ]
+}

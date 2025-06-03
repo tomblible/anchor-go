@@ -1,0 +1,1129 @@
+{
+  "version": "0.1.0",
+  "name": "raydium_cp_swap",
+  "metadata": {
+    "address": "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C"
+  },
+  "instructions": [
+    {
+      "name": "createAmmConfig",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "ammConfig",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "index",
+          "type": "u16"
+        },
+        {
+          "name": "tradeFeeRate",
+          "type": "u64"
+        },
+        {
+          "name": "protocolFeeRate",
+          "type": "u64"
+        },
+        {
+          "name": "fundFeeRate",
+          "type": "u64"
+        },
+        {
+          "name": "createPoolFee",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "updateAmmConfig",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "ammConfig",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "param",
+          "type": "u8"
+        },
+        {
+          "name": "value",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "updatePoolStatus",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "status",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "collectProtocolFee",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "token0Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token1Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault0Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vault1Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "recipientToken0Account",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "recipientToken1Account",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram2022",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount0Requested",
+          "type": "u64"
+        },
+        {
+          "name": "amount1Requested",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "collectFundFee",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "token0Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token1Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault0Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vault1Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "recipientToken0Account",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "recipientToken1Account",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram2022",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount0Requested",
+          "type": "u64"
+        },
+        {
+          "name": "amount1Requested",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "accounts": [
+        {
+          "name": "creator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "ammConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "token1Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lpMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorToken0",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorToken1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorLpToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token1Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "createPoolFee",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "observationState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "token0Program",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "token1Program",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "initAmount0",
+          "type": "u64"
+        },
+        {
+          "name": "initAmount1",
+          "type": "u64"
+        },
+        {
+          "name": "openTime",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "deposit",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ownerLpToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Account",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token1Account",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token1Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram2022",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vault0Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vault1Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lpMint",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "lpTokenAmount",
+          "type": "u64"
+        },
+        {
+          "name": "maximumToken0Amount",
+          "type": "u64"
+        },
+        {
+          "name": "maximumToken1Amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdraw",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ownerLpToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Account",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token1Account",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token1Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram2022",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vault0Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vault1Mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lpMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "memoProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "lpTokenAmount",
+          "type": "u64"
+        },
+        {
+          "name": "minimumToken0Amount",
+          "type": "u64"
+        },
+        {
+          "name": "minimumToken1Amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "swapBaseInput",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inputTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "outputTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inputVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "outputVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inputTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "outputTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inputTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "outputTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "observationState",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amountIn",
+          "type": "u64"
+        },
+        {
+          "name": "minimumAmountOut",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "swapBaseOutput",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inputTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "outputTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inputVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "outputVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inputTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "outputTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inputTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "outputTokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "observationState",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "maxAmountIn",
+          "type": "u64"
+        },
+        {
+          "name": "amountOut",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "AmmConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "disableCreatePool",
+            "type": "bool"
+          },
+          {
+            "name": "index",
+            "type": "u16"
+          },
+          {
+            "name": "tradeFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "protocolFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "fundFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "createPoolFee",
+            "type": "u64"
+          },
+          {
+            "name": "protocolOwner",
+            "type": "publicKey"
+          },
+          {
+            "name": "fundOwner",
+            "type": "publicKey"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                16
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "ObservationState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "initialized",
+            "type": "bool"
+          },
+          {
+            "name": "observationIndex",
+            "type": "u16"
+          },
+          {
+            "name": "poolId",
+            "type": "publicKey"
+          },
+          {
+            "name": "observations",
+            "type": {
+              "array": [
+                {
+                  "defined": "Observation"
+                },
+                100
+              ]
+            }
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                4
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ammConfig",
+            "type": "publicKey"
+          },
+          {
+            "name": "poolCreator",
+            "type": "publicKey"
+          },
+          {
+            "name": "token0Vault",
+            "type": "publicKey"
+          },
+          {
+            "name": "token1Vault",
+            "type": "publicKey"
+          },
+          {
+            "name": "lpMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "token0Mint",
+            "type": "publicKey"
+          },
+          {
+            "name": "token1Mint",
+            "type": "publicKey"
+          },
+          {
+            "name": "token0Program",
+            "type": "publicKey"
+          },
+          {
+            "name": "token1Program",
+            "type": "publicKey"
+          },
+          {
+            "name": "observationKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "authBump",
+            "type": "u8"
+          },
+          {
+            "name": "status",
+            "type": "u8"
+          },
+          {
+            "name": "lpMintDecimals",
+            "type": "u8"
+          },
+          {
+            "name": "mint0Decimals",
+            "type": "u8"
+          },
+          {
+            "name": "mint1Decimals",
+            "type": "u8"
+          },
+          {
+            "name": "lpSupply",
+            "type": "u64"
+          },
+          {
+            "name": "protocolFeesToken0",
+            "type": "u64"
+          },
+          {
+            "name": "protocolFeesToken1",
+            "type": "u64"
+          },
+          {
+            "name": "fundFeesToken0",
+            "type": "u64"
+          },
+          {
+            "name": "fundFeesToken1",
+            "type": "u64"
+          },
+          {
+            "name": "openTime",
+            "type": "u64"
+          },
+          {
+            "name": "recentEpoch",
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                31
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "Observation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "blockTimestamp",
+            "type": "u64"
+          },
+          {
+            "name": "cumulativeToken0PriceX32",
+            "type": "u128"
+          },
+          {
+            "name": "cumulativeToken1PriceX32",
+            "type": "u128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeDirection",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "ZeroForOne"
+          },
+          {
+            "name": "OneForZero"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RoundDirection",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Floor"
+          },
+          {
+            "name": "Ceiling"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolStatusBitIndex",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Deposit"
+          },
+          {
+            "name": "Withdraw"
+          },
+          {
+            "name": "Swap"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolStatusBitFlag",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Enable"
+          },
+          {
+            "name": "Disable"
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "LpChangeEvent",
+      "fields": [
+        {
+          "name": "poolId",
+          "type": "publicKey",
+          "index": true
+        },
+        {
+          "name": "lpAmountBefore",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "token0VaultBefore",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "token1VaultBefore",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "token0Amount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "token1Amount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "token0TransferFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "token1TransferFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "changeType",
+          "type": "u8",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "SwapEvent",
+      "fields": [
+        {
+          "name": "poolId",
+          "type": "publicKey",
+          "index": true
+        },
+        {
+          "name": "inputVaultBefore",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "outputVaultBefore",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "inputAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "outputAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "inputTransferFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "outputTransferFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "baseInput",
+          "type": "bool",
+          "index": false
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NotApproved",
+      "msg": "Not approved"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidOwner",
+      "msg": "Input account owner is not the program address"
+    },
+    {
+      "code": 6002,
+      "name": "EmptySupply",
+      "msg": "Input token account empty"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidInput",
+      "msg": "InvalidInput"
+    },
+    {
+      "code": 6004,
+      "name": "IncorrectLpMint",
+      "msg": "Address of the provided lp token mint is incorrect"
+    },
+    {
+      "code": 6005,
+      "name": "ExceededSlippage",
+      "msg": "Exceeds desired slippage limit"
+    },
+    {
+      "code": 6006,
+      "name": "ZeroTradingTokens",
+      "msg": "Given pool token amount results in zero trading tokens"
+    },
+    {
+      "code": 6007,
+      "name": "NotSupportMint",
+      "msg": "Not support token_2022 mint extension"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidVault",
+      "msg": "invaild vault"
+    },
+    {
+      "code": 6009,
+      "name": "InitLpAmountTooLess",
+      "msg": "Init lp amount is too less(Because 100 amount lp will be locked)"
+    }
+  ]
+}
