@@ -276,25 +276,20 @@ func (obj *WithdrawIneligibleReward) UnmarshalWithDecoder(decoder *ag_binary.Dec
 func NewWithdrawIneligibleRewardInstruction(
 	// Parameters:
 	reward_index uint8,
-	// Accounts:
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	rewardVault ag_solanago.PublicKey,
 	rewardMint ag_solanago.PublicKey,
 	funderTokenAccount ag_solanago.PublicKey,
 	funder ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *WithdrawIneligibleReward {
+	tokenProgram ag_solanago.PublicKey) *WithdrawIneligibleReward {
 	return NewWithdrawIneligibleRewardInstructionBuilder().
 		SetRewardIndex(reward_index).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetRewardVaultAccount(rewardVault).
 		SetRewardMintAccount(rewardMint).
 		SetFunderTokenAccountAccount(funderTokenAccount).
 		SetFunderAccount(funder).
-		SetTokenProgramAccount(tokenProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenProgramAccount(tokenProgram)
 }
 
 // NewSimpleWithdrawIneligibleRewardInstruction declares a new WithdrawIneligibleReward instruction with the provided parameters and accounts.

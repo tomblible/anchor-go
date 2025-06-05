@@ -1040,9 +1040,13 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 								if isSysVar(account.Name) || account.Name == "program" {
 									return true
 								}
+								if addresses[ToCamel(account.Name)+"PDA"] != "" {
+									//在instructionBuilder中已经设置的PDA账户
+									return true
+								}
 								if account.Address != "" {
 									if getDefProgram(ToLowerCamel(account.Name), account.Address) != "" {
-										//在instructionBuilder中已经设置的账户
+										//在instructionBuilder中已经设置的程序
 										return true
 									}
 								}
@@ -1106,9 +1110,13 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 							if isSysVar(account.Name) || account.Name == "program" {
 								return true
 							}
+							if addresses[ToCamel(account.Name)+"PDA"] != "" {
+								//在instructionBuilder中已经设置的PDA账户
+								return true
+							}
 							if account.Address != "" {
 								if getDefProgram(ToLowerCamel(account.Name), account.Address) != "" {
-									//在instructionBuilder中已经设置的账户
+									//在instructionBuilder中已经设置的程序
 									return true
 								}
 							}
@@ -1221,9 +1229,14 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									return true
 								}
 								accountLower := ToLowerCamel(account.Name)
+								fmt.Println("addresses:", addresses, `ToCamel(account.Name)+"PDA"`, ToCamel(account.Name)+"PDA")
+								if addresses[ToCamel(account.Name)+"PDA"] != "" {
+									//在instructionBuilder中已经设置的PDA账户
+									return true
+								}
 								if account.Address != "" {
-									if getDefProgram(accountLower, account.Address) != "" {
-										//在instructionBuilder中已经设置的账户
+									if getDefProgram(ToLowerCamel(account.Name), account.Address) != "" {
+										//在instructionBuilder中已经设置的程序
 										return true
 									}
 								}
@@ -1285,24 +1298,34 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 				).
 				BlockFunc(func(body *Group) {
 					// Body:
-					{
-						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
-							if account.Address != "" {
-								if getDefProgram(ToCamel(account.Name), account.Address) != "" {
-									//InstructionBuilder里面已经set过了
-									return true
-								}
-								body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(account.Address))
-								createdAccounts[ToLowerCamel(account.Name)] = account.Address
-							}
-							return true
-						})
-					}
+					// {
+					// 	instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
+					// 		if account.Address != "" {
+					// 			if getDefProgram(ToCamel(account.Name), account.Address) != "" {
+					// 				//InstructionBuilder里面已经set过了
+					// 				return true
+					// 			}
+					// 			body.Id(ToLowerCamel(account.Name)).Op(":=").Qual(PkgSolanaGo, "MustPublicKeyFromBase58").Call(Lit(account.Address))
+					// 			createdAccounts[ToLowerCamel(account.Name)] = account.Address
+					// 		}
+					// 		return true
+					// 	})
+					// }
 					// 处理不需要参数传递的是该程序的PDA，需要直接使用constant里面的Must函数派生的PDA账户
 					for range len(instruction.Accounts) - len(createdAccounts) {
 						instruction.Accounts.Walk("", nil, nil, func(parentGroupPath string, index int, parentGroup *IdlAccounts, account *IdlAccount) bool {
 							if _, isExist := createdAccounts[ToLowerCamel(account.Name)]; isExist {
 								return true
+							}
+							if addresses[ToCamel(account.Name)+"PDA"] != "" {
+								//在instructionBuilder中已经设置的PDA账户
+								return true
+							}
+							if account.Address != "" {
+								if getDefProgram(ToLowerCamel(account.Name), account.Address) != "" {
+									//在instructionBuilder中已经设置的程序
+									return true
+								}
 							}
 							if account.PDA != nil {
 								if account.PDA.Program != nil { //说明pda的program是其他程序，已经作为参数传进来
@@ -1362,9 +1385,13 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 							if account.Name == "program" {
 								return true
 							}
+							if addresses[ToCamel(account.Name)+"PDA"] != "" {
+								//在instructionBuilder中已经设置的PDA账户
+								return true
+							}
 							if account.Address != "" {
-								if getDefProgram(ToCamel(account.Name), account.Address) != "" {
-									//InstructionBuilder里面已经set过了
+								if getDefProgram(ToLowerCamel(account.Name), account.Address) != "" {
+									//在instructionBuilder中已经设置的程序
 									return true
 								}
 							}

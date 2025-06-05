@@ -255,15 +255,13 @@ func NewCreateVirtualPoolMetadataInstruction(
 	virtualPool ag_solanago.PublicKey,
 	virtualPoolMetadata ag_solanago.PublicKey,
 	creator ag_solanago.PublicKey,
-	payer ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreateVirtualPoolMetadata {
+	payer ag_solanago.PublicKey) *CreateVirtualPoolMetadata {
 	return NewCreateVirtualPoolMetadataInstructionBuilder().
 		SetMetadata(metadata).
 		SetVirtualPoolAccount(virtualPool).
 		SetVirtualPoolMetadataAccount(virtualPoolMetadata).
 		SetCreatorAccount(creator).
-		SetPayerAccount(payer).
-		SetEventAuthorityAccount(eventAuthority)
+		SetPayerAccount(payer)
 }
 
 // NewSimpleCreateVirtualPoolMetadataInstruction declares a new CreateVirtualPoolMetadata instruction with the provided parameters and accounts.

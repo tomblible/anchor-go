@@ -214,14 +214,12 @@ func NewUpdateRewardDurationInstruction(
 	new_duration uint64,
 	// Accounts:
 	pool ag_solanago.PublicKey,
-	admin ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *UpdateRewardDuration {
+	admin ag_solanago.PublicKey) *UpdateRewardDuration {
 	return NewUpdateRewardDurationInstructionBuilder().
 		SetRewardIndex(reward_index).
 		SetNewDuration(new_duration).
 		SetPoolAccount(pool).
-		SetAdminAccount(admin).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleUpdateRewardDurationInstruction declares a new UpdateRewardDuration instruction with the provided parameters and accounts.

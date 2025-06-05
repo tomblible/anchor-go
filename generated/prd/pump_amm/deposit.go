@@ -425,44 +425,6 @@ func NewDepositInstruction(
 	max_quote_amount_in uint64,
 	// Accounts:
 	pool ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
-	user ag_solanago.PublicKey,
-	baseMint ag_solanago.PublicKey,
-	quoteMint ag_solanago.PublicKey,
-	lpMint ag_solanago.PublicKey,
-	userBaseTokenAccount ag_solanago.PublicKey,
-	userQuoteTokenAccount ag_solanago.PublicKey,
-	userPoolTokenAccount ag_solanago.PublicKey,
-	poolBaseTokenAccount ag_solanago.PublicKey,
-	poolQuoteTokenAccount ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *Deposit {
-	return NewDepositInstructionBuilder().
-		SetLpTokenAmountOut(lp_token_amount_out).
-		SetMaxBaseAmountIn(max_base_amount_in).
-		SetMaxQuoteAmountIn(max_quote_amount_in).
-		SetPoolAccount(pool).
-		SetGlobalConfigAccount(globalConfig).
-		SetUserAccount(user).
-		SetBaseMintAccount(baseMint).
-		SetQuoteMintAccount(quoteMint).
-		SetLpMintAccount(lpMint).
-		SetUserBaseTokenAccountAccount(userBaseTokenAccount).
-		SetUserQuoteTokenAccountAccount(userQuoteTokenAccount).
-		SetUserPoolTokenAccountAccount(userPoolTokenAccount).
-		SetPoolBaseTokenAccountAccount(poolBaseTokenAccount).
-		SetPoolQuoteTokenAccountAccount(poolQuoteTokenAccount).
-		SetEventAuthorityAccount(eventAuthority)
-}
-
-// NewSimpleDepositInstruction declares a new Deposit instruction with the provided parameters and accounts.
-func NewSimpleDepositInstruction(
-	// Parameters:
-	lp_token_amount_out uint64,
-	max_base_amount_in uint64,
-	max_quote_amount_in uint64,
-	// Accounts:
-	pool ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
 	user ag_solanago.PublicKey,
 	baseMint ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
@@ -477,7 +439,39 @@ func NewSimpleDepositInstruction(
 		SetMaxBaseAmountIn(max_base_amount_in).
 		SetMaxQuoteAmountIn(max_quote_amount_in).
 		SetPoolAccount(pool).
-		SetGlobalConfigAccount(globalConfig).
+		SetUserAccount(user).
+		SetBaseMintAccount(baseMint).
+		SetQuoteMintAccount(quoteMint).
+		SetLpMintAccount(lpMint).
+		SetUserBaseTokenAccountAccount(userBaseTokenAccount).
+		SetUserQuoteTokenAccountAccount(userQuoteTokenAccount).
+		SetUserPoolTokenAccountAccount(userPoolTokenAccount).
+		SetPoolBaseTokenAccountAccount(poolBaseTokenAccount).
+		SetPoolQuoteTokenAccountAccount(poolQuoteTokenAccount)
+}
+
+// NewSimpleDepositInstruction declares a new Deposit instruction with the provided parameters and accounts.
+func NewSimpleDepositInstruction(
+	// Parameters:
+	lp_token_amount_out uint64,
+	max_base_amount_in uint64,
+	max_quote_amount_in uint64,
+	// Accounts:
+	pool ag_solanago.PublicKey,
+	user ag_solanago.PublicKey,
+	baseMint ag_solanago.PublicKey,
+	quoteMint ag_solanago.PublicKey,
+	lpMint ag_solanago.PublicKey,
+	userBaseTokenAccount ag_solanago.PublicKey,
+	userQuoteTokenAccount ag_solanago.PublicKey,
+	userPoolTokenAccount ag_solanago.PublicKey,
+	poolBaseTokenAccount ag_solanago.PublicKey,
+	poolQuoteTokenAccount ag_solanago.PublicKey) *Deposit {
+	return NewDepositInstructionBuilder().
+		SetLpTokenAmountOut(lp_token_amount_out).
+		SetMaxBaseAmountIn(max_base_amount_in).
+		SetMaxQuoteAmountIn(max_quote_amount_in).
+		SetPoolAccount(pool).
 		SetUserAccount(user).
 		SetBaseMintAccount(baseMint).
 		SetQuoteMintAccount(quoteMint).

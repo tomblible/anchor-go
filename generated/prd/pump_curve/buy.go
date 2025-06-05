@@ -351,28 +351,23 @@ func NewBuyInstruction(
 	// Parameters:
 	amount uint64,
 	max_sol_cost uint64,
-	// Accounts:
-	global ag_solanago.PublicKey,
 	feeRecipient ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
 	bondingCurve ag_solanago.PublicKey,
 	associatedBondingCurve ag_solanago.PublicKey,
 	associatedUser ag_solanago.PublicKey,
 	user ag_solanago.PublicKey,
-	creatorVault ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *Buy {
+	creatorVault ag_solanago.PublicKey) *Buy {
 	return NewBuyInstructionBuilder().
 		SetAmount(amount).
 		SetMaxSolCost(max_sol_cost).
-		SetGlobalAccount(global).
 		SetFeeRecipientAccount(feeRecipient).
 		SetMintAccount(mint).
 		SetBondingCurveAccount(bondingCurve).
 		SetAssociatedBondingCurveAccount(associatedBondingCurve).
 		SetAssociatedUserAccount(associatedUser).
 		SetUserAccount(user).
-		SetCreatorVaultAccount(creatorVault).
-		SetEventAuthorityAccount(eventAuthority)
+		SetCreatorVaultAccount(creatorVault)
 }
 
 // NewSimpleBuyInstruction declares a new Buy instruction with the provided parameters and accounts.

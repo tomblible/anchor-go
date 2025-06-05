@@ -426,8 +426,7 @@ func NewInitializeVirtualPoolWithSplTokenInstruction(
 	quoteVault ag_solanago.PublicKey,
 	mintMetadata ag_solanago.PublicKey,
 	payer ag_solanago.PublicKey,
-	tokenQuoteProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *InitializeVirtualPoolWithSplToken {
+	tokenQuoteProgram ag_solanago.PublicKey) *InitializeVirtualPoolWithSplToken {
 	return NewInitializeVirtualPoolWithSplTokenInstructionBuilder().
 		SetParams(params).
 		SetConfigAccount(config).
@@ -439,8 +438,7 @@ func NewInitializeVirtualPoolWithSplTokenInstruction(
 		SetQuoteVaultAccount(quoteVault).
 		SetMintMetadataAccount(mintMetadata).
 		SetPayerAccount(payer).
-		SetTokenQuoteProgramAccount(tokenQuoteProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenQuoteProgramAccount(tokenQuoteProgram)
 }
 
 // NewSimpleInitializeVirtualPoolWithSplTokenInstruction declares a new InitializeVirtualPoolWithSplToken instruction with the provided parameters and accounts.

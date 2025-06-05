@@ -182,13 +182,11 @@ func NewSetCoinCreatorInstruction(
 	// Accounts:
 	pool ag_solanago.PublicKey,
 	metadata ag_solanago.PublicKey,
-	bondingCurve ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *SetCoinCreator {
+	bondingCurve ag_solanago.PublicKey) *SetCoinCreator {
 	return NewSetCoinCreatorInstructionBuilder().
 		SetPoolAccount(pool).
 		SetMetadataAccount(metadata).
-		SetBondingCurveAccount(bondingCurve).
-		SetEventAuthorityAccount(eventAuthority)
+		SetBondingCurveAccount(bondingCurve)
 }
 
 // NewSimpleSetCoinCreatorInstruction declares a new SetCoinCreator instruction with the provided parameters and accounts.

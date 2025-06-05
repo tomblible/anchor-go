@@ -308,8 +308,7 @@ func NewFundRewardInstruction(
 	rewardMint ag_solanago.PublicKey,
 	funderTokenAccount ag_solanago.PublicKey,
 	funder ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *FundReward {
+	tokenProgram ag_solanago.PublicKey) *FundReward {
 	return NewFundRewardInstructionBuilder().
 		SetRewardIndex(reward_index).
 		SetAmount(amount).
@@ -319,8 +318,7 @@ func NewFundRewardInstruction(
 		SetRewardMintAccount(rewardMint).
 		SetFunderTokenAccountAccount(funderTokenAccount).
 		SetFunderAccount(funder).
-		SetTokenProgramAccount(tokenProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenProgramAccount(tokenProgram)
 }
 
 // NewSimpleFundRewardInstruction declares a new FundReward instruction with the provided parameters and accounts.

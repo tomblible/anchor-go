@@ -435,26 +435,20 @@ func NewCreateInstruction(
 	creator ag_solanago.PublicKey,
 	// Accounts:
 	mint ag_solanago.PublicKey,
-	mintAuthority ag_solanago.PublicKey,
 	bondingCurve ag_solanago.PublicKey,
 	associatedBondingCurve ag_solanago.PublicKey,
-	global ag_solanago.PublicKey,
 	metadata ag_solanago.PublicKey,
-	user ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *Create {
+	user ag_solanago.PublicKey) *Create {
 	return NewCreateInstructionBuilder().
 		SetName(name).
 		SetSymbol(symbol).
 		SetUri(uri).
 		SetCreator(creator).
 		SetMintAccount(mint).
-		SetMintAuthorityAccount(mintAuthority).
 		SetBondingCurveAccount(bondingCurve).
 		SetAssociatedBondingCurveAccount(associatedBondingCurve).
-		SetGlobalAccount(global).
 		SetMetadataAccount(metadata).
-		SetUserAccount(user).
-		SetEventAuthorityAccount(eventAuthority)
+		SetUserAccount(user)
 }
 
 // NewSimpleCreateInstruction declares a new Create instruction with the provided parameters and accounts.

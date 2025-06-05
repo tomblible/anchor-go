@@ -311,8 +311,7 @@ func NewWithdrawMigrationFeeInstruction(
 	quoteVault ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
 	sender ag_solanago.PublicKey,
-	tokenQuoteProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *WithdrawMigrationFee {
+	tokenQuoteProgram ag_solanago.PublicKey) *WithdrawMigrationFee {
 	return NewWithdrawMigrationFeeInstructionBuilder().
 		SetFlag(flag).
 		SetConfigAccount(config).
@@ -321,8 +320,7 @@ func NewWithdrawMigrationFeeInstruction(
 		SetQuoteVaultAccount(quoteVault).
 		SetQuoteMintAccount(quoteMint).
 		SetSenderAccount(sender).
-		SetTokenQuoteProgramAccount(tokenQuoteProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenQuoteProgramAccount(tokenQuoteProgram)
 }
 
 // NewSimpleWithdrawMigrationFeeInstruction declares a new WithdrawMigrationFee instruction with the provided parameters and accounts.

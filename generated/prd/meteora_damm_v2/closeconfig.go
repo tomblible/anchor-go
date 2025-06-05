@@ -182,13 +182,11 @@ func NewCloseConfigInstruction(
 	// Accounts:
 	config ag_solanago.PublicKey,
 	admin ag_solanago.PublicKey,
-	rentReceiver ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CloseConfig {
+	rentReceiver ag_solanago.PublicKey) *CloseConfig {
 	return NewCloseConfigInstructionBuilder().
 		SetConfigAccount(config).
 		SetAdminAccount(admin).
-		SetRentReceiverAccount(rentReceiver).
-		SetEventAuthorityAccount(eventAuthority)
+		SetRentReceiverAccount(rentReceiver)
 }
 
 // NewSimpleCloseConfigInstruction declares a new CloseConfig instruction with the provided parameters and accounts.

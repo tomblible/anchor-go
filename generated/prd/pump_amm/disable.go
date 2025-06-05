@@ -279,18 +279,14 @@ func NewDisableInstruction(
 	disable_buy bool,
 	disable_sell bool,
 	// Accounts:
-	admin ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *Disable {
+	admin ag_solanago.PublicKey) *Disable {
 	return NewDisableInstructionBuilder().
 		SetDisableCreatePool(disable_create_pool).
 		SetDisableDeposit(disable_deposit).
 		SetDisableWithdraw(disable_withdraw).
 		SetDisableBuy(disable_buy).
 		SetDisableSell(disable_sell).
-		SetAdminAccount(admin).
-		SetGlobalConfigAccount(globalConfig).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleDisableInstruction declares a new Disable instruction with the provided parameters and accounts.
@@ -302,14 +298,12 @@ func NewSimpleDisableInstruction(
 	disable_buy bool,
 	disable_sell bool,
 	// Accounts:
-	admin ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey) *Disable {
+	admin ag_solanago.PublicKey) *Disable {
 	return NewDisableInstructionBuilder().
 		SetDisableCreatePool(disable_create_pool).
 		SetDisableDeposit(disable_deposit).
 		SetDisableWithdraw(disable_withdraw).
 		SetDisableBuy(disable_buy).
 		SetDisableSell(disable_sell).
-		SetAdminAccount(admin).
-		SetGlobalConfigAccount(globalConfig)
+		SetAdminAccount(admin)
 }

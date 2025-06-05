@@ -200,13 +200,11 @@ func NewCreateClaimFeeOperatorInstruction(
 	// Accounts:
 	claimFeeOperator ag_solanago.PublicKey,
 	operator ag_solanago.PublicKey,
-	admin ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreateClaimFeeOperator {
+	admin ag_solanago.PublicKey) *CreateClaimFeeOperator {
 	return NewCreateClaimFeeOperatorInstructionBuilder().
 		SetClaimFeeOperatorAccount(claimFeeOperator).
 		SetOperatorAccount(operator).
-		SetAdminAccount(admin).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleCreateClaimFeeOperatorInstruction declares a new CreateClaimFeeOperator instruction with the provided parameters and accounts.

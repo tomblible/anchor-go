@@ -182,13 +182,11 @@ func NewSetMetaplexCreatorInstruction(
 	// Accounts:
 	mint ag_solanago.PublicKey,
 	metadata ag_solanago.PublicKey,
-	bondingCurve ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *SetMetaplexCreator {
+	bondingCurve ag_solanago.PublicKey) *SetMetaplexCreator {
 	return NewSetMetaplexCreatorInstructionBuilder().
 		SetMintAccount(mint).
 		SetMetadataAccount(metadata).
-		SetBondingCurveAccount(bondingCurve).
-		SetEventAuthorityAccount(eventAuthority)
+		SetBondingCurveAccount(bondingCurve)
 }
 
 // NewSimpleSetMetaplexCreatorInstruction declares a new SetMetaplexCreator instruction with the provided parameters and accounts.

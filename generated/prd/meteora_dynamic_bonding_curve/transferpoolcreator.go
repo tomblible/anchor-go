@@ -200,14 +200,12 @@ func NewTransferPoolCreatorInstruction(
 	virtualPool ag_solanago.PublicKey,
 	config ag_solanago.PublicKey,
 	creator ag_solanago.PublicKey,
-	newCreator ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *TransferPoolCreator {
+	newCreator ag_solanago.PublicKey) *TransferPoolCreator {
 	return NewTransferPoolCreatorInstructionBuilder().
 		SetVirtualPoolAccount(virtualPool).
 		SetConfigAccount(config).
 		SetCreatorAccount(creator).
-		SetNewCreatorAccount(newCreator).
-		SetEventAuthorityAccount(eventAuthority)
+		SetNewCreatorAccount(newCreator)
 }
 
 // NewSimpleTransferPoolCreatorInstruction declares a new TransferPoolCreator instruction with the provided parameters and accounts.

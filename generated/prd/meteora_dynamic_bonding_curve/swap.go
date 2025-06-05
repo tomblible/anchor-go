@@ -425,8 +425,7 @@ func NewSwapInstruction(
 	payer ag_solanago.PublicKey,
 	tokenBaseProgram ag_solanago.PublicKey,
 	tokenQuoteProgram ag_solanago.PublicKey,
-	referralTokenAccount ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *Swap {
+	referralTokenAccount ag_solanago.PublicKey) *Swap {
 	return NewSwapInstructionBuilder().
 		SetParams(params).
 		SetConfigAccount(config).
@@ -440,8 +439,7 @@ func NewSwapInstruction(
 		SetPayerAccount(payer).
 		SetTokenBaseProgramAccount(tokenBaseProgram).
 		SetTokenQuoteProgramAccount(tokenQuoteProgram).
-		SetReferralTokenAccountAccount(referralTokenAccount).
-		SetEventAuthorityAccount(eventAuthority)
+		SetReferralTokenAccountAccount(referralTokenAccount)
 }
 
 // NewSimpleSwapInstruction declares a new Swap instruction with the provided parameters and accounts.

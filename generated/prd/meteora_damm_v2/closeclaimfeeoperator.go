@@ -182,13 +182,11 @@ func NewCloseClaimFeeOperatorInstruction(
 	// Accounts:
 	claimFeeOperator ag_solanago.PublicKey,
 	rentReceiver ag_solanago.PublicKey,
-	admin ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CloseClaimFeeOperator {
+	admin ag_solanago.PublicKey) *CloseClaimFeeOperator {
 	return NewCloseClaimFeeOperatorInstructionBuilder().
 		SetClaimFeeOperatorAccount(claimFeeOperator).
 		SetRentReceiverAccount(rentReceiver).
-		SetAdminAccount(admin).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleCloseClaimFeeOperatorInstruction declares a new CloseClaimFeeOperator instruction with the provided parameters and accounts.

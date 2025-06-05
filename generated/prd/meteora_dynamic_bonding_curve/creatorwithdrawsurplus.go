@@ -283,8 +283,7 @@ func NewCreatorWithdrawSurplusInstruction(
 	quoteVault ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
 	creator ag_solanago.PublicKey,
-	tokenQuoteProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreatorWithdrawSurplus {
+	tokenQuoteProgram ag_solanago.PublicKey) *CreatorWithdrawSurplus {
 	return NewCreatorWithdrawSurplusInstructionBuilder().
 		SetConfigAccount(config).
 		SetVirtualPoolAccount(virtualPool).
@@ -292,8 +291,7 @@ func NewCreatorWithdrawSurplusInstruction(
 		SetQuoteVaultAccount(quoteVault).
 		SetQuoteMintAccount(quoteMint).
 		SetCreatorAccount(creator).
-		SetTokenQuoteProgramAccount(tokenQuoteProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenQuoteProgramAccount(tokenQuoteProgram)
 }
 
 // NewSimpleCreatorWithdrawSurplusInstruction declares a new CreatorWithdrawSurplus instruction with the provided parameters and accounts.

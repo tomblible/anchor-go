@@ -408,8 +408,6 @@ func (obj *RemoveLiquidity) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (er
 func NewRemoveLiquidityInstruction(
 	// Parameters:
 	params RemoveLiquidityParameters,
-	// Accounts:
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	position ag_solanago.PublicKey,
 	tokenAAccount ag_solanago.PublicKey,
@@ -421,11 +419,9 @@ func NewRemoveLiquidityInstruction(
 	positionNftAccount ag_solanago.PublicKey,
 	owner ag_solanago.PublicKey,
 	tokenAProgram ag_solanago.PublicKey,
-	tokenBProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *RemoveLiquidity {
+	tokenBProgram ag_solanago.PublicKey) *RemoveLiquidity {
 	return NewRemoveLiquidityInstructionBuilder().
 		SetParams(params).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetPositionAccount(position).
 		SetTokenAAccountAccount(tokenAAccount).
@@ -437,8 +433,7 @@ func NewRemoveLiquidityInstruction(
 		SetPositionNftAccountAccount(positionNftAccount).
 		SetOwnerAccount(owner).
 		SetTokenAProgramAccount(tokenAProgram).
-		SetTokenBProgramAccount(tokenBProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenBProgramAccount(tokenBProgram)
 }
 
 // NewSimpleRemoveLiquidityInstruction declares a new RemoveLiquidity instruction with the provided parameters and accounts.

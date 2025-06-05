@@ -218,14 +218,12 @@ func NewMigrationDammV2CreateMetadataInstruction(
 	virtualPool ag_solanago.PublicKey,
 	config ag_solanago.PublicKey,
 	migrationMetadata ag_solanago.PublicKey,
-	payer ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *MigrationDammV2CreateMetadata {
+	payer ag_solanago.PublicKey) *MigrationDammV2CreateMetadata {
 	return NewMigrationDammV2CreateMetadataInstructionBuilder().
 		SetVirtualPoolAccount(virtualPool).
 		SetConfigAccount(config).
 		SetMigrationMetadataAccount(migrationMetadata).
-		SetPayerAccount(payer).
-		SetEventAuthorityAccount(eventAuthority)
+		SetPayerAccount(payer)
 }
 
 // NewSimpleMigrationDammV2CreateMetadataInstruction declares a new MigrationDammV2CreateMetadata instruction with the provided parameters and accounts.

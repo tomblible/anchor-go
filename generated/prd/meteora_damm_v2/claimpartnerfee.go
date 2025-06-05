@@ -390,8 +390,6 @@ func NewClaimPartnerFeeInstruction(
 	// Parameters:
 	max_amount_a uint64,
 	max_amount_b uint64,
-	// Accounts:
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	tokenAAccount ag_solanago.PublicKey,
 	tokenBAccount ag_solanago.PublicKey,
@@ -401,12 +399,10 @@ func NewClaimPartnerFeeInstruction(
 	tokenBMint ag_solanago.PublicKey,
 	partner ag_solanago.PublicKey,
 	tokenAProgram ag_solanago.PublicKey,
-	tokenBProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *ClaimPartnerFee {
+	tokenBProgram ag_solanago.PublicKey) *ClaimPartnerFee {
 	return NewClaimPartnerFeeInstructionBuilder().
 		SetMaxAmountA(max_amount_a).
 		SetMaxAmountB(max_amount_b).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetTokenAAccountAccount(tokenAAccount).
 		SetTokenBAccountAccount(tokenBAccount).
@@ -416,8 +412,7 @@ func NewClaimPartnerFeeInstruction(
 		SetTokenBMintAccount(tokenBMint).
 		SetPartnerAccount(partner).
 		SetTokenAProgramAccount(tokenAProgram).
-		SetTokenBProgramAccount(tokenBProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenBProgramAccount(tokenBProgram)
 }
 
 // NewSimpleClaimPartnerFeeInstruction declares a new ClaimPartnerFee instruction with the provided parameters and accounts.

@@ -283,19 +283,15 @@ func NewClosePositionInstruction(
 	positionNftAccount ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	position ag_solanago.PublicKey,
-	poolAuthority ag_solanago.PublicKey,
 	rentReceiver ag_solanago.PublicKey,
-	owner ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *ClosePosition {
+	owner ag_solanago.PublicKey) *ClosePosition {
 	return NewClosePositionInstructionBuilder().
 		SetPositionNftMintAccount(positionNftMint).
 		SetPositionNftAccountAccount(positionNftAccount).
 		SetPoolAccount(pool).
 		SetPositionAccount(position).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetRentReceiverAccount(rentReceiver).
-		SetOwnerAccount(owner).
-		SetEventAuthorityAccount(eventAuthority)
+		SetOwnerAccount(owner)
 }
 
 // NewSimpleClosePositionInstruction declares a new ClosePosition instruction with the provided parameters and accounts.

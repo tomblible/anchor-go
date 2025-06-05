@@ -389,10 +389,7 @@ func NewSetParamsInstruction(
 	pool_migration_fee uint64,
 	creator_fee_basis_points uint64,
 	set_creator_authority ag_solanago.PublicKey,
-	// Accounts:
-	global ag_solanago.PublicKey,
-	authority ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *SetParams {
+	authority ag_solanago.PublicKey) *SetParams {
 	return NewSetParamsInstructionBuilder().
 		SetInitialVirtualTokenReserves(initial_virtual_token_reserves).
 		SetInitialVirtualSolReserves(initial_virtual_sol_reserves).
@@ -404,9 +401,7 @@ func NewSetParamsInstruction(
 		SetPoolMigrationFee(pool_migration_fee).
 		SetCreatorFeeBasisPoints(creator_fee_basis_points).
 		SetSetCreatorAuthority(set_creator_authority).
-		SetGlobalAccount(global).
-		SetAuthorityAccount(authority).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAuthorityAccount(authority)
 }
 
 // NewSimpleSetParamsInstruction declares a new SetParams instruction with the provided parameters and accounts.

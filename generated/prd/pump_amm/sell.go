@@ -472,7 +472,6 @@ func NewSellInstruction(
 	// Accounts:
 	pool ag_solanago.PublicKey,
 	user ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
 	baseMint ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
 	userBaseTokenAccount ag_solanago.PublicKey,
@@ -483,7 +482,6 @@ func NewSellInstruction(
 	protocolFeeRecipientTokenAccount ag_solanago.PublicKey,
 	baseTokenProgram ag_solanago.PublicKey,
 	quoteTokenProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey,
 	coinCreatorVaultAta ag_solanago.PublicKey,
 	coinCreatorVaultAuthority ag_solanago.PublicKey) *Sell {
 	return NewSellInstructionBuilder().
@@ -491,7 +489,6 @@ func NewSellInstruction(
 		SetMinQuoteAmountOut(min_quote_amount_out).
 		SetPoolAccount(pool).
 		SetUserAccount(user).
-		SetGlobalConfigAccount(globalConfig).
 		SetBaseMintAccount(baseMint).
 		SetQuoteMintAccount(quoteMint).
 		SetUserBaseTokenAccountAccount(userBaseTokenAccount).
@@ -502,7 +499,6 @@ func NewSellInstruction(
 		SetProtocolFeeRecipientTokenAccountAccount(protocolFeeRecipientTokenAccount).
 		SetBaseTokenProgramAccount(baseTokenProgram).
 		SetQuoteTokenProgramAccount(quoteTokenProgram).
-		SetEventAuthorityAccount(eventAuthority).
 		SetCoinCreatorVaultAtaAccount(coinCreatorVaultAta).
 		SetCoinCreatorVaultAuthorityAccount(coinCreatorVaultAuthority)
 }
@@ -515,7 +511,6 @@ func NewSimpleSellInstruction(
 	// Accounts:
 	pool ag_solanago.PublicKey,
 	user ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
 	baseMint ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
 	userBaseTokenAccount ag_solanago.PublicKey,
@@ -533,7 +528,6 @@ func NewSimpleSellInstruction(
 		SetMinQuoteAmountOut(min_quote_amount_out).
 		SetPoolAccount(pool).
 		SetUserAccount(user).
-		SetGlobalConfigAccount(globalConfig).
 		SetBaseMintAccount(baseMint).
 		SetQuoteMintAccount(quoteMint).
 		SetUserBaseTokenAccountAccount(userBaseTokenAccount).

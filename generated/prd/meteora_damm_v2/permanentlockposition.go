@@ -234,15 +234,13 @@ func NewPermanentLockPositionInstruction(
 	pool ag_solanago.PublicKey,
 	position ag_solanago.PublicKey,
 	positionNftAccount ag_solanago.PublicKey,
-	owner ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *PermanentLockPosition {
+	owner ag_solanago.PublicKey) *PermanentLockPosition {
 	return NewPermanentLockPositionInstructionBuilder().
 		SetPermanentLockLiquidity(permanent_lock_liquidity).
 		SetPoolAccount(pool).
 		SetPositionAccount(position).
 		SetPositionNftAccountAccount(positionNftAccount).
-		SetOwnerAccount(owner).
-		SetEventAuthorityAccount(eventAuthority)
+		SetOwnerAccount(owner)
 }
 
 // NewSimplePermanentLockPositionInstruction declares a new PermanentLockPosition instruction with the provided parameters and accounts.

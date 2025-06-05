@@ -283,8 +283,7 @@ func NewPartnerWithdrawSurplusInstruction(
 	quoteVault ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
 	feeClaimer ag_solanago.PublicKey,
-	tokenQuoteProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *PartnerWithdrawSurplus {
+	tokenQuoteProgram ag_solanago.PublicKey) *PartnerWithdrawSurplus {
 	return NewPartnerWithdrawSurplusInstructionBuilder().
 		SetConfigAccount(config).
 		SetVirtualPoolAccount(virtualPool).
@@ -292,8 +291,7 @@ func NewPartnerWithdrawSurplusInstruction(
 		SetQuoteVaultAccount(quoteVault).
 		SetQuoteMintAccount(quoteMint).
 		SetFeeClaimerAccount(feeClaimer).
-		SetTokenQuoteProgramAccount(tokenQuoteProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenQuoteProgramAccount(tokenQuoteProgram)
 }
 
 // NewSimplePartnerWithdrawSurplusInstruction declares a new PartnerWithdrawSurplus instruction with the provided parameters and accounts.

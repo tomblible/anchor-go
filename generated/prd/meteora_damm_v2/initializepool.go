@@ -513,7 +513,6 @@ func NewInitializePoolInstruction(
 	positionNftAccount ag_solanago.PublicKey,
 	payer ag_solanago.PublicKey,
 	config ag_solanago.PublicKey,
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	position ag_solanago.PublicKey,
 	tokenAMint ag_solanago.PublicKey,
@@ -523,8 +522,7 @@ func NewInitializePoolInstruction(
 	payerTokenA ag_solanago.PublicKey,
 	payerTokenB ag_solanago.PublicKey,
 	tokenAProgram ag_solanago.PublicKey,
-	tokenBProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *InitializePool {
+	tokenBProgram ag_solanago.PublicKey) *InitializePool {
 	return NewInitializePoolInstructionBuilder().
 		SetParams(params).
 		SetCreatorAccount(creator).
@@ -532,7 +530,6 @@ func NewInitializePoolInstruction(
 		SetPositionNftAccountAccount(positionNftAccount).
 		SetPayerAccount(payer).
 		SetConfigAccount(config).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetPositionAccount(position).
 		SetTokenAMintAccount(tokenAMint).
@@ -542,8 +539,7 @@ func NewInitializePoolInstruction(
 		SetPayerTokenAAccount(payerTokenA).
 		SetPayerTokenBAccount(payerTokenB).
 		SetTokenAProgramAccount(tokenAProgram).
-		SetTokenBProgramAccount(tokenBProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenBProgramAccount(tokenBProgram)
 }
 
 // NewSimpleInitializePoolInstruction declares a new InitializePool instruction with the provided parameters and accounts.

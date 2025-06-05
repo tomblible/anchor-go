@@ -240,14 +240,12 @@ func NewCreatePartnerMetadataInstruction(
 	// Accounts:
 	partnerMetadata ag_solanago.PublicKey,
 	payer ag_solanago.PublicKey,
-	feeClaimer ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreatePartnerMetadata {
+	feeClaimer ag_solanago.PublicKey) *CreatePartnerMetadata {
 	return NewCreatePartnerMetadataInstructionBuilder().
 		SetMetadata(metadata).
 		SetPartnerMetadataAccount(partnerMetadata).
 		SetPayerAccount(payer).
-		SetFeeClaimerAccount(feeClaimer).
-		SetEventAuthorityAccount(eventAuthority)
+		SetFeeClaimerAccount(feeClaimer)
 }
 
 // NewSimpleCreatePartnerMetadataInstruction declares a new CreatePartnerMetadata instruction with the provided parameters and accounts.

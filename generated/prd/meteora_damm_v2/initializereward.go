@@ -321,25 +321,20 @@ func NewInitializeRewardInstruction(
 	reward_index uint8,
 	reward_duration uint64,
 	funder ag_solanago.PublicKey,
-	// Accounts:
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	rewardVault ag_solanago.PublicKey,
 	rewardMint ag_solanago.PublicKey,
 	admin ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *InitializeReward {
+	tokenProgram ag_solanago.PublicKey) *InitializeReward {
 	return NewInitializeRewardInstructionBuilder().
 		SetRewardIndex(reward_index).
 		SetRewardDuration(reward_duration).
 		SetFunder(funder).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetRewardVaultAccount(rewardVault).
 		SetRewardMintAccount(rewardMint).
 		SetAdminAccount(admin).
-		SetTokenProgramAccount(tokenProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenProgramAccount(tokenProgram)
 }
 
 // NewSimpleInitializeRewardInstruction declares a new InitializeReward instruction with the provided parameters and accounts.

@@ -232,14 +232,12 @@ func NewCreateConfigInstruction(
 	config_parameters StaticConfigParameters,
 	// Accounts:
 	config ag_solanago.PublicKey,
-	admin ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreateConfig {
+	admin ag_solanago.PublicKey) *CreateConfig {
 	return NewCreateConfigInstructionBuilder().
 		SetIndex(index).
 		SetConfigParameters(config_parameters).
 		SetConfigAccount(config).
-		SetAdminAccount(admin).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleCreateConfigInstruction declares a new CreateConfig instruction with the provided parameters and accounts.

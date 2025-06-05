@@ -214,14 +214,12 @@ func NewUpdateRewardFunderInstruction(
 	new_funder ag_solanago.PublicKey,
 	// Accounts:
 	pool ag_solanago.PublicKey,
-	admin ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *UpdateRewardFunder {
+	admin ag_solanago.PublicKey) *UpdateRewardFunder {
 	return NewUpdateRewardFunderInstructionBuilder().
 		SetRewardIndex(reward_index).
 		SetNewFunder(new_funder).
 		SetPoolAccount(pool).
-		SetAdminAccount(admin).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleUpdateRewardFunderInstruction declares a new UpdateRewardFunder instruction with the provided parameters and accounts.

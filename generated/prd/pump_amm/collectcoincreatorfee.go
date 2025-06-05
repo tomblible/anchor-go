@@ -236,16 +236,14 @@ func NewCollectCoinCreatorFeeInstruction(
 	coinCreator ag_solanago.PublicKey,
 	coinCreatorVaultAuthority ag_solanago.PublicKey,
 	coinCreatorVaultAta ag_solanago.PublicKey,
-	coinCreatorTokenAccount ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CollectCoinCreatorFee {
+	coinCreatorTokenAccount ag_solanago.PublicKey) *CollectCoinCreatorFee {
 	return NewCollectCoinCreatorFeeInstructionBuilder().
 		SetQuoteMintAccount(quoteMint).
 		SetQuoteTokenProgramAccount(quoteTokenProgram).
 		SetCoinCreatorAccount(coinCreator).
 		SetCoinCreatorVaultAuthorityAccount(coinCreatorVaultAuthority).
 		SetCoinCreatorVaultAtaAccount(coinCreatorVaultAta).
-		SetCoinCreatorTokenAccountAccount(coinCreatorTokenAccount).
-		SetEventAuthorityAccount(eventAuthority)
+		SetCoinCreatorTokenAccountAccount(coinCreatorTokenAccount)
 }
 
 // NewSimpleCollectCoinCreatorFeeInstruction declares a new CollectCoinCreatorFee instruction with the provided parameters and accounts.

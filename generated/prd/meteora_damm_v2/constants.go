@@ -7,19 +7,21 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
-func FindPositionNftAccountAddress(positionNftMint ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+func FindTokenAVaultAddress(tokenAMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
-	// const: 0x706f736974696f6e5f6e66745f6163636f756e74
-	seeds = append(seeds, []byte{byte(0x70), byte(0x6f), byte(0x73), byte(0x69), byte(0x74), byte(0x69), byte(0x6f), byte(0x6e), byte(0x5f), byte(0x6e), byte(0x66), byte(0x74), byte(0x5f), byte(0x61), byte(0x63), byte(0x63), byte(0x6f), byte(0x75), byte(0x6e), byte(0x74)})
-	// path: positionNftMint
-	seeds = append(seeds, positionNftMint.Bytes())
+	// const: 0x746f6b656e5f7661756c74
+	seeds = append(seeds, []byte{byte(0x74), byte(0x6f), byte(0x6b), byte(0x65), byte(0x6e), byte(0x5f), byte(0x76), byte(0x61), byte(0x75), byte(0x6c), byte(0x74)})
+	// path: tokenAMint
+	seeds = append(seeds, tokenAMint.Bytes())
+	// path: pool
+	seeds = append(seeds, pool.Bytes())
 
 	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
 	return
 }
 
-func MustFindPositionNftAccountAddress(positionNftMint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindPositionNftAccountAddress(positionNftMint)
+func MustFindTokenAVaultAddress(tokenAMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindTokenAVaultAddress(tokenAMint, pool)
 	return
 }
 
@@ -41,37 +43,19 @@ func MustFindTokenBVaultAddress(tokenBMint ag_solanago.PublicKey, pool ag_solana
 	return
 }
 
-func FindClaimFeeOperatorAddress(operator ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+func FindPositionNftAccountAddress(positionNftMint ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
-	// const: 0x63665f6f70657261746f72
-	seeds = append(seeds, []byte{byte(0x63), byte(0x66), byte(0x5f), byte(0x6f), byte(0x70), byte(0x65), byte(0x72), byte(0x61), byte(0x74), byte(0x6f), byte(0x72)})
-	// path: operator
-	seeds = append(seeds, operator.Bytes())
+	// const: 0x706f736974696f6e5f6e66745f6163636f756e74
+	seeds = append(seeds, []byte{byte(0x70), byte(0x6f), byte(0x73), byte(0x69), byte(0x74), byte(0x69), byte(0x6f), byte(0x6e), byte(0x5f), byte(0x6e), byte(0x66), byte(0x74), byte(0x5f), byte(0x61), byte(0x63), byte(0x63), byte(0x6f), byte(0x75), byte(0x6e), byte(0x74)})
+	// path: positionNftMint
+	seeds = append(seeds, positionNftMint.Bytes())
 
 	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
 	return
 }
 
-func MustFindClaimFeeOperatorAddress(operator ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindClaimFeeOperatorAddress(operator)
-	return
-}
-
-func FindConfigAddress(index uint64) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x636f6e666967
-	seeds = append(seeds, []byte{byte(0x63), byte(0x6f), byte(0x6e), byte(0x66), byte(0x69), byte(0x67)})
-	// path: index
-	argBytes := make([]byte, 8)
-	binary.LittleEndian.PutUint64(argBytes, uint64(index))
-	seeds = append(seeds, argBytes)
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindConfigAddress(index uint64) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindConfigAddress(index)
+func MustFindPositionNftAccountAddress(positionNftMint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindPositionNftAccountAddress(positionNftMint)
 	return
 }
 
@@ -107,24 +91,6 @@ func MustFindTokenBadgeAddress(tokenMint ag_solanago.PublicKey) (pda ag_solanago
 	return
 }
 
-func FindTokenAVaultAddress(tokenAMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x746f6b656e5f7661756c74
-	seeds = append(seeds, []byte{byte(0x74), byte(0x6f), byte(0x6b), byte(0x65), byte(0x6e), byte(0x5f), byte(0x76), byte(0x61), byte(0x75), byte(0x6c), byte(0x74)})
-	// path: tokenAMint
-	seeds = append(seeds, tokenAMint.Bytes())
-	// path: pool
-	seeds = append(seeds, pool.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindTokenAVaultAddress(tokenAMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindTokenAVaultAddress(tokenAMint, pool)
-	return
-}
-
 func FindRewardVaultAddress(pool ag_solanago.PublicKey, rewardIndex uint8) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// const: 0x7265776172645f7661756c74
@@ -141,5 +107,39 @@ func FindRewardVaultAddress(pool ag_solanago.PublicKey, rewardIndex uint8) (pda 
 
 func MustFindRewardVaultAddress(pool ag_solanago.PublicKey, rewardIndex uint8) (pda ag_solanago.PublicKey) {
 	pda, _, _ = FindRewardVaultAddress(pool, rewardIndex)
+	return
+}
+
+func FindClaimFeeOperatorAddress(operator ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x63665f6f70657261746f72
+	seeds = append(seeds, []byte{byte(0x63), byte(0x66), byte(0x5f), byte(0x6f), byte(0x70), byte(0x65), byte(0x72), byte(0x61), byte(0x74), byte(0x6f), byte(0x72)})
+	// path: operator
+	seeds = append(seeds, operator.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindClaimFeeOperatorAddress(operator ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindClaimFeeOperatorAddress(operator)
+	return
+}
+
+func FindConfigAddress(index uint64) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x636f6e666967
+	seeds = append(seeds, []byte{byte(0x63), byte(0x6f), byte(0x6e), byte(0x66), byte(0x69), byte(0x67)})
+	// path: index
+	argBytes := make([]byte, 8)
+	binary.LittleEndian.PutUint64(argBytes, uint64(index))
+	seeds = append(seeds, argBytes)
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindConfigAddress(index uint64) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindConfigAddress(index)
 	return
 }

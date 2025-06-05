@@ -380,8 +380,6 @@ func (obj *ClaimPositionFee) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 // NewClaimPositionFeeInstruction declares a new ClaimPositionFee instruction with the provided parameters and accounts.
 func NewClaimPositionFeeInstruction(
-	// Accounts:
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	position ag_solanago.PublicKey,
 	tokenAAccount ag_solanago.PublicKey,
@@ -393,10 +391,8 @@ func NewClaimPositionFeeInstruction(
 	positionNftAccount ag_solanago.PublicKey,
 	owner ag_solanago.PublicKey,
 	tokenAProgram ag_solanago.PublicKey,
-	tokenBProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *ClaimPositionFee {
+	tokenBProgram ag_solanago.PublicKey) *ClaimPositionFee {
 	return NewClaimPositionFeeInstructionBuilder().
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetPositionAccount(position).
 		SetTokenAAccountAccount(tokenAAccount).
@@ -408,8 +404,7 @@ func NewClaimPositionFeeInstruction(
 		SetPositionNftAccountAccount(positionNftAccount).
 		SetOwnerAccount(owner).
 		SetTokenAProgramAccount(tokenAProgram).
-		SetTokenBProgramAccount(tokenBProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenBProgramAccount(tokenBProgram)
 }
 
 // NewSimpleClaimPositionFeeInstruction declares a new ClaimPositionFee instruction with the provided parameters and accounts.

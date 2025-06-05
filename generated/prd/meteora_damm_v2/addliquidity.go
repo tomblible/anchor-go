@@ -402,8 +402,7 @@ func NewAddLiquidityInstruction(
 	positionNftAccount ag_solanago.PublicKey,
 	owner ag_solanago.PublicKey,
 	tokenAProgram ag_solanago.PublicKey,
-	tokenBProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *AddLiquidity {
+	tokenBProgram ag_solanago.PublicKey) *AddLiquidity {
 	return NewAddLiquidityInstructionBuilder().
 		SetParams(params).
 		SetPoolAccount(pool).
@@ -417,8 +416,7 @@ func NewAddLiquidityInstruction(
 		SetPositionNftAccountAccount(positionNftAccount).
 		SetOwnerAccount(owner).
 		SetTokenAProgramAccount(tokenAProgram).
-		SetTokenBProgramAccount(tokenBProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenBProgramAccount(tokenBProgram)
 }
 
 // NewSimpleAddLiquidityInstruction declares a new AddLiquidity instruction with the provided parameters and accounts.

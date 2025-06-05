@@ -351,28 +351,23 @@ func NewSellInstruction(
 	// Parameters:
 	amount uint64,
 	min_sol_output uint64,
-	// Accounts:
-	global ag_solanago.PublicKey,
 	feeRecipient ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
 	bondingCurve ag_solanago.PublicKey,
 	associatedBondingCurve ag_solanago.PublicKey,
 	associatedUser ag_solanago.PublicKey,
 	user ag_solanago.PublicKey,
-	creatorVault ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *Sell {
+	creatorVault ag_solanago.PublicKey) *Sell {
 	return NewSellInstructionBuilder().
 		SetAmount(amount).
 		SetMinSolOutput(min_sol_output).
-		SetGlobalAccount(global).
 		SetFeeRecipientAccount(feeRecipient).
 		SetMintAccount(mint).
 		SetBondingCurveAccount(bondingCurve).
 		SetAssociatedBondingCurveAccount(associatedBondingCurve).
 		SetAssociatedUserAccount(associatedUser).
 		SetUserAccount(user).
-		SetCreatorVaultAccount(creatorVault).
-		SetEventAuthorityAccount(eventAuthority)
+		SetCreatorVaultAccount(creatorVault)
 }
 
 // NewSimpleSellInstruction declares a new Sell instruction with the provided parameters and accounts.

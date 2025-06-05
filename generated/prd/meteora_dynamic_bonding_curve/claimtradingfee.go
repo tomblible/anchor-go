@@ -417,8 +417,7 @@ func NewClaimTradingFeeInstruction(
 	quoteMint ag_solanago.PublicKey,
 	feeClaimer ag_solanago.PublicKey,
 	tokenBaseProgram ag_solanago.PublicKey,
-	tokenQuoteProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *ClaimTradingFee {
+	tokenQuoteProgram ag_solanago.PublicKey) *ClaimTradingFee {
 	return NewClaimTradingFeeInstructionBuilder().
 		SetMaxAmountA(max_amount_a).
 		SetMaxAmountB(max_amount_b).
@@ -432,8 +431,7 @@ func NewClaimTradingFeeInstruction(
 		SetQuoteMintAccount(quoteMint).
 		SetFeeClaimerAccount(feeClaimer).
 		SetTokenBaseProgramAccount(tokenBaseProgram).
-		SetTokenQuoteProgramAccount(tokenQuoteProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenQuoteProgramAccount(tokenQuoteProgram)
 }
 
 // NewSimpleClaimTradingFeeInstruction declares a new ClaimTradingFee instruction with the provided parameters and accounts.

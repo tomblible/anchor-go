@@ -232,14 +232,12 @@ func NewCreateDynamicConfigInstruction(
 	config_parameters DynamicConfigParameters,
 	// Accounts:
 	config ag_solanago.PublicKey,
-	admin ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreateDynamicConfig {
+	admin ag_solanago.PublicKey) *CreateDynamicConfig {
 	return NewCreateDynamicConfigInstructionBuilder().
 		SetIndex(index).
 		SetConfigParameters(config_parameters).
 		SetConfigAccount(config).
-		SetAdminAccount(admin).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleCreateDynamicConfigInstruction declares a new CreateDynamicConfig instruction with the provided parameters and accounts.

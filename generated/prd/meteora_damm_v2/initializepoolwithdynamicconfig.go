@@ -531,7 +531,6 @@ func NewInitializePoolWithDynamicConfigInstruction(
 	payer ag_solanago.PublicKey,
 	poolCreatorAuthority ag_solanago.PublicKey,
 	config ag_solanago.PublicKey,
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	position ag_solanago.PublicKey,
 	tokenAMint ag_solanago.PublicKey,
@@ -541,8 +540,7 @@ func NewInitializePoolWithDynamicConfigInstruction(
 	payerTokenA ag_solanago.PublicKey,
 	payerTokenB ag_solanago.PublicKey,
 	tokenAProgram ag_solanago.PublicKey,
-	tokenBProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *InitializePoolWithDynamicConfig {
+	tokenBProgram ag_solanago.PublicKey) *InitializePoolWithDynamicConfig {
 	return NewInitializePoolWithDynamicConfigInstructionBuilder().
 		SetParams(params).
 		SetCreatorAccount(creator).
@@ -551,7 +549,6 @@ func NewInitializePoolWithDynamicConfigInstruction(
 		SetPayerAccount(payer).
 		SetPoolCreatorAuthorityAccount(poolCreatorAuthority).
 		SetConfigAccount(config).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetPositionAccount(position).
 		SetTokenAMintAccount(tokenAMint).
@@ -561,8 +558,7 @@ func NewInitializePoolWithDynamicConfigInstruction(
 		SetPayerTokenAAccount(payerTokenA).
 		SetPayerTokenBAccount(payerTokenB).
 		SetTokenAProgramAccount(tokenAProgram).
-		SetTokenBProgramAccount(tokenBProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenBProgramAccount(tokenBProgram)
 }
 
 // NewSimpleInitializePoolWithDynamicConfigInstruction declares a new InitializePoolWithDynamicConfig instruction with the provided parameters and accounts.

@@ -181,24 +181,18 @@ func (obj *UpdateAdmin) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err er
 func NewUpdateAdminInstruction(
 	// Accounts:
 	admin ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
-	newAdmin ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *UpdateAdmin {
+	newAdmin ag_solanago.PublicKey) *UpdateAdmin {
 	return NewUpdateAdminInstructionBuilder().
 		SetAdminAccount(admin).
-		SetGlobalConfigAccount(globalConfig).
-		SetNewAdminAccount(newAdmin).
-		SetEventAuthorityAccount(eventAuthority)
+		SetNewAdminAccount(newAdmin)
 }
 
 // NewSimpleUpdateAdminInstruction declares a new UpdateAdmin instruction with the provided parameters and accounts.
 func NewSimpleUpdateAdminInstruction(
 	// Accounts:
 	admin ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
 	newAdmin ag_solanago.PublicKey) *UpdateAdmin {
 	return NewUpdateAdminInstructionBuilder().
 		SetAdminAccount(admin).
-		SetGlobalConfigAccount(globalConfig).
 		SetNewAdminAccount(newAdmin)
 }

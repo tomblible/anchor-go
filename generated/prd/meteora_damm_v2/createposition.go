@@ -302,18 +302,14 @@ func NewCreatePositionInstruction(
 	positionNftAccount ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	position ag_solanago.PublicKey,
-	poolAuthority ag_solanago.PublicKey,
-	payer ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreatePosition {
+	payer ag_solanago.PublicKey) *CreatePosition {
 	return NewCreatePositionInstructionBuilder().
 		SetOwnerAccount(owner).
 		SetPositionNftMintAccount(positionNftMint).
 		SetPositionNftAccountAccount(positionNftAccount).
 		SetPoolAccount(pool).
 		SetPositionAccount(position).
-		SetPoolAuthorityAccount(poolAuthority).
-		SetPayerAccount(payer).
-		SetEventAuthorityAccount(eventAuthority)
+		SetPayerAccount(payer)
 }
 
 // NewSimpleCreatePositionInstruction declares a new CreatePosition instruction with the provided parameters and accounts.

@@ -192,13 +192,11 @@ func NewSetPoolStatusInstruction(
 	status uint8,
 	// Accounts:
 	pool ag_solanago.PublicKey,
-	admin ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *SetPoolStatus {
+	admin ag_solanago.PublicKey) *SetPoolStatus {
 	return NewSetPoolStatusInstructionBuilder().
 		SetStatus(status).
 		SetPoolAccount(pool).
-		SetAdminAccount(admin).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleSetPoolStatusInstruction declares a new SetPoolStatus instruction with the provided parameters and accounts.

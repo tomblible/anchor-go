@@ -267,16 +267,14 @@ func NewCreateConfigInstruction(
 	feeClaimer ag_solanago.PublicKey,
 	leftoverReceiver ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
-	payer ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreateConfig {
+	payer ag_solanago.PublicKey) *CreateConfig {
 	return NewCreateConfigInstructionBuilder().
 		SetConfigParameters(config_parameters).
 		SetConfigAccount(config).
 		SetFeeClaimerAccount(feeClaimer).
 		SetLeftoverReceiverAccount(leftoverReceiver).
 		SetQuoteMintAccount(quoteMint).
-		SetPayerAccount(payer).
-		SetEventAuthorityAccount(eventAuthority)
+		SetPayerAccount(payer)
 }
 
 // NewSimpleCreateConfigInstruction declares a new CreateConfig instruction with the provided parameters and accounts.

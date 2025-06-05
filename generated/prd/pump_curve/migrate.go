@@ -509,8 +509,6 @@ func (obj *Migrate) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error)
 
 // NewMigrateInstruction declares a new Migrate instruction with the provided parameters and accounts.
 func NewMigrateInstruction(
-	// Accounts:
-	global ag_solanago.PublicKey,
 	withdrawAuthority ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
 	bondingCurve ag_solanago.PublicKey,
@@ -525,10 +523,8 @@ func NewMigrateInstruction(
 	userPoolTokenAccount ag_solanago.PublicKey,
 	poolBaseTokenAccount ag_solanago.PublicKey,
 	poolQuoteTokenAccount ag_solanago.PublicKey,
-	pumpAmmEventAuthority ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *Migrate {
+	pumpAmmEventAuthority ag_solanago.PublicKey) *Migrate {
 	return NewMigrateInstructionBuilder().
-		SetGlobalAccount(global).
 		SetWithdrawAuthorityAccount(withdrawAuthority).
 		SetMintAccount(mint).
 		SetBondingCurveAccount(bondingCurve).
@@ -543,8 +539,7 @@ func NewMigrateInstruction(
 		SetUserPoolTokenAccountAccount(userPoolTokenAccount).
 		SetPoolBaseTokenAccountAccount(poolBaseTokenAccount).
 		SetPoolQuoteTokenAccountAccount(poolQuoteTokenAccount).
-		SetPumpAmmEventAuthorityAccount(pumpAmmEventAuthority).
-		SetEventAuthorityAccount(eventAuthority)
+		SetPumpAmmEventAuthorityAccount(pumpAmmEventAuthority)
 }
 
 // NewSimpleMigrateInstruction declares a new Migrate instruction with the provided parameters and accounts.

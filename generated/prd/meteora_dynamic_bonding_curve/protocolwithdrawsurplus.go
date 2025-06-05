@@ -265,16 +265,14 @@ func NewProtocolWithdrawSurplusInstruction(
 	tokenQuoteAccount ag_solanago.PublicKey,
 	quoteVault ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
-	tokenQuoteProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *ProtocolWithdrawSurplus {
+	tokenQuoteProgram ag_solanago.PublicKey) *ProtocolWithdrawSurplus {
 	return NewProtocolWithdrawSurplusInstructionBuilder().
 		SetConfigAccount(config).
 		SetVirtualPoolAccount(virtualPool).
 		SetTokenQuoteAccountAccount(tokenQuoteAccount).
 		SetQuoteVaultAccount(quoteVault).
 		SetQuoteMintAccount(quoteMint).
-		SetTokenQuoteProgramAccount(tokenQuoteProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenQuoteProgramAccount(tokenQuoteProgram)
 }
 
 // NewSimpleProtocolWithdrawSurplusInstruction declares a new ProtocolWithdrawSurplus instruction with the provided parameters and accounts.

@@ -425,44 +425,6 @@ func NewWithdrawInstruction(
 	min_quote_amount_out uint64,
 	// Accounts:
 	pool ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
-	user ag_solanago.PublicKey,
-	baseMint ag_solanago.PublicKey,
-	quoteMint ag_solanago.PublicKey,
-	lpMint ag_solanago.PublicKey,
-	userBaseTokenAccount ag_solanago.PublicKey,
-	userQuoteTokenAccount ag_solanago.PublicKey,
-	userPoolTokenAccount ag_solanago.PublicKey,
-	poolBaseTokenAccount ag_solanago.PublicKey,
-	poolQuoteTokenAccount ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *Withdraw {
-	return NewWithdrawInstructionBuilder().
-		SetLpTokenAmountIn(lp_token_amount_in).
-		SetMinBaseAmountOut(min_base_amount_out).
-		SetMinQuoteAmountOut(min_quote_amount_out).
-		SetPoolAccount(pool).
-		SetGlobalConfigAccount(globalConfig).
-		SetUserAccount(user).
-		SetBaseMintAccount(baseMint).
-		SetQuoteMintAccount(quoteMint).
-		SetLpMintAccount(lpMint).
-		SetUserBaseTokenAccountAccount(userBaseTokenAccount).
-		SetUserQuoteTokenAccountAccount(userQuoteTokenAccount).
-		SetUserPoolTokenAccountAccount(userPoolTokenAccount).
-		SetPoolBaseTokenAccountAccount(poolBaseTokenAccount).
-		SetPoolQuoteTokenAccountAccount(poolQuoteTokenAccount).
-		SetEventAuthorityAccount(eventAuthority)
-}
-
-// NewSimpleWithdrawInstruction declares a new Withdraw instruction with the provided parameters and accounts.
-func NewSimpleWithdrawInstruction(
-	// Parameters:
-	lp_token_amount_in uint64,
-	min_base_amount_out uint64,
-	min_quote_amount_out uint64,
-	// Accounts:
-	pool ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
 	user ag_solanago.PublicKey,
 	baseMint ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
@@ -477,7 +439,39 @@ func NewSimpleWithdrawInstruction(
 		SetMinBaseAmountOut(min_base_amount_out).
 		SetMinQuoteAmountOut(min_quote_amount_out).
 		SetPoolAccount(pool).
-		SetGlobalConfigAccount(globalConfig).
+		SetUserAccount(user).
+		SetBaseMintAccount(baseMint).
+		SetQuoteMintAccount(quoteMint).
+		SetLpMintAccount(lpMint).
+		SetUserBaseTokenAccountAccount(userBaseTokenAccount).
+		SetUserQuoteTokenAccountAccount(userQuoteTokenAccount).
+		SetUserPoolTokenAccountAccount(userPoolTokenAccount).
+		SetPoolBaseTokenAccountAccount(poolBaseTokenAccount).
+		SetPoolQuoteTokenAccountAccount(poolQuoteTokenAccount)
+}
+
+// NewSimpleWithdrawInstruction declares a new Withdraw instruction with the provided parameters and accounts.
+func NewSimpleWithdrawInstruction(
+	// Parameters:
+	lp_token_amount_in uint64,
+	min_base_amount_out uint64,
+	min_quote_amount_out uint64,
+	// Accounts:
+	pool ag_solanago.PublicKey,
+	user ag_solanago.PublicKey,
+	baseMint ag_solanago.PublicKey,
+	quoteMint ag_solanago.PublicKey,
+	lpMint ag_solanago.PublicKey,
+	userBaseTokenAccount ag_solanago.PublicKey,
+	userQuoteTokenAccount ag_solanago.PublicKey,
+	userPoolTokenAccount ag_solanago.PublicKey,
+	poolBaseTokenAccount ag_solanago.PublicKey,
+	poolQuoteTokenAccount ag_solanago.PublicKey) *Withdraw {
+	return NewWithdrawInstructionBuilder().
+		SetLpTokenAmountIn(lp_token_amount_in).
+		SetMinBaseAmountOut(min_base_amount_out).
+		SetMinQuoteAmountOut(min_quote_amount_out).
+		SetPoolAccount(pool).
 		SetUserAccount(user).
 		SetBaseMintAccount(baseMint).
 		SetQuoteMintAccount(quoteMint).

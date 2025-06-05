@@ -182,12 +182,10 @@ func (obj *ExtendAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 func NewExtendAccountInstruction(
 	// Accounts:
 	account ag_solanago.PublicKey,
-	user ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *ExtendAccount {
+	user ag_solanago.PublicKey) *ExtendAccount {
 	return NewExtendAccountInstructionBuilder().
 		SetAccountAccount(account).
-		SetUserAccount(user).
-		SetEventAuthorityAccount(eventAuthority)
+		SetUserAccount(user)
 }
 
 // NewSimpleExtendAccountInstruction declares a new ExtendAccount instruction with the provided parameters and accounts.

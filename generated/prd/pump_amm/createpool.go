@@ -499,7 +499,6 @@ func NewCreatePoolInstruction(
 	coin_creator ag_solanago.PublicKey,
 	// Accounts:
 	pool ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
 	creator ag_solanago.PublicKey,
 	baseMint ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
@@ -510,15 +509,13 @@ func NewCreatePoolInstruction(
 	poolBaseTokenAccount ag_solanago.PublicKey,
 	poolQuoteTokenAccount ag_solanago.PublicKey,
 	baseTokenProgram ag_solanago.PublicKey,
-	quoteTokenProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreatePool {
+	quoteTokenProgram ag_solanago.PublicKey) *CreatePool {
 	return NewCreatePoolInstructionBuilder().
 		SetIndex(index).
 		SetBaseAmountIn(base_amount_in).
 		SetQuoteAmountIn(quote_amount_in).
 		SetCoinCreator(coin_creator).
 		SetPoolAccount(pool).
-		SetGlobalConfigAccount(globalConfig).
 		SetCreatorAccount(creator).
 		SetBaseMintAccount(baseMint).
 		SetQuoteMintAccount(quoteMint).
@@ -529,8 +526,7 @@ func NewCreatePoolInstruction(
 		SetPoolBaseTokenAccountAccount(poolBaseTokenAccount).
 		SetPoolQuoteTokenAccountAccount(poolQuoteTokenAccount).
 		SetBaseTokenProgramAccount(baseTokenProgram).
-		SetQuoteTokenProgramAccount(quoteTokenProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetQuoteTokenProgramAccount(quoteTokenProgram)
 }
 
 // NewSimpleCreatePoolInstruction declares a new CreatePool instruction with the provided parameters and accounts.
@@ -540,7 +536,6 @@ func NewSimpleCreatePoolInstruction(
 	base_amount_in uint64,
 	quote_amount_in uint64,
 	coin_creator ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
 	creator ag_solanago.PublicKey,
 	baseMint ag_solanago.PublicKey,
 	quoteMint ag_solanago.PublicKey,
@@ -559,7 +554,6 @@ func NewSimpleCreatePoolInstruction(
 		SetQuoteAmountIn(quote_amount_in).
 		SetCoinCreator(coin_creator).
 		SetPoolAccount(pool).
-		SetGlobalConfigAccount(globalConfig).
 		SetCreatorAccount(creator).
 		SetBaseMintAccount(baseMint).
 		SetQuoteMintAccount(quoteMint).

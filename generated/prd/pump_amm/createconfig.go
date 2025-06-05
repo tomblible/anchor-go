@@ -275,16 +275,12 @@ func NewCreateConfigInstruction(
 	lp_fee_basis_points uint64,
 	protocol_fee_basis_points uint64,
 	protocol_fee_recipients [8]ag_solanago.PublicKey,
-	coin_creator_fee_basis_points uint64,
-	globalConfig ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreateConfig {
+	coin_creator_fee_basis_points uint64) *CreateConfig {
 	return NewCreateConfigInstructionBuilder().
 		SetLpFeeBasisPoints(lp_fee_basis_points).
 		SetProtocolFeeBasisPoints(protocol_fee_basis_points).
 		SetProtocolFeeRecipients(protocol_fee_recipients).
-		SetCoinCreatorFeeBasisPoints(coin_creator_fee_basis_points).
-		SetGlobalConfigAccount(globalConfig).
-		SetEventAuthorityAccount(eventAuthority)
+		SetCoinCreatorFeeBasisPoints(coin_creator_fee_basis_points)
 }
 
 // NewSimpleCreateConfigInstruction declares a new CreateConfig instruction with the provided parameters and accounts.

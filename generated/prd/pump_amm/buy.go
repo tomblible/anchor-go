@@ -483,7 +483,6 @@ func NewBuyInstruction(
 	protocolFeeRecipientTokenAccount ag_solanago.PublicKey,
 	baseTokenProgram ag_solanago.PublicKey,
 	quoteTokenProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey,
 	coinCreatorVaultAta ag_solanago.PublicKey,
 	coinCreatorVaultAuthority ag_solanago.PublicKey) *Buy {
 	return NewBuyInstructionBuilder().
@@ -502,7 +501,6 @@ func NewBuyInstruction(
 		SetProtocolFeeRecipientTokenAccountAccount(protocolFeeRecipientTokenAccount).
 		SetBaseTokenProgramAccount(baseTokenProgram).
 		SetQuoteTokenProgramAccount(quoteTokenProgram).
-		SetEventAuthorityAccount(eventAuthority).
 		SetCoinCreatorVaultAtaAccount(coinCreatorVaultAta).
 		SetCoinCreatorVaultAuthorityAccount(coinCreatorVaultAuthority)
 }

@@ -363,8 +363,6 @@ func (obj *ClaimProtocolFee) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 // NewClaimProtocolFeeInstruction declares a new ClaimProtocolFee instruction with the provided parameters and accounts.
 func NewClaimProtocolFeeInstruction(
-	// Accounts:
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	tokenAVault ag_solanago.PublicKey,
 	tokenBVault ag_solanago.PublicKey,
@@ -375,10 +373,8 @@ func NewClaimProtocolFeeInstruction(
 	claimFeeOperator ag_solanago.PublicKey,
 	operator ag_solanago.PublicKey,
 	tokenAProgram ag_solanago.PublicKey,
-	tokenBProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *ClaimProtocolFee {
+	tokenBProgram ag_solanago.PublicKey) *ClaimProtocolFee {
 	return NewClaimProtocolFeeInstructionBuilder().
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetTokenAVaultAccount(tokenAVault).
 		SetTokenBVaultAccount(tokenBVault).
@@ -389,8 +385,7 @@ func NewClaimProtocolFeeInstruction(
 		SetClaimFeeOperatorAccount(claimFeeOperator).
 		SetOperatorAccount(operator).
 		SetTokenAProgramAccount(tokenAProgram).
-		SetTokenBProgramAccount(tokenBProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenBProgramAccount(tokenBProgram)
 }
 
 // NewSimpleClaimProtocolFeeInstruction declares a new ClaimProtocolFee instruction with the provided parameters and accounts.

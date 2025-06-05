@@ -283,8 +283,7 @@ func NewWithdrawLeftoverInstruction(
 	baseVault ag_solanago.PublicKey,
 	baseMint ag_solanago.PublicKey,
 	leftoverReceiver ag_solanago.PublicKey,
-	tokenBaseProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *WithdrawLeftover {
+	tokenBaseProgram ag_solanago.PublicKey) *WithdrawLeftover {
 	return NewWithdrawLeftoverInstructionBuilder().
 		SetConfigAccount(config).
 		SetVirtualPoolAccount(virtualPool).
@@ -292,8 +291,7 @@ func NewWithdrawLeftoverInstruction(
 		SetBaseVaultAccount(baseVault).
 		SetBaseMintAccount(baseMint).
 		SetLeftoverReceiverAccount(leftoverReceiver).
-		SetTokenBaseProgramAccount(tokenBaseProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenBaseProgramAccount(tokenBaseProgram)
 }
 
 // NewSimpleWithdrawLeftoverInstruction declares a new WithdrawLeftover instruction with the provided parameters and accounts.

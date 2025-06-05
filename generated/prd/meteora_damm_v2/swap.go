@@ -394,8 +394,6 @@ func (obj *Swap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 func NewSwapInstruction(
 	// Parameters:
 	params SwapParameters,
-	// Accounts:
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	inputTokenAccount ag_solanago.PublicKey,
 	outputTokenAccount ag_solanago.PublicKey,
@@ -406,11 +404,9 @@ func NewSwapInstruction(
 	payer ag_solanago.PublicKey,
 	tokenAProgram ag_solanago.PublicKey,
 	tokenBProgram ag_solanago.PublicKey,
-	referralTokenAccount ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *Swap {
+	referralTokenAccount ag_solanago.PublicKey) *Swap {
 	return NewSwapInstructionBuilder().
 		SetParams(params).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetInputTokenAccountAccount(inputTokenAccount).
 		SetOutputTokenAccountAccount(outputTokenAccount).
@@ -421,8 +417,7 @@ func NewSwapInstruction(
 		SetPayerAccount(payer).
 		SetTokenAProgramAccount(tokenAProgram).
 		SetTokenBProgramAccount(tokenBProgram).
-		SetReferralTokenAccountAccount(referralTokenAccount).
-		SetEventAuthorityAccount(eventAuthority)
+		SetReferralTokenAccountAccount(referralTokenAccount)
 }
 
 // NewSimpleSwapInstruction declares a new Swap instruction with the provided parameters and accounts.

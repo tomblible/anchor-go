@@ -145,11 +145,8 @@ func (obj *Initialize) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err err
 
 // NewInitializeInstruction declares a new Initialize instruction with the provided parameters and accounts.
 func NewInitializeInstruction(
-	// Accounts:
-	global ag_solanago.PublicKey,
 	user ag_solanago.PublicKey) *Initialize {
 	return NewInitializeInstructionBuilder().
-		SetGlobalAccount(global).
 		SetUserAccount(user)
 }
 

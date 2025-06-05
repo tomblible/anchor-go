@@ -430,8 +430,6 @@ func NewRemoveAllLiquidityInstruction(
 	// Parameters:
 	token_a_amount_threshold uint64,
 	token_b_amount_threshold uint64,
-	// Accounts:
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	position ag_solanago.PublicKey,
 	tokenAAccount ag_solanago.PublicKey,
@@ -443,12 +441,10 @@ func NewRemoveAllLiquidityInstruction(
 	positionNftAccount ag_solanago.PublicKey,
 	owner ag_solanago.PublicKey,
 	tokenAProgram ag_solanago.PublicKey,
-	tokenBProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *RemoveAllLiquidity {
+	tokenBProgram ag_solanago.PublicKey) *RemoveAllLiquidity {
 	return NewRemoveAllLiquidityInstructionBuilder().
 		SetTokenAAmountThreshold(token_a_amount_threshold).
 		SetTokenBAmountThreshold(token_b_amount_threshold).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetPositionAccount(position).
 		SetTokenAAccountAccount(tokenAAccount).
@@ -460,8 +456,7 @@ func NewRemoveAllLiquidityInstruction(
 		SetPositionNftAccountAccount(positionNftAccount).
 		SetOwnerAccount(owner).
 		SetTokenAProgramAccount(tokenAProgram).
-		SetTokenBProgramAccount(tokenBProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenBProgramAccount(tokenBProgram)
 }
 
 // NewSimpleRemoveAllLiquidityInstruction declares a new RemoveAllLiquidity instruction with the provided parameters and accounts.

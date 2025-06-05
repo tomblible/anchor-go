@@ -244,19 +244,15 @@ func NewSetCreatorInstruction(
 	creator ag_solanago.PublicKey,
 	// Accounts:
 	setCreatorAuthority ag_solanago.PublicKey,
-	global ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
 	metadata ag_solanago.PublicKey,
-	bondingCurve ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *SetCreator {
+	bondingCurve ag_solanago.PublicKey) *SetCreator {
 	return NewSetCreatorInstructionBuilder().
 		SetCreator(creator).
 		SetSetCreatorAuthorityAccount(setCreatorAuthority).
-		SetGlobalAccount(global).
 		SetMintAccount(mint).
 		SetMetadataAccount(metadata).
-		SetBondingCurveAccount(bondingCurve).
-		SetEventAuthorityAccount(eventAuthority)
+		SetBondingCurveAccount(bondingCurve)
 }
 
 // NewSimpleSetCreatorInstruction declares a new SetCreator instruction with the provided parameters and accounts.

@@ -319,8 +319,6 @@ func (obj *ClaimReward) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err er
 func NewClaimRewardInstruction(
 	// Parameters:
 	reward_index uint8,
-	// Accounts:
-	poolAuthority ag_solanago.PublicKey,
 	pool ag_solanago.PublicKey,
 	position ag_solanago.PublicKey,
 	rewardVault ag_solanago.PublicKey,
@@ -328,11 +326,9 @@ func NewClaimRewardInstruction(
 	userTokenAccount ag_solanago.PublicKey,
 	positionNftAccount ag_solanago.PublicKey,
 	owner ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *ClaimReward {
+	tokenProgram ag_solanago.PublicKey) *ClaimReward {
 	return NewClaimRewardInstructionBuilder().
 		SetRewardIndex(reward_index).
-		SetPoolAuthorityAccount(poolAuthority).
 		SetPoolAccount(pool).
 		SetPositionAccount(position).
 		SetRewardVaultAccount(rewardVault).
@@ -340,8 +336,7 @@ func NewClaimRewardInstruction(
 		SetUserTokenAccountAccount(userTokenAccount).
 		SetPositionNftAccountAccount(positionNftAccount).
 		SetOwnerAccount(owner).
-		SetTokenProgramAccount(tokenProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenProgramAccount(tokenProgram)
 }
 
 // NewSimpleClaimRewardInstruction declares a new ClaimReward instruction with the provided parameters and accounts.

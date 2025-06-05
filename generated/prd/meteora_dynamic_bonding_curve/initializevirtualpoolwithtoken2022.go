@@ -393,8 +393,7 @@ func NewInitializeVirtualPoolWithToken2022Instruction(
 	baseVault ag_solanago.PublicKey,
 	quoteVault ag_solanago.PublicKey,
 	payer ag_solanago.PublicKey,
-	tokenQuoteProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *InitializeVirtualPoolWithToken2022 {
+	tokenQuoteProgram ag_solanago.PublicKey) *InitializeVirtualPoolWithToken2022 {
 	return NewInitializeVirtualPoolWithToken2022InstructionBuilder().
 		SetParams(params).
 		SetConfigAccount(config).
@@ -405,8 +404,7 @@ func NewInitializeVirtualPoolWithToken2022Instruction(
 		SetBaseVaultAccount(baseVault).
 		SetQuoteVaultAccount(quoteVault).
 		SetPayerAccount(payer).
-		SetTokenQuoteProgramAccount(tokenQuoteProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenQuoteProgramAccount(tokenQuoteProgram)
 }
 
 // NewSimpleInitializeVirtualPoolWithToken2022Instruction declares a new InitializeVirtualPoolWithToken2022 instruction with the provided parameters and accounts.

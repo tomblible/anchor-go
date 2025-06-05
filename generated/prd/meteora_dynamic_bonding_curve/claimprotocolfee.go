@@ -391,8 +391,7 @@ func NewClaimProtocolFeeInstruction(
 	claimFeeOperator ag_solanago.PublicKey,
 	operator ag_solanago.PublicKey,
 	tokenBaseProgram ag_solanago.PublicKey,
-	tokenQuoteProgram ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *ClaimProtocolFee {
+	tokenQuoteProgram ag_solanago.PublicKey) *ClaimProtocolFee {
 	return NewClaimProtocolFeeInstructionBuilder().
 		SetConfigAccount(config).
 		SetPoolAccount(pool).
@@ -405,8 +404,7 @@ func NewClaimProtocolFeeInstruction(
 		SetClaimFeeOperatorAccount(claimFeeOperator).
 		SetOperatorAccount(operator).
 		SetTokenBaseProgramAccount(tokenBaseProgram).
-		SetTokenQuoteProgramAccount(tokenQuoteProgram).
-		SetEventAuthorityAccount(eventAuthority)
+		SetTokenQuoteProgramAccount(tokenQuoteProgram)
 }
 
 // NewSimpleClaimProtocolFeeInstruction declares a new ClaimProtocolFee instruction with the provided parameters and accounts.

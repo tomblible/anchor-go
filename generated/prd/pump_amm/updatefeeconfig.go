@@ -257,17 +257,13 @@ func NewUpdateFeeConfigInstruction(
 	protocol_fee_recipients [8]ag_solanago.PublicKey,
 	coin_creator_fee_basis_points uint64,
 	// Accounts:
-	admin ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *UpdateFeeConfig {
+	admin ag_solanago.PublicKey) *UpdateFeeConfig {
 	return NewUpdateFeeConfigInstructionBuilder().
 		SetLpFeeBasisPoints(lp_fee_basis_points).
 		SetProtocolFeeBasisPoints(protocol_fee_basis_points).
 		SetProtocolFeeRecipients(protocol_fee_recipients).
 		SetCoinCreatorFeeBasisPoints(coin_creator_fee_basis_points).
-		SetAdminAccount(admin).
-		SetGlobalConfigAccount(globalConfig).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleUpdateFeeConfigInstruction declares a new UpdateFeeConfig instruction with the provided parameters and accounts.
@@ -278,13 +274,11 @@ func NewSimpleUpdateFeeConfigInstruction(
 	protocol_fee_recipients [8]ag_solanago.PublicKey,
 	coin_creator_fee_basis_points uint64,
 	// Accounts:
-	admin ag_solanago.PublicKey,
-	globalConfig ag_solanago.PublicKey) *UpdateFeeConfig {
+	admin ag_solanago.PublicKey) *UpdateFeeConfig {
 	return NewUpdateFeeConfigInstructionBuilder().
 		SetLpFeeBasisPoints(lp_fee_basis_points).
 		SetProtocolFeeBasisPoints(protocol_fee_basis_points).
 		SetProtocolFeeRecipients(protocol_fee_recipients).
 		SetCoinCreatorFeeBasisPoints(coin_creator_fee_basis_points).
-		SetAdminAccount(admin).
-		SetGlobalConfigAccount(globalConfig)
+		SetAdminAccount(admin)
 }

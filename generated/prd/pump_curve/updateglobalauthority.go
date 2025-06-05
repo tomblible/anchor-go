@@ -180,16 +180,11 @@ func (obj *UpdateGlobalAuthority) UnmarshalWithDecoder(decoder *ag_binary.Decode
 
 // NewUpdateGlobalAuthorityInstruction declares a new UpdateGlobalAuthority instruction with the provided parameters and accounts.
 func NewUpdateGlobalAuthorityInstruction(
-	// Accounts:
-	global ag_solanago.PublicKey,
 	authority ag_solanago.PublicKey,
-	newAuthority ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *UpdateGlobalAuthority {
+	newAuthority ag_solanago.PublicKey) *UpdateGlobalAuthority {
 	return NewUpdateGlobalAuthorityInstructionBuilder().
-		SetGlobalAccount(global).
 		SetAuthorityAccount(authority).
-		SetNewAuthorityAccount(newAuthority).
-		SetEventAuthorityAccount(eventAuthority)
+		SetNewAuthorityAccount(newAuthority)
 }
 
 // NewSimpleUpdateGlobalAuthorityInstruction declares a new UpdateGlobalAuthority instruction with the provided parameters and accounts.

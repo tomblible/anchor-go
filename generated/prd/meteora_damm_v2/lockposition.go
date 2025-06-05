@@ -288,8 +288,7 @@ func NewLockPositionInstruction(
 	vesting ag_solanago.PublicKey,
 	positionNftAccount ag_solanago.PublicKey,
 	owner ag_solanago.PublicKey,
-	payer ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *LockPosition {
+	payer ag_solanago.PublicKey) *LockPosition {
 	return NewLockPositionInstructionBuilder().
 		SetParams(params).
 		SetPoolAccount(pool).
@@ -297,8 +296,7 @@ func NewLockPositionInstruction(
 		SetVestingAccount(vesting).
 		SetPositionNftAccountAccount(positionNftAccount).
 		SetOwnerAccount(owner).
-		SetPayerAccount(payer).
-		SetEventAuthorityAccount(eventAuthority)
+		SetPayerAccount(payer)
 }
 
 // NewSimpleLockPositionInstruction declares a new LockPosition instruction with the provided parameters and accounts.

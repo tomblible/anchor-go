@@ -182,12 +182,10 @@ func (obj *CollectCreatorFee) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 func NewCollectCreatorFeeInstruction(
 	// Accounts:
 	creator ag_solanago.PublicKey,
-	creatorVault ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CollectCreatorFee {
+	creatorVault ag_solanago.PublicKey) *CollectCreatorFee {
 	return NewCollectCreatorFeeInstructionBuilder().
 		SetCreatorAccount(creator).
-		SetCreatorVaultAccount(creatorVault).
-		SetEventAuthorityAccount(eventAuthority)
+		SetCreatorVaultAccount(creatorVault)
 }
 
 // NewSimpleCollectCreatorFeeInstruction declares a new CollectCreatorFee instruction with the provided parameters and accounts.

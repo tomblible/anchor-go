@@ -200,13 +200,11 @@ func NewCreateTokenBadgeInstruction(
 	// Accounts:
 	tokenBadge ag_solanago.PublicKey,
 	tokenMint ag_solanago.PublicKey,
-	admin ag_solanago.PublicKey,
-	eventAuthority ag_solanago.PublicKey) *CreateTokenBadge {
+	admin ag_solanago.PublicKey) *CreateTokenBadge {
 	return NewCreateTokenBadgeInstructionBuilder().
 		SetTokenBadgeAccount(tokenBadge).
 		SetTokenMintAccount(tokenMint).
-		SetAdminAccount(admin).
-		SetEventAuthorityAccount(eventAuthority)
+		SetAdminAccount(admin)
 }
 
 // NewSimpleCreateTokenBadgeInstruction declares a new CreateTokenBadge instruction with the provided parameters and accounts.
