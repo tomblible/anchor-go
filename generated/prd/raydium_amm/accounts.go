@@ -3,7 +3,6 @@
 package raydium_amm
 
 import (
-	"fmt"
 	ag_binary "github.com/gagliardetto/binary"
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
@@ -36,14 +35,7 @@ type TargetOrdersAccount struct {
 	FreeSlotBits         ag_binary.Uint128
 }
 
-var TargetOrdersAccountDiscriminator = [8]byte{113, 225, 140, 255, 65, 144, 239, 231}
-
 func (obj TargetOrdersAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Write account discriminator:
-	err = encoder.WriteBytes(TargetOrdersAccountDiscriminator[:], false)
-	if err != nil {
-		return err
-	}
 	// Serialize `Owner` param:
 	err = encoder.Encode(obj.Owner)
 	if err != nil {
@@ -173,19 +165,6 @@ func (obj TargetOrdersAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (e
 }
 
 func (obj *TargetOrdersAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Read and check account discriminator:
-	{
-		discriminator, err := decoder.ReadTypeID()
-		if err != nil {
-			return err
-		}
-		if !discriminator.Equal(TargetOrdersAccountDiscriminator[:]) {
-			return fmt.Errorf(
-				"wrong discriminator: wanted %s, got %s",
-				"[113 225 140 255 65 144 239 231]",
-				fmt.Sprint(discriminator[:]))
-		}
-	}
 	// Deserialize `Owner`:
 	err = decoder.Decode(&obj.Owner)
 	if err != nil {
@@ -325,14 +304,7 @@ type FeesAccount struct {
 	SwapFeeDenominator     uint64
 }
 
-var FeesAccountDiscriminator = [8]byte{151, 157, 50, 115, 130, 72, 179, 36}
-
 func (obj FeesAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Write account discriminator:
-	err = encoder.WriteBytes(FeesAccountDiscriminator[:], false)
-	if err != nil {
-		return err
-	}
 	// Serialize `MinSeparateNumerator` param:
 	err = encoder.Encode(obj.MinSeparateNumerator)
 	if err != nil {
@@ -377,19 +349,6 @@ func (obj FeesAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error
 }
 
 func (obj *FeesAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Read and check account discriminator:
-	{
-		discriminator, err := decoder.ReadTypeID()
-		if err != nil {
-			return err
-		}
-		if !discriminator.Equal(FeesAccountDiscriminator[:]) {
-			return fmt.Errorf(
-				"wrong discriminator: wanted %s, got %s",
-				"[151 157 50 115 130 72 179 36]",
-				fmt.Sprint(discriminator[:]))
-		}
-	}
 	// Deserialize `MinSeparateNumerator`:
 	err = decoder.Decode(&obj.MinSeparateNumerator)
 	if err != nil {
@@ -469,14 +428,7 @@ type AmmInfoAccount struct {
 	padding            [2]uint64
 }
 
-var AmmInfoAccountDiscriminator = [8]byte{33, 217, 2, 203, 184, 83, 235, 91}
-
 func (obj AmmInfoAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Write account discriminator:
-	err = encoder.WriteBytes(AmmInfoAccountDiscriminator[:], false)
-	if err != nil {
-		return err
-	}
 	// Serialize `Status` param:
 	err = encoder.Encode(obj.Status)
 	if err != nil {
@@ -646,19 +598,6 @@ func (obj AmmInfoAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err er
 }
 
 func (obj *AmmInfoAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Read and check account discriminator:
-	{
-		discriminator, err := decoder.ReadTypeID()
-		if err != nil {
-			return err
-		}
-		if !discriminator.Equal(AmmInfoAccountDiscriminator[:]) {
-			return fmt.Errorf(
-				"wrong discriminator: wanted %s, got %s",
-				"[33 217 2 203 184 83 235 91]",
-				fmt.Sprint(discriminator[:]))
-		}
-	}
 	// Deserialize `Status`:
 	err = decoder.Decode(&obj.Status)
 	if err != nil {

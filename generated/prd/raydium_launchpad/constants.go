@@ -7,6 +7,24 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
+func FindVestingRecordAddress(poolState ag_solanago.PublicKey, beneficiary ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x706f6f6c5f76657374696e67
+	seeds = append(seeds, []byte{byte(0x70), byte(0x6f), byte(0x6f), byte(0x6c), byte(0x5f), byte(0x76), byte(0x65), byte(0x73), byte(0x74), byte(0x69), byte(0x6e), byte(0x67)})
+	// path: poolState
+	seeds = append(seeds, poolState.Bytes())
+	// path: beneficiary
+	seeds = append(seeds, beneficiary.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindVestingRecordAddress(poolState ag_solanago.PublicKey, beneficiary ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindVestingRecordAddress(poolState, beneficiary)
+	return
+}
+
 func FindGlobalConfigAddress(quoteTokenMint ag_solanago.PublicKey, curveType uint8, index uint16) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// const: 0x676c6f62616c5f636f6e666967
@@ -97,23 +115,5 @@ func FindQuoteVaultAddress(poolState ag_solanago.PublicKey, quoteMint ag_solanag
 
 func MustFindQuoteVaultAddress(poolState ag_solanago.PublicKey, quoteMint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
 	pda, _, _ = FindQuoteVaultAddress(poolState, quoteMint)
-	return
-}
-
-func FindVestingRecordAddress(poolState ag_solanago.PublicKey, beneficiary ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x706f6f6c5f76657374696e67
-	seeds = append(seeds, []byte{byte(0x70), byte(0x6f), byte(0x6f), byte(0x6c), byte(0x5f), byte(0x76), byte(0x65), byte(0x73), byte(0x74), byte(0x69), byte(0x6e), byte(0x67)})
-	// path: poolState
-	seeds = append(seeds, poolState.Bytes())
-	// path: beneficiary
-	seeds = append(seeds, beneficiary.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindVestingRecordAddress(poolState ag_solanago.PublicKey, beneficiary ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindVestingRecordAddress(poolState, beneficiary)
 	return
 }

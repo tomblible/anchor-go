@@ -14,7 +14,7 @@ import (
 
 const ProgramName = "Whirlpool"
 
-var ProgramID ag_solanago.PublicKey = ag_solanago.MustPublicKeyFromBase58("675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8")
+var ProgramID ag_solanago.PublicKey = ag_solanago.MustPublicKeyFromBase58("whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc")
 
 func SetProgramID(PublicKey ag_solanago.PublicKey) {
 	ProgramID = PublicKey

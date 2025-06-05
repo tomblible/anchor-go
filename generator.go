@@ -201,7 +201,7 @@ func genTypeDef(idl *IDL, withDiscriminator *[8]byte, def IdlTypeDef) Code {
 
 				//toBeHashed := ToCamel(def.Name)
 
-				if withDiscriminator != nil {
+				if withDiscriminator != nil && conf.TypeID == TypeIDAnchor {
 					discriminatorName := exportedAccountName + "Discriminator"
 					//if GetConfig().Debug {
 					//	code.Comment(Sf(`hash("%s:%s")`, bin.SIGHASH_ACCOUNT_NAMESPACE, toBeHashed)).Line()

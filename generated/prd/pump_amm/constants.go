@@ -7,22 +7,6 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
-func FindLpMintAddress(pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x706f6f6c5f6c705f6d696e74
-	seeds = append(seeds, []byte{byte(0x70), byte(0x6f), byte(0x6f), byte(0x6c), byte(0x5f), byte(0x6c), byte(0x70), byte(0x5f), byte(0x6d), byte(0x69), byte(0x6e), byte(0x74)})
-	// path: pool
-	seeds = append(seeds, pool.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindLpMintAddress(pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindLpMintAddress(pool)
-	return
-}
-
 func FindCoinCreatorVaultAuthorityAddress(poolCoinCreator ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// const: 0x63726561746f725f7661756c74
@@ -60,5 +44,21 @@ func FindPoolAddress(index uint16, creator ag_solanago.PublicKey, baseMint ag_so
 
 func MustFindPoolAddress(index uint16, creator ag_solanago.PublicKey, baseMint ag_solanago.PublicKey, quoteMint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
 	pda, _, _ = FindPoolAddress(index, creator, baseMint, quoteMint)
+	return
+}
+
+func FindLpMintAddress(pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x706f6f6c5f6c705f6d696e74
+	seeds = append(seeds, []byte{byte(0x70), byte(0x6f), byte(0x6f), byte(0x6c), byte(0x5f), byte(0x6c), byte(0x70), byte(0x5f), byte(0x6d), byte(0x69), byte(0x6e), byte(0x74)})
+	// path: pool
+	seeds = append(seeds, pool.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindLpMintAddress(pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindLpMintAddress(pool)
 	return
 }

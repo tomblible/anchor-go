@@ -4,22 +4,6 @@ package meteora_dynamic_bonding_curve
 
 import ag_solanago "github.com/gagliardetto/solana-go"
 
-func FindMigrationMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x64616d6d5f7632
-	seeds = append(seeds, []byte{byte(0x64), byte(0x61), byte(0x6d), byte(0x6d), byte(0x5f), byte(0x76), byte(0x32)})
-	// path: virtualPool
-	seeds = append(seeds, virtualPool.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindMigrationMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindMigrationMetadataAddress(virtualPool)
-	return
-}
-
 func FindClaimFeeOperatorAddress(operator ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// const: 0x63665f6f70657261746f72
@@ -117,5 +101,21 @@ func FindQuoteVaultAddress(quoteMint ag_solanago.PublicKey, pool ag_solanago.Pub
 
 func MustFindQuoteVaultAddress(quoteMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
 	pda, _, _ = FindQuoteVaultAddress(quoteMint, pool)
+	return
+}
+
+func FindMigrationMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x64616d6d5f7632
+	seeds = append(seeds, []byte{byte(0x64), byte(0x61), byte(0x6d), byte(0x6d), byte(0x5f), byte(0x76), byte(0x32)})
+	// path: virtualPool
+	seeds = append(seeds, virtualPool.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindMigrationMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindMigrationMetadataAddress(virtualPool)
 	return
 }
