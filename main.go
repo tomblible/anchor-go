@@ -1710,33 +1710,34 @@ func genAccountGettersSetters(
 											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":")))) // Just pass the byte array directly
 											continue
 										}
+										argBytesName := "argBytes" + strconv.Itoa(i)
 										switch seedTypes[i].asString {
 										case IdlTypeBool:
 											body.Add(If(Id(seedRef).Block(
-												Id("argBytes").Op(":=").Index().Byte().Values(Lit(1)),
+												Id(argBytesName).Op(":=").Index().Byte().Values(Lit(1)),
 											).Else().Block(
-												Id("argBytes").Op(":=").Index().Byte().Values(Lit(0)),
+												Id(argBytesName).Op(":=").Index().Byte().Values(Lit(0)),
 											)))
-											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(argBytesName)))
 										case IdlTypeI8, IdlTypeU8:
-											body.Add(Id("argBytes").Op(":=").Index().Byte().Values(Byte().Call(Id(seedRef)))) //[]byte{byte(arg)}
-											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+											body.Add(Id(argBytesName).Op(":=").Index().Byte().Values(Byte().Call(Id(seedRef)))) //[]byte{byte(arg)}
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(argBytesName)))
 										case IdlTypeI16, IdlTypeU16:
-											body.Add(Id("argBytes").Op(":=").Make(Index().Byte(), Lit(2)))
-											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint16").Call(Id("argBytes"), Uint16().Call(Id(seedRef))))
-											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+											body.Add(Id(argBytesName).Op(":=").Make(Index().Byte(), Lit(2)))
+											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint16").Call(Id(argBytesName), Uint16().Call(Id(seedRef))))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(argBytesName)))
 										case IdlTypeI32, IdlTypeU32:
-											body.Add(Id("argBytes").Op(":=").Make(Index().Byte(), Lit(4)))
-											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint32").Call(Id("argBytes"), Uint32().Call(Id(seedRef))))
-											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+											body.Add(Id(argBytesName).Op(":=").Make(Index().Byte(), Lit(4)))
+											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint32").Call(Id(argBytesName), Uint32().Call(Id(seedRef))))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(argBytesName)))
 										case IdlTypeI64, IdlTypeU64:
-											body.Add(Id("argBytes").Op(":=").Make(Index().Byte(), Lit(8)))
-											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint64").Call(Id("argBytes"), Uint64().Call(Id(seedRef))))
-											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+											body.Add(Id(argBytesName).Op(":=").Make(Index().Byte(), Lit(8)))
+											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint64").Call(Id(argBytesName), Uint64().Call(Id(seedRef))))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(argBytesName)))
 										case IdlTypeF32, IdlTypeF64:
-											body.Add(Id("argBytes").Op(":=").Make(Index().Byte(), Lit(8)))
-											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint64").Call(Id("argBytes"), Uint64().Call(Qual(PkgMath, "Float64bits").Call(Float64().Call(Id(seedRef))))))
-											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id("argBytes")))
+											body.Add(Id(argBytesName).Op(":=").Make(Index().Byte(), Lit(8)))
+											body.Add(Qual(PkgBinary, "LittleEndian").Dot("PutUint64").Call(Id(argBytesName), Uint64().Call(Qual(PkgMath, "Float64bits").Call(Float64().Call(Id(seedRef))))))
+											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(argBytesName)))
 										case IdlTypeI128, IdlTypeU128:
 											body.Add(Id("seeds").Op("=").Append(Id("seeds"), Id(seedRef).Index(Op(":"))))
 										case IdlTypeString:

@@ -41,10 +41,17 @@ meteora_vault:build
 	anchor idl convert ./idl/dex/meteora_vault.json >./idl/dex/meteora_vault_new.json
 	./anchor-go -src=./idl/dex/meteora_vault_new.json -pkg=meteora_vault -dst=./generated/prd/meteora_vault
 
+raydium_launchpad:build
+	./anchor-go -src=./idl/dex/raydium_launchpad.json -pkg=raydium_launchpad -dst=./generated/prd/raydium_launchpad
+
+moonit:build
+	anchor idl convert ./idl/dex/moonit.json >./idl/dex/moonit_new.json
+	./anchor-go -src=./idl/dex/moonit_new.json -pkg=moonit -dst=./generated/prd/moonit
+
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 
 	
-all: pump_curve pump_amm raydium_amm raydium_clmm raydium_cpmm whirlpool meteora_dynamic_bonding_curve meteora_damm_v2 meteora_dlmm meteora_pools meteora_vault
+all: pump_curve pump_amm raydium_amm raydium_clmm raydium_cpmm whirlpool meteora_dynamic_bonding_curve meteora_damm_v2 meteora_dlmm meteora_pools meteora_vault raydium_launchpad moonit
 
 convert:
 	# anchor idl convert ./test/old.json >./test/new.json

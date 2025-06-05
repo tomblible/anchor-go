@@ -4,6 +4,54 @@ package meteora_dynamic_bonding_curve
 
 import ag_solanago "github.com/gagliardetto/solana-go"
 
+func FindMigrationMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x64616d6d5f7632
+	seeds = append(seeds, []byte{byte(0x64), byte(0x61), byte(0x6d), byte(0x6d), byte(0x5f), byte(0x76), byte(0x32)})
+	// path: virtualPool
+	seeds = append(seeds, virtualPool.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindMigrationMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindMigrationMetadataAddress(virtualPool)
+	return
+}
+
+func FindClaimFeeOperatorAddress(operator ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x63665f6f70657261746f72
+	seeds = append(seeds, []byte{byte(0x63), byte(0x66), byte(0x5f), byte(0x6f), byte(0x70), byte(0x65), byte(0x72), byte(0x61), byte(0x74), byte(0x6f), byte(0x72)})
+	// path: operator
+	seeds = append(seeds, operator.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindClaimFeeOperatorAddress(operator ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindClaimFeeOperatorAddress(operator)
+	return
+}
+
+func FindBaseAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x626173655f6c6f636b6572
+	seeds = append(seeds, []byte{byte(0x62), byte(0x61), byte(0x73), byte(0x65), byte(0x5f), byte(0x6c), byte(0x6f), byte(0x63), byte(0x6b), byte(0x65), byte(0x72)})
+	// path: virtualPool
+	seeds = append(seeds, virtualPool.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindBaseAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindBaseAddress(virtualPool)
+	return
+}
+
 func FindPartnerMetadataAddress(feeClaimer ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// const: 0x706172746e65725f6d65746164617461
@@ -69,53 +117,5 @@ func FindQuoteVaultAddress(quoteMint ag_solanago.PublicKey, pool ag_solanago.Pub
 
 func MustFindQuoteVaultAddress(quoteMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
 	pda, _, _ = FindQuoteVaultAddress(quoteMint, pool)
-	return
-}
-
-func FindMigrationMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x64616d6d5f7632
-	seeds = append(seeds, []byte{byte(0x64), byte(0x61), byte(0x6d), byte(0x6d), byte(0x5f), byte(0x76), byte(0x32)})
-	// path: virtualPool
-	seeds = append(seeds, virtualPool.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindMigrationMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindMigrationMetadataAddress(virtualPool)
-	return
-}
-
-func FindClaimFeeOperatorAddress(operator ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x63665f6f70657261746f72
-	seeds = append(seeds, []byte{byte(0x63), byte(0x66), byte(0x5f), byte(0x6f), byte(0x70), byte(0x65), byte(0x72), byte(0x61), byte(0x74), byte(0x6f), byte(0x72)})
-	// path: operator
-	seeds = append(seeds, operator.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindClaimFeeOperatorAddress(operator ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindClaimFeeOperatorAddress(operator)
-	return
-}
-
-func FindBaseAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x626173655f6c6f636b6572
-	seeds = append(seeds, []byte{byte(0x62), byte(0x61), byte(0x73), byte(0x65), byte(0x5f), byte(0x6c), byte(0x6f), byte(0x63), byte(0x6b), byte(0x65), byte(0x72)})
-	// path: virtualPool
-	seeds = append(seeds, virtualPool.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindBaseAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindBaseAddress(virtualPool)
 	return
 }
