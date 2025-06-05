@@ -18,7 +18,7 @@ import (
 func TestDebug(t *testing.T) {
 	conf.Encoding = EncodingBorsh
 	conf.TypeID = TypeIDAnchor
-	filenames := FlagStringArray{"./idl/fyd/raydium_clmm_new.json"}
+	filenames := FlagStringArray{"./idl/dex/raydium_clmm_new.json"}
 	conf.DstDir = "./generated/prd/raydium_clmm"
 	conf.Package = "raydium_clmm"
 	conf.Debug = false
