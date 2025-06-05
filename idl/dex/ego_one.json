@@ -1,0 +1,6369 @@
+{
+  "address": "EGoXXeoChy6AMizqDR5oyUAcS5XM64UezFY4UrhUTNxx",
+  "metadata": {
+    "name": "ego_one",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Ego One"
+  },
+  "instructions": [
+    {
+      "name": "add_fund",
+      "discriminator": [
+        171,
+        162,
+        20,
+        168,
+        248,
+        252,
+        208,
+        110
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "docs": [
+            "User adding fund"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pregrad_user_fund",
+          "docs": [
+            "Holds user's fund amount and data during the pre-graduation period"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  101,
+                  103,
+                  114,
+                  97,
+                  100,
+                  95,
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  102,
+                  117,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Token mint"
+          ]
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "AddFundParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "claim_profile",
+      "discriminator": [
+        58,
+        26,
+        130,
+        69,
+        27,
+        81,
+        106,
+        114
+      ],
+      "accounts": [
+        {
+          "name": "new_profile_owner",
+          "docs": [
+            "New profile owner"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "admin_profile",
+          "signer": true
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "ClaimProfileParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "collect_fees_lp",
+      "discriminator": [
+        15,
+        152,
+        28,
+        112,
+        183,
+        231,
+        227,
+        141
+      ],
+      "accounts": [
+        {
+          "name": "profile_owner_or_admin",
+          "docs": [
+            "Profile owner, the fee admin or the migration admin must initiate the tx"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "quote_mint"
+        },
+        {
+          "name": "profile_lp",
+          "docs": [
+            "Owner for the liquidity and fee nft"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  108,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "locking_program",
+          "address": "LockrWmn6K5twhz3y9w1dQERbmgSaRkfnTeTKbpofwE"
+        },
+        {
+          "name": "locking_program_auth",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  99,
+                  107,
+                  95,
+                  99,
+                  112,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "locking_program"
+            }
+          }
+        },
+        {
+          "name": "fee_nft_account",
+          "docs": [
+            "Fee token account"
+          ]
+        },
+        {
+          "name": "locked_liquidity",
+          "docs": [
+            "Store the locked the information of liquidity"
+          ],
+          "writable": true
+        },
+        {
+          "name": "cpmm_program",
+          "docs": [
+            "cpmm program"
+          ],
+          "address": "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C"
+        },
+        {
+          "name": "cp_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  110,
+                  100,
+                  95,
+                  108,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cpmm_program"
+            }
+          }
+        },
+        {
+          "name": "pool_state",
+          "docs": [
+            "Pool state account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "lp_mint",
+          "docs": [
+            "lp mint"
+          ],
+          "writable": true
+        },
+        {
+          "name": "recipient_token_0_account",
+          "docs": [
+            "The token account for receive token_0"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  102,
+                  101,
+                  101,
+                  95,
+                  108,
+                  112,
+                  95,
+                  113,
+                  117,
+                  111,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "recipient_token_1_account",
+          "docs": [
+            "The token account for receive token_1"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  102,
+                  101,
+                  101,
+                  95,
+                  108,
+                  112,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_0_vault",
+          "docs": [
+            "The address that holds pool tokens for token_0"
+          ],
+          "writable": true
+        },
+        {
+          "name": "token_1_vault",
+          "docs": [
+            "The address that holds pool tokens for token_1"
+          ],
+          "writable": true
+        },
+        {
+          "name": "locked_lp_vault",
+          "docs": [
+            "locked lp token account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "locking_program_auth"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lp_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_program",
+          "docs": [
+            "token Program"
+          ],
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "token_program_2022",
+          "docs": [
+            "Token program 2022"
+          ],
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "memo_program",
+          "docs": [
+            "memo program"
+          ],
+          "address": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "complete_pregrad",
+      "discriminator": [
+        137,
+        152,
+        147,
+        164,
+        14,
+        17,
+        33,
+        241
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pregrad_token_vault",
+          "docs": [
+            "Vault that holds the tokens temporarily during the pre-graduation period"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "profile_lp",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  108,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_lp_quote_vault",
+          "docs": [
+            "Profile specific ATA that holds LP (quote token)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_lp"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "quote_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "profile_vest",
+          "docs": [
+            "Profile vest account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  118,
+                  101,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_vest_vault",
+          "docs": [
+            "Profile vest vault account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_vest"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Token mint"
+          ],
+          "writable": true
+        },
+        {
+          "name": "quote_mint",
+          "docs": [
+            "Quote mint = WSOL"
+          ],
+          "address": "So11111111111111111111111111111111111111112"
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "fee_dest",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delete_pregrad",
+      "discriminator": [
+        145,
+        60,
+        22,
+        113,
+        82,
+        163,
+        91,
+        62
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pregrad_token_vault",
+          "docs": [
+            "Vault that holds the tokens temporarily during the pre-graduation period"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Token mint"
+          ]
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "fee_dest",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "distribute_tokens",
+      "discriminator": [
+        105,
+        69,
+        130,
+        52,
+        196,
+        28,
+        176,
+        120
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pregrad_token_vault",
+          "docs": [
+            "Vault that holds the tokens temporarily during the pre-graduation period"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "pregrad_user_fund",
+          "docs": [
+            "Holds user's fund amount and data during the pre-graduation period"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  101,
+                  103,
+                  114,
+                  97,
+                  100,
+                  95,
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  102,
+                  117,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_lp",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  108,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_lp_quote_vault",
+          "docs": [
+            "Profile specific ATA that holds LP (quote token)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_lp"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "quote_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Token mint"
+          ]
+        },
+        {
+          "name": "quote_mint",
+          "docs": [
+            "Quote mint = WSOL"
+          ],
+          "address": "So11111111111111111111111111111111111111112"
+        },
+        {
+          "name": "user"
+        },
+        {
+          "name": "user_token_vault",
+          "docs": [
+            "User's token account to distribute the tokens to"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "execute_migration",
+      "discriminator": [
+        40,
+        232,
+        136,
+        213,
+        182,
+        35,
+        199,
+        132
+      ],
+      "accounts": [
+        {
+          "name": "admin_migration",
+          "docs": [
+            "Admin migration"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true
+        },
+        {
+          "name": "profile_lp",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  108,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Base token"
+          ]
+        },
+        {
+          "name": "cp_swap_program",
+          "docs": [
+            "Raydium cp-swap program"
+          ],
+          "address": "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C"
+        },
+        {
+          "name": "amm_config"
+        },
+        {
+          "name": "authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  110,
+                  100,
+                  95,
+                  108,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "pool_state",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_0_mint",
+          "docs": [
+            "Token_0 mint, the key must be smaller than token_1 mint."
+          ]
+        },
+        {
+          "name": "token_1_mint",
+          "docs": [
+            "Token_1 mint, the key must be greater than token_0 mint."
+          ]
+        },
+        {
+          "name": "lp_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  108,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "creator_token_0",
+          "docs": [
+            "payer token0 account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "creator_token_1",
+          "docs": [
+            "creator token1 account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "creator_lp_token",
+          "writable": true
+        },
+        {
+          "name": "token_0_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              },
+              {
+                "kind": "account",
+                "path": "token_0_mint"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "token_1_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              },
+              {
+                "kind": "account",
+                "path": "token_1_mint"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "create_pool_fee_rcvr",
+          "docs": [
+            "create pool fee account"
+          ],
+          "writable": true,
+          "address": "DNXgeM9EiiaAbaWvwjHj9fQQLAX5ZsfHyvmYUNRAdNC8"
+        },
+        {
+          "name": "observation_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  111,
+                  98,
+                  115,
+                  101,
+                  114,
+                  118,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "execute_self_custody",
+      "discriminator": [
+        1,
+        206,
+        13,
+        8,
+        27,
+        61,
+        178,
+        49
+      ],
+      "accounts": [
+        {
+          "name": "profile_owner",
+          "docs": [
+            "Profile owner -- must initiate the tx"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile_owner_token_vault",
+          "docs": [
+            "Profile owner base vault account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_owner"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_vest",
+          "docs": [
+            "Profile vest account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  118,
+                  101,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_vest_vault",
+          "docs": [
+            "Profile vest vault account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_vest"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Profile token"
+          ]
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init_config",
+      "discriminator": [
+        23,
+        235,
+        115,
+        232,
+        168,
+        96,
+        1,
+        231
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "docs": [
+            "Only the program admin can initialize the config."
+          ],
+          "writable": true,
+          "signer": true,
+          "address": "5m63EKQBrAQ13UKnLY7WpqUtqmJ286F2boZDw4uGt8PH"
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data to initialize"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "InitConfigParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "init_pregrad",
+      "discriminator": [
+        137,
+        72,
+        85,
+        187,
+        74,
+        111,
+        237,
+        136
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "docs": [
+            "Anyone can initialize pre-graduation"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "New token to mint. Must start with \"ego...\"."
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_metadata",
+          "writable": true
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "params.social_type"
+              },
+              {
+                "kind": "arg",
+                "path": "params.social_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pregrad_token_vault",
+          "docs": [
+            "Vault that holds the tokens temporarily during the pre-graduation period",
+            "ATA (token_mint owned by pregrad_data)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "pregrad_user_fund",
+          "docs": [
+            "Holds user's fund amount and data during the pre-graduation period"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  101,
+                  103,
+                  114,
+                  97,
+                  100,
+                  95,
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  102,
+                  117,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "token_metadata_program",
+          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "InitPregradParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "lock_liquidity",
+      "discriminator": [
+        179,
+        201,
+        236,
+        158,
+        212,
+        98,
+        70,
+        182
+      ],
+      "accounts": [
+        {
+          "name": "admin_migration",
+          "docs": [
+            "Admin migration"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true
+        },
+        {
+          "name": "profile_lp",
+          "docs": [
+            "Owner for the liquidity and fee nft"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  108,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Base token"
+          ]
+        },
+        {
+          "name": "liquidity_locking_program",
+          "docs": [
+            "Raydium liquidity locking program"
+          ],
+          "address": "LockrWmn6K5twhz3y9w1dQERbmgSaRkfnTeTKbpofwE"
+        },
+        {
+          "name": "raydium_lock_cp_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  99,
+                  107,
+                  95,
+                  99,
+                  112,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "liquidity_locking_program"
+            }
+          }
+        },
+        {
+          "name": "fee_nft_mint",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "fee_nft_account",
+          "writable": true
+        },
+        {
+          "name": "pool_state"
+        },
+        {
+          "name": "locked_liquidity",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  99,
+                  107,
+                  101,
+                  100,
+                  95,
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "fee_nft_mint"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "liquidity_locking_program"
+            }
+          }
+        },
+        {
+          "name": "lp_mint",
+          "docs": [
+            "The mint of liquidity token",
+            "address = pool_state.lp_mint"
+          ],
+          "writable": true
+        },
+        {
+          "name": "liquidity_owner_lp",
+          "docs": [
+            "liquidity owner lp token account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "locked_lp_vault",
+          "writable": true
+        },
+        {
+          "name": "token_0_vault",
+          "docs": [
+            "The address that holds pool tokens for token_0",
+            "address = pool_state.token_0_vault"
+          ],
+          "writable": true
+        },
+        {
+          "name": "token_1_vault",
+          "docs": [
+            "The address that holds pool tokens for token_1",
+            "address = pool_state.token_1_vault"
+          ],
+          "writable": true
+        },
+        {
+          "name": "metadata_account",
+          "docs": [
+            "To store metaplex metadata"
+          ],
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "docs": [
+            "Program to create/transfer mint/token account"
+          ],
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "docs": [
+            "Program to create an ATA for receiving fee NFT"
+          ],
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "metadata_program",
+          "docs": [
+            "Program to create NFT metadata accunt"
+          ],
+          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        },
+        {
+          "name": "rent",
+          "docs": [
+            "Sysvar for token mint and ATA creation"
+          ],
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "system_program",
+          "docs": [
+            "Program to create the new account"
+          ],
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "refund_user",
+      "discriminator": [
+        222,
+        128,
+        243,
+        5,
+        115,
+        45,
+        205,
+        53
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pregrad_user_fund",
+          "docs": [
+            "Holds user's fund amount and data during the pre-graduation period"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  101,
+                  103,
+                  114,
+                  97,
+                  100,
+                  95,
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  102,
+                  117,
+                  110,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Token mint"
+          ]
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "signal_self_custody",
+      "discriminator": [
+        200,
+        47,
+        176,
+        63,
+        167,
+        81,
+        221,
+        41
+      ],
+      "accounts": [
+        {
+          "name": "profile_owner",
+          "docs": [
+            "Profile owner -- must initiate the tx"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_vest",
+          "docs": [
+            "Profile vest account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  118,
+                  101,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_vest_vault",
+          "docs": [
+            "Profile vest vault account"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_vest"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Profile token"
+          ]
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "SignalSelfCustodyParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "start_distribution",
+      "discriminator": [
+        118,
+        230,
+        215,
+        75,
+        83,
+        2,
+        163,
+        35
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pregrad_token_vault",
+          "docs": [
+            "Vault that holds the tokens temporarily during the pre-graduation period"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Token mint"
+          ]
+        },
+        {
+          "name": "quote_mint",
+          "docs": [
+            "Quote mint = WSOL"
+          ],
+          "address": "So11111111111111111111111111111111111111112"
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_token_vault",
+          "docs": [
+            "Profile base vault to hold tokens for the profile owner"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_data"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "profile_fee_lp_token_vault",
+          "docs": [
+            "Vault that holds fees. Regular token account (token_mint -> profile_data)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  102,
+                  101,
+                  101,
+                  95,
+                  108,
+                  112,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_fee_lp_quote_vault",
+          "docs": [
+            "Vault that holds fees. Regular token account (quote_mint -> profile_data)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  102,
+                  101,
+                  101,
+                  95,
+                  108,
+                  112,
+                  95,
+                  113,
+                  117,
+                  111,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_lp",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  108,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_lp_token_vault",
+          "docs": [
+            "Temp vault that holds the LP token for Raydium pool.",
+            "ATA (token_mint -> profile_lp)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_lp"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "profile_lp_quote_vault",
+          "docs": [
+            "Temp vault that holds the LP quote for Raydium pool.",
+            "ATA (quote_mint -> profile_lp)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_lp"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "quote_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_metadata",
+          "writable": true
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "token_metadata_program",
+          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "start_refund",
+      "discriminator": [
+        95,
+        66,
+        238,
+        38,
+        103,
+        165,
+        178,
+        15
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pregrad_data",
+          "docs": [
+            "Pre-graduation data"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pregrad_token_vault",
+          "docs": [
+            "Vault that holds the tokens temporarily during the pre-graduation period"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "pregrad_data"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Token mint for the pre-graduation"
+          ],
+          "writable": true
+        },
+        {
+          "name": "token_metadata",
+          "writable": true
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "token_metadata_program",
+          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "transfer_fees",
+      "discriminator": [
+        103,
+        60,
+        61,
+        79,
+        56,
+        61,
+        76,
+        49
+      ],
+      "accounts": [
+        {
+          "name": "profile_owner",
+          "docs": [
+            "Profile owner, must initiate the tx"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile_owner_quote_vault",
+          "docs": [
+            "Fee destination address, profile owner's quote account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_owner"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "quote_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_fee_lp_quote_vault",
+          "docs": [
+            "LP fee source account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  102,
+                  101,
+                  101,
+                  95,
+                  108,
+                  112,
+                  95,
+                  113,
+                  117,
+                  111,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Profile token"
+          ]
+        },
+        {
+          "name": "quote_mint",
+          "docs": [
+            "WSOL"
+          ],
+          "address": "So11111111111111111111111111111111111111112"
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "TransferFeesParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "transfer_protocol_fees",
+      "discriminator": [
+        142,
+        148,
+        70,
+        57,
+        116,
+        166,
+        82,
+        111
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "docs": [
+            "Fee admin or migration admin must initiate the tx"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "admin_fee"
+        },
+        {
+          "name": "admin_fee_quote_vault",
+          "docs": [
+            "Fee destination vault address"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "admin_fee"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "quote_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_fee_lp_quote_vault",
+          "docs": [
+            "LP fee source account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  102,
+                  101,
+                  101,
+                  95,
+                  108,
+                  112,
+                  95,
+                  113,
+                  117,
+                  111,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Profile token"
+          ]
+        },
+        {
+          "name": "quote_mint",
+          "docs": [
+            "WSOL"
+          ],
+          "address": "So11111111111111111111111111111111111111112"
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "TransferProtocolFeesParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "unclaim_profile",
+      "discriminator": [
+        76,
+        70,
+        142,
+        123,
+        80,
+        149,
+        192,
+        23
+      ],
+      "accounts": [
+        {
+          "name": "admin_profile",
+          "signer": true
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Profile token mint"
+          ]
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update_config",
+      "discriminator": [
+        29,
+        158,
+        252,
+        191,
+        10,
+        83,
+        219,
+        99
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "docs": [
+            "Only the program admin can update the config."
+          ],
+          "writable": true,
+          "signer": true,
+          "address": "5m63EKQBrAQ13UKnLY7WpqUtqmJ286F2boZDw4uGt8PH"
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data to update"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "UpdateConfigParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "vest_tokens",
+      "discriminator": [
+        34,
+        183,
+        67,
+        191,
+        110,
+        172,
+        244,
+        234
+      ],
+      "accounts": [
+        {
+          "name": "profile_owner",
+          "docs": [
+            "Profile owner -- must initiate the tx"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "admin_profile",
+          "signer": true
+        },
+        {
+          "name": "profile_data",
+          "docs": [
+            "Profile data account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_token_vault",
+          "docs": [
+            "Profile base vault account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_data"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "profile_vest",
+          "docs": [
+            "Profile vest account"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101,
+                  95,
+                  118,
+                  101,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile_vest_vault",
+          "docs": [
+            "Profile vest vault account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "profile_vest"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "config_data",
+          "docs": [
+            "Config data"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "VestTokensParams"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "ConfigDataV1",
+      "discriminator": [
+        126,
+        196,
+        129,
+        157,
+        214,
+        18,
+        250,
+        97
+      ]
+    },
+    {
+      "name": "LockedCpLiquidityState",
+      "discriminator": [
+        25,
+        10,
+        238,
+        197,
+        207,
+        234,
+        73,
+        22
+      ]
+    },
+    {
+      "name": "PoolState",
+      "discriminator": [
+        247,
+        237,
+        227,
+        245,
+        215,
+        195,
+        222,
+        70
+      ]
+    },
+    {
+      "name": "PregradDataV1",
+      "discriminator": [
+        86,
+        53,
+        173,
+        118,
+        147,
+        67,
+        18,
+        141
+      ]
+    },
+    {
+      "name": "PregradUserFundV1",
+      "discriminator": [
+        38,
+        111,
+        99,
+        224,
+        31,
+        131,
+        73,
+        48
+      ]
+    },
+    {
+      "name": "ProfileDataV1",
+      "discriminator": [
+        155,
+        70,
+        151,
+        145,
+        230,
+        7,
+        94,
+        241
+      ]
+    },
+    {
+      "name": "ProfileVestV1",
+      "discriminator": [
+        52,
+        165,
+        85,
+        153,
+        201,
+        225,
+        173,
+        172
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "MigrationEvent",
+      "discriminator": [
+        255,
+        202,
+        76,
+        147,
+        91,
+        231,
+        73,
+        22
+      ]
+    },
+    {
+      "name": "PregradAddFundEvent",
+      "discriminator": [
+        76,
+        38,
+        255,
+        53,
+        78,
+        57,
+        38,
+        14
+      ]
+    },
+    {
+      "name": "PregradCompleteEvent",
+      "discriminator": [
+        220,
+        102,
+        173,
+        190,
+        241,
+        11,
+        10,
+        204
+      ]
+    },
+    {
+      "name": "PregradDeleteEvent",
+      "discriminator": [
+        80,
+        117,
+        137,
+        8,
+        193,
+        180,
+        42,
+        254
+      ]
+    },
+    {
+      "name": "PregradDistributeTokensEvent",
+      "discriminator": [
+        7,
+        10,
+        5,
+        65,
+        75,
+        50,
+        105,
+        245
+      ]
+    },
+    {
+      "name": "PregradRefundUserEvent",
+      "discriminator": [
+        1,
+        239,
+        28,
+        49,
+        209,
+        55,
+        136,
+        158
+      ]
+    },
+    {
+      "name": "ProfileFeeChangeEvent",
+      "discriminator": [
+        158,
+        20,
+        207,
+        56,
+        199,
+        35,
+        218,
+        171
+      ]
+    },
+    {
+      "name": "ProfileOwnerChangeEvent",
+      "discriminator": [
+        233,
+        9,
+        59,
+        126,
+        110,
+        99,
+        10,
+        163
+      ]
+    },
+    {
+      "name": "ProfileSelfCustodyEvent",
+      "discriminator": [
+        194,
+        56,
+        81,
+        32,
+        227,
+        6,
+        189,
+        149
+      ]
+    },
+    {
+      "name": "ProfileTokenVestingEvent",
+      "discriminator": [
+        215,
+        232,
+        225,
+        15,
+        49,
+        224,
+        76,
+        5
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvariantViolated",
+      "msg": "Invariant violated"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidAdmin",
+      "msg": "Admin is not valid"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidConfigFeePpm",
+      "msg": "Config: invalid fee ppm"
+    },
+    {
+      "code": 6003,
+      "name": "FunctionNotEnabled",
+      "msg": "Function not enabled"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidInputParams",
+      "msg": "Input params are invalid or are not expected"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidAccounts",
+      "msg": "Invalid accounts"
+    },
+    {
+      "code": 6006,
+      "name": "PregradInvalidStateForAction",
+      "msg": "Pre-graduation in invalid state for action"
+    },
+    {
+      "code": 6007,
+      "name": "PregradUserFundInvalidStateForAction",
+      "msg": "Pre-graduation user fund in invalid state for action"
+    },
+    {
+      "code": 6008,
+      "name": "ProfileInvalidStateForAction",
+      "msg": "Profile in invalid state for action"
+    },
+    {
+      "code": 6009,
+      "name": "ProfileVestInvalidStateForAction",
+      "msg": "Profile vest in invalid state for action"
+    },
+    {
+      "code": 6010,
+      "name": "CooldownNotOverForOwner",
+      "msg": "Cooldown not over for owner"
+    },
+    {
+      "code": 6011,
+      "name": "CooldownNotOverForVesting",
+      "msg": "Cooldown not over for vesting"
+    },
+    {
+      "code": 6012,
+      "name": "CooldownNotOverForSelfCustody",
+      "msg": "Cooldown not over for self-custody"
+    },
+    {
+      "code": 6013,
+      "name": "NotProfileOwner",
+      "msg": "Not the profile owner"
+    },
+    {
+      "code": 6014,
+      "name": "InvalidTokenMint",
+      "msg": "Invalid token mint"
+    }
+  ],
+  "types": [
+    {
+      "name": "AddFundParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ClaimProfileParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "social_type",
+            "type": {
+              "defined": {
+                "name": "SocialType"
+              }
+            }
+          },
+          {
+            "name": "social_id",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ConfigDataV1",
+      "docs": [
+        "Global config data"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "admin_profile_auth",
+            "docs": [
+              "Admin authority for profile related actions (i.e. claim/unclaim profile, vest tokens)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "admin_migration_auth",
+            "docs": [
+              "Admin authority for liquidity migration related actions (i.e. execute migration, lock liquidity)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "admin_fee_auth",
+            "docs": [
+              "Admin authority for fee related actions (i.e. collect fees, transfer protocol fees)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pregrad_fee_ppm",
+            "docs": [
+              "Fee on pre-graduation fund deposits in PPM"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "pregrad_min_fund_amount",
+            "docs": [
+              "Min fund amount for pre-graduation in lamports"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_min_hours",
+            "docs": [
+              "Min hours that can be set for pre-graduation duration"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "pregrad_max_hours",
+            "docs": [
+              "Max hours that can be set for pre-graduation duration"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "pregrad_min_threshold_amount",
+            "docs": [
+              "Min threshold amount that can be set for pre-graduation (in lamports)",
+              "(i.e. total fund/deposit amount >= threshold amount to graduate)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_max_threshold_amount",
+            "docs": [
+              "Maximum threshold amount that can be set for pre-graduation (in lamports)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_profile_token_supply",
+            "docs": [
+              "Token supply reserved for the profile owner"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_liquidity_token_supply",
+            "docs": [
+              "Token supply reserved for the liquidity pool (i.e. Raydium)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_token_supply",
+            "docs": [
+              "Token supply that will be distributed to the pre-graduation depositors"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "fee_protocol_proportion_ppm",
+            "docs": [
+              "Proportion of the trading fees that should go to the protocol in PPM"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "raydium_fee_config",
+            "docs": [
+              "Raydium fee config that can be used for the liquidity pool"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "raydium_fee_amount",
+            "docs": [
+              "Fee amount to temporarily move to profile_lp to pay for the Raydium pool creation fee",
+              "Typically, this amount is the pool fee creation fee + 0.1 SOL"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "enable_pregrad",
+            "docs": [
+              "Whether pre-graduation actions are enabled"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "enable_migration",
+            "docs": [
+              "Whether liquidity migration actions are enabled"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "enable_profile_owner",
+            "docs": [
+              "Whether profile owner actions are enabled"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "enable_fee",
+            "docs": [
+              "Whether fee related actions are enabled"
+            ],
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InitConfigParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin_profile_auth",
+            "type": "pubkey"
+          },
+          {
+            "name": "admin_migration_auth",
+            "type": "pubkey"
+          },
+          {
+            "name": "admin_fee_auth",
+            "type": "pubkey"
+          },
+          {
+            "name": "pregrad_fee_ppm",
+            "type": "u32"
+          },
+          {
+            "name": "pregrad_min_fund_amount",
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_min_hours",
+            "type": "u32"
+          },
+          {
+            "name": "pregrad_max_hours",
+            "type": "u32"
+          },
+          {
+            "name": "pregrad_min_threshold_amount",
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_max_threshold_amount",
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_profile_token_supply",
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_liquidity_token_supply",
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_token_supply",
+            "type": "u64"
+          },
+          {
+            "name": "fee_protocol_proportion_ppm",
+            "type": "u32"
+          },
+          {
+            "name": "raydium_fee_config",
+            "type": "pubkey"
+          },
+          {
+            "name": "raydium_fee_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InitPregradParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_name",
+            "docs": [
+              "Name of the token"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "token_symbol",
+            "docs": [
+              "Symbol/ticker of the token"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "token_uri",
+            "docs": [
+              "URI used in the token metadata"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "social_id",
+            "docs": [
+              "Social UUID"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "social_type",
+            "docs": [
+              "Social type (i.e. X, TikTok, Instagram, etc.)"
+            ],
+            "type": {
+              "defined": {
+                "name": "SocialType"
+              }
+            }
+          },
+          {
+            "name": "end_time",
+            "docs": [
+              "End time in epoch seconds"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "graduation_amount",
+            "docs": [
+              "Total amount of lamports that needs to be deposited for the pre-grad to graduate"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "initial_fund_amount",
+            "docs": [
+              "Amount of lamports that the payer of InitPregrad is depositing"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "profile_token_supply",
+            "type": "u64"
+          },
+          {
+            "name": "liquidity_token_supply",
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_token_supply",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LockedCpLiquidityState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "locked_lp_amount",
+            "docs": [
+              "The Locked liquidity amount without claimed lp fee"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "claimed_lp_amount",
+            "docs": [
+              "Claimed lp fee amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "unclaimed_lp_amount",
+            "docs": [
+              "Unclaimed lp fee amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "last_lp",
+            "docs": [
+              "Last updated cp pool lp total supply"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "last_k",
+            "docs": [
+              "Last updated cp pool k"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "recent_epoch",
+            "docs": [
+              "Account update recent epoch"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "pool_id",
+            "docs": [
+              "The ID of the pool with which this record is connected"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_nft_mint",
+            "docs": [
+              "nft mint to check who has authority to collect fee"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "locked_owner",
+            "docs": [
+              "The owner who has locked liquidity"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "locked_lp_mint",
+            "docs": [
+              "The mint of locked lp token"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "padding",
+            "docs": [
+              "Unused bytes for future upgrades."
+            ],
+            "type": {
+              "array": [
+                "u64",
+                8
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "MigrationEvent",
+      "docs": [
+        "Emitted when migration occurs"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_0_amount",
+            "docs": [
+              "Amount of token 0"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "token_1_amount",
+            "docs": [
+              "Amount of token 1"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time migration event occurred (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolState",
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "c",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amm_config",
+            "docs": [
+              "Which config the pool belongs"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_creator",
+            "docs": [
+              "pool creator"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_0_vault",
+            "docs": [
+              "Token A"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_1_vault",
+            "docs": [
+              "Token B"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_mint",
+            "docs": [
+              "Pool tokens are issued when A or B tokens are deposited.",
+              "Pool tokens can be withdrawn back to the original A or B token."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_0_mint",
+            "docs": [
+              "Mint information for token A"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_1_mint",
+            "docs": [
+              "Mint information for token B"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_0_program",
+            "docs": [
+              "token_0 program"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_1_program",
+            "docs": [
+              "token_1 program"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "observation_key",
+            "docs": [
+              "observation account to store oracle data"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "auth_bump",
+            "type": "u8"
+          },
+          {
+            "name": "status",
+            "docs": [
+              "Bitwise representation of the state of the pool",
+              "bit0, 1: disable deposit(vaule is 1), 0: normal",
+              "bit1, 1: disable withdraw(vaule is 2), 0: normal",
+              "bit2, 1: disable swap(vaule is 4), 0: normal"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "lp_mint_decimals",
+            "type": "u8"
+          },
+          {
+            "name": "mint_0_decimals",
+            "docs": [
+              "mint0 and mint1 decimals"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "mint_1_decimals",
+            "type": "u8"
+          },
+          {
+            "name": "lp_supply",
+            "docs": [
+              "lp mint supply"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fees_token_0",
+            "docs": [
+              "The amounts of token_0 and token_1 that are owed to the liquidity provider."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fees_token_1",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fees_token_0",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fees_token_1",
+            "type": "u64"
+          },
+          {
+            "name": "open_time",
+            "docs": [
+              "The timestamp allowed for swap in the pool."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "docs": [
+              "padding for future updates"
+            ],
+            "type": {
+              "array": [
+                "u64",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PregradAddFundEvent",
+      "docs": [
+        "Emitted when a user adds fund to a pre-graduation"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "total_users",
+            "docs": [
+              "Total users"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "total_fund_amount",
+            "docs": [
+              "Total fund amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_user_fund_amount",
+            "docs": [
+              "Total fund amount added so far by the user"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "fee_amount",
+            "docs": [
+              "Fee amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time fund event occurred (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PregradCompleteEvent",
+      "docs": [
+        "Emitted when a pre-graduation is completed"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "total_users",
+            "docs": [
+              "Total users"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "total_fund_amount",
+            "docs": [
+              "Total fund amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "distributed_users",
+            "docs": [
+              "Distributed users"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "distributed_fund_amount",
+            "docs": [
+              "Distributed fund amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "distributed_token_amount",
+            "docs": [
+              "Distributed token amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fee_amount",
+            "docs": [
+              "Protocol fee amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time complete event occurred (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PregradDataV1",
+      "docs": [
+        "Data account that keeps track of the pre-graduation phase"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "social",
+            "docs": [
+              "Social type + uuid"
+            ],
+            "type": {
+              "defined": {
+                "name": "SocialTypeId"
+              }
+            }
+          },
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token tied to the pre-graduation / profile"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "end_time",
+            "docs": [
+              "End time of the pre-graduation in epoch seconds"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "graduation_threshold_amount",
+            "docs": [
+              "Amount required for the pre-grad to graduate (in lamports)",
+              "(i.e. total fund/deposit amount >= threshold amount to graduate)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "profile_token_supply",
+            "docs": [
+              "Token supply reserved for the profile owner"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "liquidity_token_supply",
+            "docs": [
+              "Token supply reserved for the liquidity pool (i.e. Raydium)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "pregrad_token_supply",
+            "docs": [
+              "Token supply that will be distributed to the pre-graduation depositors"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "docs": [
+              "Current status of the pre-graduation"
+            ],
+            "type": {
+              "defined": {
+                "name": "PregradStatus"
+              }
+            }
+          },
+          {
+            "name": "total_users",
+            "docs": [
+              "Total number of users that have funded/deposited into the pre-graduation"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "total_fund_amount",
+            "docs": [
+              "Total amount of funds that have been deposited into the pre-graduation (in lamports)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "refunded_users",
+            "docs": [
+              "Number of users that have been refunded"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "refunded_fund_amount",
+            "docs": [
+              "Total amount of funds/deposits that have been refunded (in lamports)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "distributed_users",
+            "docs": [
+              "Number of users that have been distributed tokens"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "distributed_fund_amount",
+            "docs": [
+              "Total amount of funds/deposits that have been distributed (in lamports)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "distributed_token_amount",
+            "docs": [
+              "Total amount of tokens that have been distributed"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fee_amount",
+            "docs": [
+              "Amount of protocol fees that have been collected (in lamports)"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PregradDeleteEvent",
+      "docs": [
+        "Emitted when a pre-graduation is deleted"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "total_users",
+            "docs": [
+              "Total users"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "total_fund_amount",
+            "docs": [
+              "Total fund amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "refunded_users",
+            "docs": [
+              "Refunded users"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "refunded_fund_amount",
+            "docs": [
+              "Refunded fund amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time delete event occurred (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PregradDistributeTokensEvent",
+      "docs": [
+        "Emitted when a pre-graduation distributes tokens to a user"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "user_token_amount",
+            "docs": [
+              "Amount of tokens distributed to the user"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "user_fund_amount",
+            "docs": [
+              "Amount of fund user added for the token distribution"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time distribute event occurred (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PregradRefundUserEvent",
+      "docs": [
+        "Emitted when a pre-graduation refunds a user"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "user_fund_amount",
+            "docs": [
+              "Amount of fund user added for the token distribution"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time refund event occurred (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PregradStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "RefundStart"
+          },
+          {
+            "name": "RefundComplete"
+          },
+          {
+            "name": "DistributionStart"
+          },
+          {
+            "name": "DistributionComplete"
+          },
+          {
+            "name": "Complete"
+          },
+          {
+            "name": "Migrated"
+          },
+          {
+            "name": "LiquidityLocked"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PregradUserFundV1",
+      "docs": [
+        "Per-user and per-pregrad account to hold the user's fund amount",
+        "Should only exist during the pre-graduation phase"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "pregrad_data",
+            "docs": [
+              "Pre-graduation data account"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "fund_amount",
+            "docs": [
+              "Amount of funds/deposits that this user has deposited into the pre-graduation (in lamports)"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProfileDataV1",
+      "docs": [
+        "Data account that keeps track of the profile"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "social",
+            "docs": [
+              "Social type + uuid"
+            ],
+            "type": {
+              "defined": {
+                "name": "SocialTypeId"
+              }
+            }
+          },
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token tied to the profile"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pregrad_data",
+            "docs": [
+              "Pre-graduation data account"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "allocation_amount",
+            "docs": [
+              "Amount of tokens that is reserved/allocated to the profile owner",
+              "This value is fixed at initialization and should not change"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "available_amount",
+            "docs": [
+              "Amount of tokens that are available for the profile owner to vest",
+              "available_amount = allocation_amount - vested_amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "vested_amount",
+            "docs": [
+              "Amount of tokens that have been vested"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "last_vesting_update_time",
+            "docs": [
+              "Last time vesting occurred/updated (in epoch seconds)"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "protocol_lp_token_fee_amount",
+            "docs": [
+              "Amount of tokens collected from Raydium's LP that protocol owns as fees"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "protocol_lp_quote_fee_amount",
+            "docs": [
+              "Amount of lamports collected from Raydium's LP that protocol owns as fees",
+              "Quote token should be WSOL"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "owner_lp_token_fee_amount",
+            "docs": [
+              "Amount of tokens collected from Raydium's LP that profile owner owns as fees"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "owner_lp_quote_fee_amount",
+            "docs": [
+              "Amount of lamports collected from Raydium's LP that profile owner owns as fees",
+              "Quote token should be WSOL"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "profile_owner",
+            "docs": [
+              "Profile owner's wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "last_owner_social_update_time",
+            "docs": [
+              "Last time the profile_owner address was updated (in epoch seconds)",
+              "This happens when the profile owner claims or the protocol unclaims the profile"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProfileFeeChangeEvent",
+      "docs": [
+        "Emitted when fee amount changes"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "protocol_lp_token_fee_amount",
+            "docs": [
+              "Amount of protocol LP token fees"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "protocol_lp_quote_fee_amount",
+            "docs": [
+              "Amount of protocol LP quote fees"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "owner_lp_token_fee_amount",
+            "docs": [
+              "Amount of owner LP token fees"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "owner_lp_quote_fee_amount",
+            "docs": [
+              "Amount of owner LP quote fees"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time fee event occurred (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProfileOwnerChangeEvent",
+      "docs": [
+        "Emitted when profile owner changes"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "old_owner",
+            "docs": [
+              "Old profile owner"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "new_owner",
+            "docs": [
+              "New profile owner"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time the profile_owner address was updated (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProfileSelfCustodyEvent",
+      "docs": [
+        "Emitted when profile owner signals self-custody"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "token_amount",
+            "docs": [
+              "Amount of tokens that are subject to self-custody"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time self-custody event occurred (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProfileTokenVestingEvent",
+      "docs": [
+        "Emitted when profile token amounts change"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "allocation_amount",
+            "docs": [
+              "Amount of tokens that is reserved/allocated to the profile owner"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "available_amount",
+            "docs": [
+              "Amount of tokens that are available for the profile owner to vest"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "vested_amount",
+            "docs": [
+              "Amount of tokens that have been vested"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reason",
+            "docs": [
+              "Reason for vesting"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "event_time",
+            "docs": [
+              "Time vesting occurred/updated (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProfileVestV1",
+      "docs": [
+        "Account that keeps track of the profile owner's vested tokens and token self-custody process"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "signal_amount",
+            "docs": [
+              "Amount of tokens that the profile owner has signaled to be self-custody",
+              "This amount can be self-custodied after the self-custody cooldown period"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "last_signal_time",
+            "docs": [
+              "Last time the profile owner signaled to self-custody the tokens (in epoch seconds)"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SignalSelfCustodyParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SocialType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "X"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SocialTypeId",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "social_type",
+            "type": {
+              "defined": {
+                "name": "SocialType"
+              }
+            }
+          },
+          {
+            "name": "social_id",
+            "type": {
+              "array": [
+                "u8",
+                28
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TransferFeesParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "fee_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TransferProtocolFeesParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "fee_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UpdateConfigParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "new_admin_profile",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_admin_migration",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_admin_fee",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_pregrad_fee_ppm",
+            "type": "u32"
+          },
+          {
+            "name": "new_pregrad_min_fund_amount",
+            "type": "u64"
+          },
+          {
+            "name": "new_pregrad_min_hours",
+            "type": "u32"
+          },
+          {
+            "name": "new_pregrad_max_hours",
+            "type": "u32"
+          },
+          {
+            "name": "new_pregrad_min_threshold_amount",
+            "type": "u64"
+          },
+          {
+            "name": "new_pregrad_max_threshold_amount",
+            "type": "u64"
+          },
+          {
+            "name": "new_pregrad_profile_token_supply",
+            "type": "u64"
+          },
+          {
+            "name": "new_pregrad_liquidity_token_supply",
+            "type": "u64"
+          },
+          {
+            "name": "new_pregrad_token_supply",
+            "type": "u64"
+          },
+          {
+            "name": "new_fee_protocol_proportion_ppm",
+            "type": "u32"
+          },
+          {
+            "name": "new_raydium_fee_config",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_raydium_fee_amount",
+            "type": "u64"
+          },
+          {
+            "name": "new_enable_pregrad",
+            "type": "bool"
+          },
+          {
+            "name": "new_enable_migration",
+            "type": "bool"
+          },
+          {
+            "name": "new_enable_profile_owner",
+            "type": "bool"
+          },
+          {
+            "name": "new_enable_fee",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VestTokensParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "vest_amount",
+            "type": "u64"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ]
+}

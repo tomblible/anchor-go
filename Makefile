@@ -48,6 +48,9 @@ moonit:build
 	anchor idl convert ./idl/dex/moonit.json >./idl/dex/moonit_new.json
 	./anchor-go -src=./idl/dex/moonit_new.json -pkg=moonit -dst=./generated/prd/moonit
 
+ego_one:build
+	./anchor-go -src=./idl/dex/ego_one.json -pkg=ego_one -dst=./generated/prd/ego_one
+
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 
 	
