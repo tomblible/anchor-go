@@ -68,7 +68,7 @@ func (inst MigrateBinArray) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *MigrateBinArray) Validate() error {
-	if len(inst.AccountMetaSlice) != 1 {
+	if len(inst.AccountMetaSlice) < 1 {
 		return errors.New("accounts slice has wrong length: expected 1 accounts")
 	}
 

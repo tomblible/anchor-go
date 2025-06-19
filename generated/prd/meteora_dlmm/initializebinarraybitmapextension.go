@@ -123,7 +123,7 @@ func (inst InitializeBinArrayBitmapExtension) ValidateAndBuild() (*Instruction, 
 }
 
 func (inst *InitializeBinArrayBitmapExtension) Validate() error {
-	if len(inst.AccountMetaSlice) != 5 {
+	if len(inst.AccountMetaSlice) < 5 {
 		return errors.New("accounts slice has wrong length: expected 5 accounts")
 	}
 

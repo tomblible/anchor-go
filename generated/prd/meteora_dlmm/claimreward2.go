@@ -230,7 +230,7 @@ func (inst *ClaimReward2) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 10 {
+	if len(inst.AccountMetaSlice) < 10 {
 		return errors.New("accounts slice has wrong length: expected 10 accounts")
 	}
 

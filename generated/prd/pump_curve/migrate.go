@@ -376,7 +376,7 @@ func (inst Migrate) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *Migrate) Validate() error {
-	if len(inst.AccountMetaSlice) != 24 {
+	if len(inst.AccountMetaSlice) < 24 {
 		return errors.New("accounts slice has wrong length: expected 24 accounts")
 	}
 

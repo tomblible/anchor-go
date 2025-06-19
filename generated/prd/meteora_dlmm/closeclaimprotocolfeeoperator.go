@@ -94,7 +94,7 @@ func (inst CloseClaimProtocolFeeOperator) ValidateAndBuild() (*Instruction, erro
 }
 
 func (inst *CloseClaimProtocolFeeOperator) Validate() error {
-	if len(inst.AccountMetaSlice) != 3 {
+	if len(inst.AccountMetaSlice) < 3 {
 		return errors.New("accounts slice has wrong length: expected 3 accounts")
 	}
 

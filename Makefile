@@ -20,11 +20,11 @@ raydium_cpmm:build
 	./anchor-go -src=./idl/dex/raydium_cpmm_new.json -pkg=raydium_cpmm -dst=./generated/prd/raydium_cpmm
 
 whirlpool:build
-	anchor idl convert ./idl/dex/whirlpool.json >./idl/dex/whirlpool_new.json
-	./anchor-go -src=./idl/dex/whirlpool_new.json -pkg=whirlpool -dst=./generated/prd/whirlpool
+	# anchor idl convert ./idl/dex/whirlpool.json >./idl/dex/whirlpool_new.json
+	./anchor-go -src=./idl/dex/whirlpool.json -pkg=orca_whirlpool -dst=./generated/prd/whirlpool
 
 meteora_dynamic_bonding_curve:build
-	./anchor-go -src=./idl/dex/meteora_dynamic_bonding_curve.json -pkg=meteora_dynamic_bonding_curve -dst=./generated/prd/meteora_dynamic_bonding_curve
+	./anchor-go -src=./idl/dex/meteora_dynamic_bonding_curve.json -pkg=meteora_curve -dst=./generated/prd/meteora_dynamic_bonding_curve
 
 meteora_damm_v2:build
 	./anchor-go -src=./idl/dex/meteora_damm_v2.json -pkg=meteora_damm_v2 -dst=./generated/prd/meteora_damm_v2
@@ -50,6 +50,9 @@ moonit:build
 
 ego_one:build
 	./anchor-go -src=./idl/dex/ego_one.json -pkg=ego_one -dst=./generated/prd/ego_one
+
+vr:build
+	./anchor-go -src=./idl/dex/vr.json -pkg=vr -dst=./generated/fyd/vr
 
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 

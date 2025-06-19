@@ -504,7 +504,7 @@ func (inst *OpenPositionV2) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 22 {
+	if len(inst.AccountMetaSlice) < 22 {
 		return errors.New("accounts slice has wrong length: expected 22 accounts")
 	}
 

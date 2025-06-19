@@ -212,7 +212,7 @@ func (inst *Buy) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 11 {
+	if len(inst.AccountMetaSlice) < 11 {
 		return errors.New("accounts slice has wrong length: expected 11 accounts")
 	}
 

@@ -527,7 +527,7 @@ func (inst MigrateToCpswap) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *MigrateToCpswap) Validate() error {
-	if len(inst.AccountMetaSlice) != 28 {
+	if len(inst.AccountMetaSlice) < 28 {
 		return errors.New("accounts slice has wrong length: expected 28 accounts")
 	}
 

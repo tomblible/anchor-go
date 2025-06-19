@@ -201,7 +201,7 @@ func (inst ClosePosition) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *ClosePosition) Validate() error {
-	if len(inst.AccountMetaSlice) != 10 {
+	if len(inst.AccountMetaSlice) < 10 {
 		return errors.New("accounts slice has wrong length: expected 10 accounts")
 	}
 

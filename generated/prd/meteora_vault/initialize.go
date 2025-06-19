@@ -186,7 +186,7 @@ func (inst Initialize) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *Initialize) Validate() error {
-	if len(inst.AccountMetaSlice) != 8 {
+	if len(inst.AccountMetaSlice) < 8 {
 		return errors.New("accounts slice has wrong length: expected 8 accounts")
 	}
 

@@ -76,7 +76,7 @@ func (inst UpdateRewardInfos) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *UpdateRewardInfos) Validate() error {
-	if len(inst.AccountMetaSlice) != 1 {
+	if len(inst.AccountMetaSlice) < 1 {
 		return errors.New("accounts slice has wrong length: expected 1 accounts")
 	}
 

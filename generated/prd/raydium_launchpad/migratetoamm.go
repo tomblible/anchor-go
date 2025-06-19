@@ -590,7 +590,7 @@ func (inst *MigrateToAmm) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 32 {
+	if len(inst.AccountMetaSlice) < 32 {
 		return errors.New("accounts slice has wrong length: expected 32 accounts")
 	}
 

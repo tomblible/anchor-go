@@ -283,7 +283,7 @@ func (inst ClaimPositionFee) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *ClaimPositionFee) Validate() error {
-	if len(inst.AccountMetaSlice) != 15 {
+	if len(inst.AccountMetaSlice) < 15 {
 		return errors.New("accounts slice has wrong length: expected 15 accounts")
 	}
 

@@ -504,7 +504,7 @@ func (inst *InitializePermissionlessPoolWithFeeTier) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 26 {
+	if len(inst.AccountMetaSlice) < 26 {
 		return errors.New("accounts slice has wrong length: expected 26 accounts")
 	}
 

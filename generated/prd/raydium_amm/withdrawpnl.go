@@ -276,7 +276,7 @@ func (inst WithdrawPnl) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *WithdrawPnl) Validate() error {
-	if len(inst.AccountMetaSlice) != 17 {
+	if len(inst.AccountMetaSlice) < 17 {
 		return errors.New("accounts slice has wrong length: expected 17 accounts")
 	}
 

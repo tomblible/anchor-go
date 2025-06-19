@@ -122,7 +122,7 @@ func (inst *UpdateDynamicFeeParameters) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 4 {
+	if len(inst.AccountMetaSlice) < 4 {
 		return errors.New("accounts slice has wrong length: expected 4 accounts")
 	}
 

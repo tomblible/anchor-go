@@ -277,7 +277,7 @@ func (inst *Lock) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 13 {
+	if len(inst.AccountMetaSlice) < 13 {
 		return errors.New("accounts slice has wrong length: expected 13 accounts")
 	}
 

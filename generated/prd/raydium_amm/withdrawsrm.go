@@ -147,7 +147,7 @@ func (inst *WithdrawSrm) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 6 {
+	if len(inst.AccountMetaSlice) < 6 {
 		return errors.New("accounts slice has wrong length: expected 6 accounts")
 	}
 

@@ -480,7 +480,7 @@ func (inst *InitializeCustomizablePermissionlessConstantProductPool) Validate() 
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 25 {
+	if len(inst.AccountMetaSlice) < 25 {
 		return errors.New("accounts slice has wrong length: expected 25 accounts")
 	}
 

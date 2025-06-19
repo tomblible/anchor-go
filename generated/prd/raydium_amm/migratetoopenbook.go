@@ -328,7 +328,7 @@ func (inst MigrateToOpenBook) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *MigrateToOpenBook) Validate() error {
-	if len(inst.AccountMetaSlice) != 21 {
+	if len(inst.AccountMetaSlice) < 21 {
 		return errors.New("accounts slice has wrong length: expected 21 accounts")
 	}
 

@@ -880,7 +880,7 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 						})
 						body.Line()
 					}
-					body.If(Len(Id("inst").Dot("AccountMetaSlice")).Op("!=").Lit(instruction.Accounts.NumAccounts())).Block(
+					body.If(Len(Id("inst").Dot("AccountMetaSlice")).Op("<").Lit(instruction.Accounts.NumAccounts())).Block(
 						Return(
 							Qual("errors", "New").Call(Lit(Sf("accounts slice has wrong length: expected %d accounts", instruction.Accounts.NumAccounts()))),
 						),

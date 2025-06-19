@@ -448,7 +448,7 @@ func (inst *InitializePermissionedPool) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 24 {
+	if len(inst.AccountMetaSlice) < 24 {
 		return errors.New("accounts slice has wrong length: expected 24 accounts")
 	}
 

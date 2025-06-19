@@ -4,22 +4,6 @@ package pump_curve
 
 import ag_solanago "github.com/gagliardetto/solana-go"
 
-func FindBondingCurveAddress(mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x626f6e64696e672d6375727665
-	seeds = append(seeds, []byte{byte(0x62), byte(0x6f), byte(0x6e), byte(0x64), byte(0x69), byte(0x6e), byte(0x67), byte(0x2d), byte(0x63), byte(0x75), byte(0x72), byte(0x76), byte(0x65)})
-	// path: mint
-	seeds = append(seeds, mint.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindBondingCurveAddress(mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindBondingCurveAddress(mint)
-	return
-}
-
 func FindCreatorVaultAddress(bondingCurveCreator ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// const: 0x63726561746f722d7661756c74
@@ -49,5 +33,21 @@ func FindPoolAuthorityAddress(mint ag_solanago.PublicKey) (pda ag_solanago.Publi
 
 func MustFindPoolAuthorityAddress(mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
 	pda, _, _ = FindPoolAuthorityAddress(mint)
+	return
+}
+
+func FindBondingCurveAddress(mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x626f6e64696e672d6375727665
+	seeds = append(seeds, []byte{byte(0x62), byte(0x6f), byte(0x6e), byte(0x64), byte(0x69), byte(0x6e), byte(0x67), byte(0x2d), byte(0x63), byte(0x75), byte(0x72), byte(0x76), byte(0x65)})
+	// path: mint
+	seeds = append(seeds, mint.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindBondingCurveAddress(mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindBondingCurveAddress(mint)
 	return
 }

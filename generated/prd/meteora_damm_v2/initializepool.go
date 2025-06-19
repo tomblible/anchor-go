@@ -376,7 +376,7 @@ func (inst *InitializePool) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 20 {
+	if len(inst.AccountMetaSlice) < 20 {
 		return errors.New("accounts slice has wrong length: expected 20 accounts")
 	}
 

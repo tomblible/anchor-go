@@ -336,7 +336,7 @@ func (inst *MonitorStep) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 19 {
+	if len(inst.AccountMetaSlice) < 19 {
 		return errors.New("accounts slice has wrong length: expected 19 accounts")
 	}
 

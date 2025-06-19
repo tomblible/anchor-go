@@ -235,7 +235,7 @@ func (inst *CollectProtocolFee) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 12 {
+	if len(inst.AccountMetaSlice) < 12 {
 		return errors.New("accounts slice has wrong length: expected 12 accounts")
 	}
 

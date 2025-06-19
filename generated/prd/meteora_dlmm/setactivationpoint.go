@@ -95,7 +95,7 @@ func (inst *SetActivationPoint) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 2 {
+	if len(inst.AccountMetaSlice) < 2 {
 		return errors.New("accounts slice has wrong length: expected 2 accounts")
 	}
 

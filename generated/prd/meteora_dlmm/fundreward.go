@@ -217,7 +217,7 @@ func (inst *FundReward) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 9 {
+	if len(inst.AccountMetaSlice) < 9 {
 		return errors.New("accounts slice has wrong length: expected 9 accounts")
 	}
 

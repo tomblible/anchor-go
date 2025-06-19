@@ -307,7 +307,7 @@ func (inst *RemoveAllLiquidity) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) != 15 {
+	if len(inst.AccountMetaSlice) < 15 {
 		return errors.New("accounts slice has wrong length: expected 15 accounts")
 	}
 
