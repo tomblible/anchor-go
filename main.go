@@ -880,33 +880,34 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 						})
 						body.Line()
 					}
-					body.If(Len(Id("inst").Dot("AccountMetaSlice")).Op("<").Lit(instruction.Accounts.NumAccounts())).Block(
-						Return(
-							Qual("errors", "New").Call(Lit(Sf("accounts slice has wrong length: expected %d accounts", instruction.Accounts.NumAccounts()))),
-						),
-					)
-					body.Line()
-					body.Comment("Check whether all (required) accounts are set:")
-					body.BlockFunc(func(accountValidationBlock *Group) {
-						instruction.Accounts.Walk("", nil, nil, func(groupPath string, accountIndex int, parentGroup *IdlAccounts, ia *IdlAccount) bool {
-							exportedAccountName := ToCamel(filepath.Join(groupPath, ia.Name))
+					if instruction.Accounts.NumAccounts() > 0 {
+						body.If(Len(Id("inst").Dot("AccountMetaSlice")).Op("<").Lit(instruction.Accounts.NumAccounts())).Block(
+							Return(
+								Qual("errors", "New").Call(Lit(Sf("accounts slice has wrong length: expected %d accounts", instruction.Accounts.NumAccounts()))),
+							),
+						)
+						body.Line()
+						body.Comment("Check whether all (required) accounts are set:")
+						body.BlockFunc(func(accountValidationBlock *Group) {
+							instruction.Accounts.Walk("", nil, nil, func(groupPath string, accountIndex int, parentGroup *IdlAccounts, ia *IdlAccount) bool {
+								exportedAccountName := ToCamel(filepath.Join(groupPath, ia.Name))
 
-							if ia.Optional {
-								accountValidationBlock.Line().Commentf(
-									"[%v] = %s is optional",
-									accountIndex,
-									exportedAccountName,
-								).Line()
-							} else {
-								accountValidationBlock.If(Id("inst").Dot("AccountMetaSlice").Index(Lit(accountIndex)).Op("==").Nil()).Block(
-									Return(Qual("errors", "New").Call(Lit(Sf("accounts.%s is not set", exportedAccountName)))),
-								)
-							}
+								if ia.Optional {
+									accountValidationBlock.Line().Commentf(
+										"[%v] = %s is optional",
+										accountIndex,
+										exportedAccountName,
+									).Line()
+								} else {
+									accountValidationBlock.If(Id("inst").Dot("AccountMetaSlice").Index(Lit(accountIndex)).Op("==").Nil()).Block(
+										Return(Qual("errors", "New").Call(Lit(Sf("accounts.%s is not set", exportedAccountName)))),
+									)
+								}
 
-							return true
+								return true
+							})
 						})
-					})
-
+					}
 					body.Return(Nil())
 				})
 			file.Add(code.Line())

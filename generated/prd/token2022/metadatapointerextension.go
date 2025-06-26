@@ -3,7 +3,6 @@
 package token2022
 
 import (
-	"errors"
 	ag_binary "github.com/gagliardetto/binary"
 	ag_solanago "github.com/gagliardetto/solana-go"
 	ag_format "github.com/gagliardetto/solana-go/text/format"
@@ -55,13 +54,6 @@ func (inst MetadataPointerExtension) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *MetadataPointerExtension) Validate() error {
-	if len(inst.AccountMetaSlice) < 0 {
-		return errors.New("accounts slice has wrong length: expected 0 accounts")
-	}
-
-	// Check whether all (required) accounts are set:
-	{
-	}
 	return nil
 }
 
