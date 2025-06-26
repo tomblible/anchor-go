@@ -53,6 +53,9 @@ ego_one:build
 
 vr:build
 	./anchor-go -src=./idl/dex/vr.json -pkg=vr -dst=./generated/fyd/vr
+	
+token2022:build
+	./anchor-go -src=./idl/solana/spl/token2022.json -pkg=token2022 -dst=./generated/prd/token2022
 
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 

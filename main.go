@@ -1229,7 +1229,6 @@ func GenerateClientFromProgramIDL(idl IDL) ([]*FileWrapper, error) {
 									return true
 								}
 								accountLower := ToLowerCamel(account.Name)
-								fmt.Println("addresses:", addresses, `ToCamel(account.Name)+"PDA"`, ToCamel(account.Name)+"PDA")
 								if addresses[ToCamel(account.Name)+"PDA"] != "" {
 									//在instructionBuilder中已经设置的PDA账户
 									return true

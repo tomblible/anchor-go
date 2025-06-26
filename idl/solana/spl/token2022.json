@@ -1,0 +1,2500 @@
+{
+    "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "metadata": {
+        "name": "token2022_program",
+        "version": "0.0.0",
+        "spec": "0.1.0"
+    },
+    "instructions": [
+        {
+            "name": "initialize_mint",
+            "docs": [
+                "Initializes a new mint and optionally deposits all the newly minted",
+                "tokens in an account.",
+                "",
+                "The `InitializeMint` instruction requires no signers and MUST be",
+                "included within the same Transaction as the system program's",
+                "`CreateAccount` instruction that creates the account being initialized.",
+                "Otherwise another party can acquire ownership of the uninitialized",
+                "account."
+            ],
+            "discriminator": [
+                209,
+                42,
+                195,
+                4,
+                129,
+                85,
+                209,
+                44
+            ],
+            "accounts": [
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The mint to initialize."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "sys_var_rent_pubkey",
+                    "docs": [
+                        "Rent sysvar."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "decimals",
+                    "docs": [
+                        "Number of base 10 digits to the right of the decimal place."
+                    ],
+                    "type": "u8"
+                },
+                {
+                    "name": "mint_authority",
+                    "docs": [
+                        "The authority/multisignature to mint tokens."
+                    ],
+                    "type": "pubkey"
+                },
+                {
+                    "name": "freeze_authority",
+                    "docs": [
+                        "The freeze authority/multisignature of the mint."
+                    ],
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "initialize_account",
+            "docs": [
+                "Initializes a new account to hold tokens.  If this account is associated",
+                "with the native mint then the token balance of the initialized account",
+                "will be equal to the amount of SOL in the account. If this account is",
+                "associated with another mint, that mint must be initialized before this",
+                "command can succeed.",
+                "",
+                "The `InitializeAccount` instruction requires no signers and MUST be",
+                "included within the same Transaction as the system program's",
+                "`CreateAccount` instruction that creates the account being initialized.",
+                "Otherwise another party can acquire ownership of the uninitialized",
+                "account."
+            ],
+            "discriminator": [
+                74,
+                115,
+                99,
+                93,
+                197,
+                69,
+                103,
+                7
+            ],
+            "accounts": [
+                {
+                    "name": "account",
+                    "docs": [
+                        "The account to initialize."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The mint this account will be associated with."
+                    ]
+                },
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The new account's owner/multisignature."
+                    ]
+                },
+                {
+                    "name": "sys_var_rent_pubkey",
+                    "docs": [
+                        "Rent sysvar."
+                    ]
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "initialize_multisig",
+            "docs": [
+                "Initializes a multisignature account with N provided signers.",
+                "",
+                "Multisignature accounts can used in place of any single owner/delegate",
+                "accounts in any token instruction that require an owner/delegate to be",
+                "present.  The variant field represents the number of signers (M)",
+                "required to validate this multisignature account.",
+                "",
+                "The `InitializeMultisig` instruction requires no signers and MUST be",
+                "included within the same Transaction as the system program's",
+                "`CreateAccount` instruction that creates the account being initialized.",
+                "Otherwise another party can acquire ownership of the uninitialized",
+                "account."
+            ],
+            "discriminator": [
+                220,
+                130,
+                117,
+                21,
+                27,
+                227,
+                78,
+                213
+            ],
+            "accounts": [
+                {
+                    "name": "account",
+                    "docs": [
+                        "The multisignature account to initialize."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "sys_var_rent_pubkey",
+                    "docs": [
+                        "Rent sysvar."
+                    ]
+                },
+                {
+                    "name": "signers",
+                    "docs": [
+                        "..2+N The signer accounts, must equal to N where 1 <= N <=11"
+                    ],
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "m",
+                    "docs": [
+                        "The number of signers (M) required to validate this multisignature",
+                        "account."
+                    ],
+                    "type": "u8"
+                }
+            ]
+        },
+        {
+            "name": "transfer",
+            "docs": [
+                "Transfers tokens from one account to another either directly or via a",
+                "delegate.  If this account is associated with the native mint then equal",
+                "amounts of SOL and Tokens will be transferred to the destination",
+                "account."
+            ],
+            "discriminator": [
+                163,
+                52,
+                200,
+                231,
+                140,
+                3,
+                69,
+                186
+            ],
+            "accounts": [
+                {
+                    "name": "source",
+                    "docs": [
+                        "The source account."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "destination",
+                    "docs": [
+                        "The destination account."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The source account owner/delegate."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "docs": [
+                        "The amount of tokens to transfer."
+                    ],
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "approve",
+            "docs": [
+                "Approves a delegate.  A delegate is given the authority over tokens on",
+                "behalf of the source account's owner."
+            ],
+            "discriminator": [
+                69,
+                74,
+                217,
+                36,
+                115,
+                117,
+                97,
+                76
+            ],
+            "accounts": [
+                {
+                    "name": "source",
+                    "docs": [
+                        "The source account."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "delegate",
+                    "docs": [
+                        "The delegate."
+                    ]
+                },
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The source account owner."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "docs": [
+                        "The amount of tokens the delegate is approved for."
+                    ],
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "revoke",
+            "docs": [
+                "Revokes the delegate's authority."
+            ],
+            "discriminator": [
+                170,
+                23,
+                31,
+                34,
+                133,
+                173,
+                93,
+                242
+            ],
+            "accounts": [
+                {
+                    "name": "source",
+                    "docs": [
+                        "The source account."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The source account's owner."
+                    ]
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "set_authority",
+            "docs": [
+                "Sets a new authority of a mint or account."
+            ],
+            "discriminator": [
+                133,
+                250,
+                37,
+                21,
+                110,
+                163,
+                26,
+                121
+            ],
+            "accounts": [
+                {
+                    "name": "subject",
+                    "docs": [
+                        "The mint or account to change the authority of."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "docs": [
+                        "The current authority of the mint or account."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "authority_type",
+                    "docs": [
+                        "The type of authority to update."
+                    ],
+                    "type": {
+                        "defined": {
+                            "name": "AuthorityType"
+                        }
+                    }
+                },
+                {
+                    "name": "new_authority",
+                    "docs": [
+                        "The new authority."
+                    ],
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "mint_to",
+            "docs": [
+                "Mints new tokens to an account.  The native mint does not support",
+                "minting."
+            ],
+            "discriminator": [
+                241,
+                34,
+                48,
+                186,
+                37,
+                179,
+                123,
+                192
+            ],
+            "accounts": [
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The mint."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "destination",
+                    "docs": [
+                        "The account to mint tokens to."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "docs": [
+                        "The mint's minting authority."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "docs": [
+                        "The amount of new tokens to mint."
+                    ],
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "burn",
+            "docs": [
+                "Burns tokens by removing them from an account.  `Burn` does not support",
+                "accounts associated with the native mint, use `CloseAccount` instead."
+            ],
+            "discriminator": [
+                116,
+                110,
+                29,
+                56,
+                107,
+                219,
+                42,
+                93
+            ],
+            "accounts": [
+                {
+                    "name": "source",
+                    "docs": [
+                        "The account to burn from."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The token mint."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The account's owner/delegate."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "docs": [
+                        "The amount of tokens to burn."
+                    ],
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "close_account",
+            "docs": [
+                "Close an account by transferring all its SOL to the destination account.",
+                "Non-native accounts may only be closed if its token amount is zero."
+            ],
+            "discriminator": [
+                125,
+                255,
+                149,
+                14,
+                110,
+                34,
+                72,
+                24
+            ],
+            "accounts": [
+                {
+                    "name": "account",
+                    "docs": [
+                        "The account to close."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "destination",
+                    "docs": [
+                        "The destination account."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The account's owner."
+                    ]
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "freeze_account",
+            "docs": [
+                "Freeze an Initialized account using the Mint's freeze_authority (if set)."
+            ],
+            "discriminator": [
+                253,
+                75,
+                82,
+                133,
+                167,
+                238,
+                43,
+                130
+            ],
+            "accounts": [
+                {
+                    "name": "account",
+                    "docs": [
+                        "The account to freeze."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The token mint."
+                    ]
+                },
+                {
+                    "name": "authority",
+                    "docs": [
+                        "The mint freeze authority."
+                    ]
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "thaw_account",
+            "docs": [
+                "Thaw a Frozen account using the Mint's freeze_authority (if set)."
+            ],
+            "discriminator": [
+                115,
+                152,
+                79,
+                213,
+                213,
+                169,
+                184,
+                35
+            ],
+            "accounts": [
+                {
+                    "name": "account",
+                    "docs": [
+                        "The account to thaw."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The token mint."
+                    ]
+                },
+                {
+                    "name": "authority",
+                    "docs": [
+                        "The mint freeze authority."
+                    ]
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "transfer_checked",
+            "docs": [
+                "Transfers tokens from one account to another either directly or via a",
+                "delegate.  If this account is associated with the native mint then equal",
+                "amounts of SOL and Tokens will be transferred to the destination",
+                "account.",
+                "",
+                "This instruction differs from Transfer in that the token mint and",
+                "decimals value is checked by the caller.  This may be useful when",
+                "creating transactions offline or within a hardware wallet."
+            ],
+            "discriminator": [
+                119,
+                250,
+                202,
+                24,
+                253,
+                135,
+                244,
+                121
+            ],
+            "accounts": [
+                {
+                    "name": "source",
+                    "docs": [
+                        "The source account."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The token mint."
+                    ]
+                },
+                {
+                    "name": "destination",
+                    "docs": [
+                        "The destination account."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The source account's owner/delegate."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "docs": [
+                        "The amount of tokens to transfer."
+                    ],
+                    "type": "u64"
+                },
+                {
+                    "name": "decimals",
+                    "docs": [
+                        "Expected number of base 10 digits to the right of the decimal place."
+                    ],
+                    "type": "u8"
+                }
+            ]
+        },
+        {
+            "name": "approve_checked",
+            "docs": [
+                "Approves a delegate.  A delegate is given the authority over tokens on",
+                "behalf of the source account's owner.",
+                "",
+                "This instruction differs from Approve in that the token mint and",
+                "decimals value is checked by the caller.  This may be useful when",
+                "creating transactions offline or within a hardware wallet."
+            ],
+            "discriminator": [
+                47,
+                197,
+                254,
+                42,
+                58,
+                201,
+                58,
+                109
+            ],
+            "accounts": [
+                {
+                    "name": "source",
+                    "docs": [
+                        "The source account."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The token mint."
+                    ]
+                },
+                {
+                    "name": "delegate",
+                    "docs": [
+                        "The delegate."
+                    ]
+                },
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The source account owner."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "docs": [
+                        "The amount of tokens the delegate is approved for."
+                    ],
+                    "type": "u64"
+                },
+                {
+                    "name": "decimals",
+                    "docs": [
+                        "Expected number of base 10 digits to the right of the decimal place."
+                    ],
+                    "type": "u8"
+                }
+            ]
+        },
+        {
+            "name": "mint_to_checked",
+            "docs": [
+                "Mints new tokens to an account.  The native mint does not support minting.",
+                "",
+                "This instruction differs from MintTo in that the decimals value is",
+                "checked by the caller.  This may be useful when creating transactions",
+                "offline or within a hardware wallet."
+            ],
+            "discriminator": [
+                229,
+                236,
+                36,
+                240,
+                118,
+                225,
+                45,
+                125
+            ],
+            "accounts": [
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The mint."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "destination",
+                    "docs": [
+                        "The account to mint tokens to."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "docs": [
+                        "The mint's minting authority."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "docs": [
+                        "The amount of new tokens to mint."
+                    ],
+                    "type": "u64"
+                },
+                {
+                    "name": "decimals",
+                    "docs": [
+                        "Expected number of base 10 digits to the right of the decimal place."
+                    ],
+                    "type": "u8"
+                }
+            ]
+        },
+        {
+            "name": "burn_checked",
+            "docs": [
+                "Burns tokens by removing them from an account.  `BurnChecked` does not",
+                "support accounts associated with the native mint, use `CloseAccount`",
+                "instead.",
+                "",
+                "This instruction differs from Burn in that the decimals value is checked",
+                "by the caller. This may be useful when creating transactions offline or",
+                "within a hardware wallet."
+            ],
+            "discriminator": [
+                198,
+                121,
+                200,
+                102,
+                120,
+                208,
+                155,
+                178
+            ],
+            "accounts": [
+                {
+                    "name": "source",
+                    "docs": [
+                        "The account to burn from."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The token mint."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The account's owner/delegate."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "docs": [
+                        "The amount of tokens to burn."
+                    ],
+                    "type": "u64"
+                },
+                {
+                    "name": "decimals",
+                    "docs": [
+                        "Expected number of base 10 digits to the right of the decimal place."
+                    ],
+                    "type": "u8"
+                }
+            ]
+        },
+        {
+            "name": "initialize_account2",
+            "docs": [
+                "Like InitializeAccount, but the owner pubkey is passed via instruction data",
+                "rather than the accounts list. This variant may be preferable when using",
+                "Cross Program Invocation from an instruction that does not need the owner's",
+                "`AccountInfo` otherwise."
+            ],
+            "discriminator": [
+                8,
+                182,
+                149,
+                144,
+                185,
+                31,
+                209,
+                105
+            ],
+            "accounts": [
+                {
+                    "name": "account",
+                    "docs": [
+                        "The account to initialize."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The mint this account will be associated with."
+                    ]
+                },
+                {
+                    "name": "sys_var_rent_pubkey",
+                    "docs": [
+                        "Rent sysvar."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The new account's owner/multisignature."
+                    ],
+                    "type": "pubkey"
+                }
+            ]
+        },
+        {
+            "name": "sync_native",
+            "docs": [
+                "Given a wrapped / native token account (a token account containing SOL)",
+                "updates its amount field based on the account's underlying `lamports`.",
+                "This is useful if a non-wrapped SOL account uses `system_instruction::transfer`",
+                "to move lamports to a wrapped token account, and needs to have its token",
+                "`amount` field updated."
+            ],
+            "discriminator": [
+                155,
+                219,
+                36,
+                36,
+                239,
+                128,
+                21,
+                65
+            ],
+            "accounts": [
+                {
+                    "name": "token_account",
+                    "docs": [
+                        "The native token account to sync with its underlying lamports."
+                    ],
+                    "writable": true
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "initialize_account3",
+            "docs": [
+                "Like InitializeAccount2, but does not require the Rent sysvar to be provided."
+            ],
+            "discriminator": [
+                23,
+                142,
+                140,
+                135,
+                21,
+                160,
+                133,
+                64
+            ],
+            "accounts": [
+                {
+                    "name": "account",
+                    "docs": [
+                        "The account to initialize."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The mint this account will be associated with."
+                    ]
+                }
+            ],
+            "args": [
+                {
+                    "name": "owner",
+                    "docs": [
+                        "The new account's owner/multisignature."
+                    ],
+                    "type": "pubkey"
+                }
+            ]
+        },
+        {
+            "name": "initialize_multisig2",
+            "docs": [
+                "Like InitializeMultisig, but does not require the Rent sysvar to be provided."
+            ],
+            "discriminator": [
+                81,
+                239,
+                73,
+                39,
+                27,
+                148,
+                2,
+                146
+            ],
+            "accounts": [
+                {
+                    "name": "account",
+                    "docs": [
+                        "The multisignature account to initialize."
+                    ],
+                    "writable": true
+                },
+                {
+                    "name": "signers",
+                    "docs": [
+                        "The signer accounts, must equal to N where 1 <= N <= 11."
+                    ],
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "m",
+                    "docs": [
+                        "The number of signers (M) required to validate this multisignature account."
+                    ],
+                    "type": "u8"
+                }
+            ]
+        },
+        {
+            "name": "initialize_mint2",
+            "docs": [
+                "Like InitializeMint, but does not require the Rent sysvar to be provided."
+            ],
+            "discriminator": [
+                95,
+                108,
+                198,
+                210,
+                72,
+                243,
+                143,
+                235
+            ],
+            "accounts": [
+                {
+                    "name": "mint",
+                    "docs": [
+                        "The mint to initialize."
+                    ],
+                    "writable": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "decimals",
+                    "docs": [
+                        "Number of base 10 digits to the right of the decimal place."
+                    ],
+                    "type": "u8"
+                },
+                {
+                    "name": "mint_authority",
+                    "docs": [
+                        "The authority/multisignature to mint tokens."
+                    ],
+                    "type": "pubkey"
+                },
+                {
+                    "name": "freeze_authority",
+                    "docs": [
+                        "The freeze authority/multisignature of the mint."
+                    ],
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "get_account_data_size",
+            "docs": [
+                "Gets the required size of an account for the given mint as a little-endian `u64`"
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [
+                {
+                    "name": "mint"
+                }
+            ],
+            "args": [
+                {
+                    "name": "extension_types",
+                    "type": {
+                        "vec": {
+                            "defined": {
+                                "name": "ExtensionType"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "initialize_immutable_owner",
+            "docs": [
+                "Initialize the Immutable Owner extension for the given token account"
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "amount_to_ui_amount",
+            "docs": [
+                "Convert an Amount of tokens to a `UiAmount` string, using the given mint"
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [
+                {
+                    "name": "mint"
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "ui_amount_to_amount",
+            "docs": [
+                "Convert a `UiAmount` of tokens to a little-endian `u64` raw Amount",
+                "using the given mint"
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [
+                {
+                    "name": "mint"
+                }
+            ],
+            "args": [
+                {
+                    "name": "ui_amount",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "initialize_mint_close_authority",
+            "docs": [
+                "Initialize the close account authority on a new mint."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "close_authority",
+                    "type": "pubkey"
+                }
+            ]
+        },
+        {
+            "name": "transfer_fee_extension",
+            "docs": [
+                "The common instruction prefix for Transfer Fee extension instructions."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "confidential_transfer_extension",
+            "docs": [
+                "The common instruction prefix for Confidential Transfer extension."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "default_account_state_extension",
+            "docs": [
+                "The common instruction prefix for Default Account State extension"
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "reallocate",
+            "docs": [
+                "Check if a token account is large enough for a list of ExtensionTypes,",
+                "and if not, use reallocation to increase the data size."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "payer",
+                    "writable": true,
+                    "signer": true
+                },
+                {
+                    "name": "systemProgram"
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "extension_types",
+                    "type": {
+                        "vec": {
+                            "defined": {
+                                "name": "ExtensionType"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "memo_transfer_extension",
+            "docs": [
+                "The common instruction prefix for Memo Transfer account extension instructions."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "create_native_mint",
+            "docs": [
+                "Creates the native mint."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [
+                {
+                    "name": "funding_account",
+                    "writable": true,
+                    "signer": true
+                },
+                {
+                    "name": "native_mint",
+                    "writable": true
+                },
+                {
+                    "name": "system_program"
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "initialize_non_transferable_mint",
+            "docs": [
+                "Initialize the non transferable extension for the given mint account."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [
+                {
+                    "name": "mint_account",
+                    "writable": true
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "interest_bearing_mint_extension",
+            "docs": [
+                "The common instruction prefix for Interest Bearing extension instructions."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "cpi_guard_extension",
+            "docs": [
+                "The common instruction prefix for CPI Guard account extension instructions."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "initialize_permanent_delegate",
+            "docs": [
+                "Initialize the permanent delegate on a new mint."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "delegate",
+                    "type": "pubkey"
+                }
+            ]
+        },
+        {
+            "name": "transfer_hook_extension",
+            "docs": [
+                "The common instruction prefix for transfer hook extension instructions."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "confidential_transfer_fee_extension",
+            "docs": [
+                "The common instruction prefix for the confidential transfer fee extension instructions."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "withdraw_excess_lamports",
+            "docs": [
+                "This instruction is to be used to rescue SOL sent to any `TokenProgram`"
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [
+                {
+                    "name": "source",
+                    "writable": true
+                },
+                {
+                    "name": "destination",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "metadata_pointer_extension",
+            "docs": [
+                "The common instruction prefix for metadata pointer extension instructions."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "group_pointer_extension",
+            "docs": [
+                "The common instruction prefix for group pointer extension instructions."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "group_member_pointer_extension",
+            "docs": [
+                "The common instruction prefix for group member pointer extension instructions."
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "confidential_mint_burn_extension",
+            "docs": [
+                "Instruction prefix for instructions to the confidential-mint-burn extension"
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "scaled_ui_amount_extension",
+            "docs": [
+                "Instruction prefix for instructions to the scaled ui amount extension"
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        },
+        {
+            "name": "pausable_extension",
+            "docs": [
+                "Instruction prefix for instructions to the pausable extension"
+            ],
+            "discriminator": [
+                150,
+                200,
+                100,
+                50,
+                200,
+                150,
+                100,
+                50
+            ],
+            "accounts": [],
+            "args": []
+        }
+    ],
+    "accounts": [
+        {
+            "name": "Mint",
+            "discriminator": []
+        },
+        {
+            "name": "Token",
+            "discriminator": [
+                113,
+                66,
+                224,
+                54,
+                188,
+                119,
+                240,
+                101
+            ]
+        },
+        {
+            "name": "Multisig",
+            "discriminator": []
+        }
+    ],
+    "types": [
+        {
+            "name": "AccountState",
+            "type": {
+                "kind": "enum",
+                "variants": [
+                    {
+                        "name": "Uninitialized"
+                    },
+                    {
+                        "name": "Initialized"
+                    },
+                    {
+                        "name": "Frozen"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "AuthorityType",
+            "type": {
+                "kind": "enum",
+                "variants": [
+                    {
+                        "name": "mintTokens"
+                    },
+                    {
+                        "name": "freezeAccount"
+                    },
+                    {
+                        "name": "accountOwner"
+                    },
+                    {
+                        "name": "closeAccount"
+                    },
+                    {
+                        "name": "transferFeeConfig"
+                    },
+                    {
+                        "name": "withheldWithdraw"
+                    },
+                    {
+                        "name": "closeMint"
+                    },
+                    {
+                        "name": "interestRate"
+                    },
+                    {
+                        "name": "permanentDelegate"
+                    },
+                    {
+                        "name": "confidentialTransferMint"
+                    },
+                    {
+                        "name": "transferHookProgramId"
+                    },
+                    {
+                        "name": "confidentialTransferFeeConfig"
+                    },
+                    {
+                        "name": "metadataPointer"
+                    },
+                    {
+                        "name": "groupPointer"
+                    },
+                    {
+                        "name": "groupMemberPointer"
+                    },
+                    {
+                        "name": "scaledUiAmount"
+                    },
+                    {
+                        "name": "pause"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "TransferFee",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "epoch",
+                        "type": "u64"
+                    },
+                    {
+                        "name": "maximumFee",
+                        "type": "u64"
+                    },
+                    {
+                        "name": "transferFeeBasisPoints",
+                        "type": "u16"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "EncryptedBalance",
+            "type": {
+                "kind": "struct",
+                "array": [
+                    "u8",
+                    64
+                ]
+            }
+        },
+        {
+            "name": "DecryptableBalance",
+            "type": {
+                "kind": "struct",
+                "array": [
+                    "u8",
+                    36
+                ]
+            }
+        },
+        {
+            "name": "Extension",
+            "type": {
+                "kind": "enum",
+                "variants": [
+                    {
+                        "name": "uninitialized"
+                    },
+                    {
+                        "name": "transferFeeConfig",
+                        "fields": [
+                            {
+                                "name": "transferFeeConfigAuthority",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "withdrawWithheldAuthority",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "withheldAmount",
+                                "type": "u64"
+                            },
+                            {
+                                "name": "olderTransferFee",
+                                "type": {
+                                    "defined": {
+                                        "name": "transferFee"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "newerTransferFee",
+                                "type": {
+                                    "defined": {
+                                        "name": "transferFee"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "transferFeeAmount",
+                        "fields": [
+                            {
+                                "name": "withheldAmount",
+                                "type": "u64"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "mintCloseAuthority",
+                        "fields": [
+                            {
+                                "name": "closeAuthority",
+                                "type": "pubkey"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "confidentialTransferMint",
+                        "fields": [
+                            {
+                                "name": "authority",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            },
+                            {
+                                "name": "autoApproveNewAccounts",
+                                "type": "bool"
+                            },
+                            {
+                                "name": "auditorElgamalPubkey",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "confidentialTransferAccount",
+                        "fields": [
+                            {
+                                "name": "approved",
+                                "type": "bool"
+                            },
+                            {
+                                "name": "elgamalPubkey",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "pendingBalanceLow",
+                                "type": {
+                                    "defined": {
+                                        "name": "encryptedBalance"
+                                    }
+                                }
+                                
+                            },
+                            {
+                                "name": "pendingBalanceHigh",
+                                "type": {
+                                    "defined": {
+                                        "name": "encryptedBalance"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "availableBalance",
+                                "type": {
+                                    "defined": {
+                                        "name": "encryptedBalance"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "decryptableAvailableBalance",
+                                 "type": {
+                                    "defined": {
+                                        "name": "decryptableBalance"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "allowConfidentialCredits",
+                                "type": "bool"
+                            },
+                            {
+                                "name": "allowNonConfidentialCredits",
+                                "type": "bool"
+                            },
+                            {
+                                "name": "pendingBalanceCreditCounter",
+                                "type": "u64"
+                            },
+                            {
+                                "name": "maximumPendingBalanceCreditCounter",
+                                "type": "u64"
+                            },
+                            {
+                                "name": "expectedPendingBalanceCreditCounter",
+                                "type": "u64"
+                            },
+                            {
+                                "name": "actualPendingBalanceCreditCounter",
+                                "type": "u64"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "defaultAccountState",
+                        "fields": [
+                            {
+                                "name": "state",
+                                "type": {
+                                    "defined": {
+                                        "name": "accountState"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "immutableOwner"
+                    },
+                    {
+                        "name": "memoTransfer",
+                        "fields": [
+                            {
+                                "name": "requireIncomingTransferMemos",
+                                "type": "bool"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "nonTransferable"
+                    },
+                    {
+                        "name": "interestBearingConfig",
+                        "fields": [
+                            {
+                                "name": "rateAuthority",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "initializationTimestamp",
+                                "type": "u64"
+                            },
+                            {
+                                "name": "preUpdateAverageRate",
+                                "type": "i16"
+                            },
+                            {
+                                "name": "lastUpdateTimestamp",
+                                "type": "u64"
+                            },
+                            {
+                                "name": "currentRate",
+                                "type": "i16"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "cpiGuard",
+                        "fields": [
+                            {
+                                "name": "lockCpi",
+                                "type": "bool"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "permanentDelegate",
+                        "fields": [
+                            {
+                                "name": "delegate",
+                                "type": "pubkey"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "nonTransferableAccount"
+                    },
+                    {
+                        "name": "transferHook",
+                        "fields": [
+                            {
+                                "name": "authority",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "programId",
+                                "type": "pubkey"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "transferHookAccount",
+                        "fields": [
+                            {
+                                "name": "transferring",
+                                "type": "bool"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "confidentialTransferFee",
+                        "fields": [
+                            {
+                                "name": "authority",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            },
+                            {
+                                "name": "elgamalPubkey",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "harvestToMintEnabled",
+                                "type": "bool"
+                            },
+                            {
+                                "name": "withheldAmount",
+                                "type":{
+                                    "defined":{
+                                        "name": "encryptedBalance"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "confidentialTransferFeeAmount",
+                        "fields": [
+                            {
+                                "name": "withheldAmount",
+                               "type":{
+                                    "defined":{
+                                        "name": "encryptedBalance"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "metadataPointer",
+                        "fields": [
+                            {
+                                "name": "authority",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            },
+                            {
+                                "name": "metadataAddress",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "tokenMetadata",
+                        "fields": [
+                            {
+                                "name": "updateAuthority",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            },
+                            {
+                                "name": "mint",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "name": "symbol",
+                                "type": "string"
+                            },
+                            {
+                                "name": "uri",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "groupPointer",
+                        "fields": [
+                            {
+                                "name": "authority",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            },
+                            {
+                                "name": "groupAddress",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "tokenGroup",
+                        "fields": [
+                            {
+                                "name": "updateAuthority",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            },
+                            {
+                                "name": "mint",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "size",
+                                "type": "u64"
+                            },
+                            {
+                                "name": "maxSize",
+                                "type": "u64"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "groupMemberPointer",
+                        "fields": [
+                            {
+                                "name": "authority",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            },
+                            {
+                                "name": "memberAddress",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "tokenGroupMember",
+                        "fields": [
+                            {
+                                "name": "mint",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "group",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "memberNumber",
+                                "type": "u64"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "confidentialMintBurn"
+                    },
+                    {
+                        "name": "scaledUiAmountConfig",
+                        "fields": [
+                            {
+                                "name": "authority",
+                                "type": "pubkey"
+                            },
+                            {
+                                "name": "multiplier",
+                                "type": "f64"
+                            },
+                            {
+                                "name": "newMultiplierEffectiveTimestamp",
+                                "type": "u64"
+                            },
+                            {
+                                "name": "newMultiplier",
+                                "type": "f64"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "pausableConfig",
+                        "fields": [
+                            {
+                                "name": "authority",
+                                "type": {
+                                    "option": "pubkey"
+                                }
+                            },
+                            {
+                                "name": "paused",
+                                "type": "bool"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "pausableAccount"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "AccountType",
+            "type": {
+                "kind": "enum",
+                "variants": [
+                    {
+                        "name": "Uninitialized"
+                    },
+                    {
+                        "name": "Mint"
+                    },
+                    {
+                        "name": "Account"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "ExtensionType",
+            "type": {
+                "kind": "enum",
+                "variants": [
+                    {
+                        "name": "uninitialized"
+                    },
+                    {
+                        "name": "transferFeeConfig"
+                    },
+                    {
+                        "name": "transferFeeAmount"
+                    },
+                    {
+                        "name": "mintCloseAuthority"
+                    },
+                    {
+                        "name": "confidentialTransferMint"
+                    },
+                    {
+                        "name": "confidentialTransferAccount"
+                    },
+                    {
+                        "name": "defaultAccountState"
+                    },
+                    {
+                        "name": "immutableOwner"
+                    },
+                    {
+                        "name": "memoTransfer"
+                    },
+                    {
+                        "name": "nonTransferable"
+                    },
+                    {
+                        "name": "interestBearingConfig"
+                    },
+                    {
+                        "name": "cpiGuard"
+                    },
+                    {
+                        "name": "permanentDelegate"
+                    },
+                    {
+                        "name": "nonTransferableAccount"
+                    },
+                    {
+                        "name": "transferHook"
+                    },
+                    {
+                        "name": "transferHookAccount"
+                    },
+                    {
+                        "name": "confidentialTransferFee"
+                    },
+                    {
+                        "name": "confidentialTransferFeeAmount"
+                    },
+                    {
+                        "name": "scaledUiAmountConfig"
+                    },
+                    {
+                        "name": "pausableConfig"
+                    },
+                    {
+                        "name": "pausableAccount"
+                    },
+                    {
+                        "name": "metadataPointer"
+                    },
+                    {
+                        "name": "tokenMetadata"
+                    },
+                    {
+                        "name": "groupPointer"
+                    },
+                    {
+                        "name": "tokenGroup"
+                    },
+                    {
+                        "name": "groupMemberPointer"
+                    },
+                    {
+                        "name": "tokenGroupMember"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Multisig",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "m",
+                        "docs": [
+                            "Number of signers required"
+                        ],
+                        "type": "u8"
+                    },
+                    {
+                        "name": "n",
+                        "docs": [
+                            "Number of valid signers"
+                        ],
+                        "type": "u8"
+                    },
+                    {
+                        "name": "is_initialized",
+                        "docs": [
+                            "Is `true` if this structure has been initialized"
+                        ],
+                        "type": "bool"
+                    },
+                    {
+                        "name": "signers",
+                        "docs": [
+                            "Signer public keys"
+                        ],
+                        "type": {
+                            "array": [
+                                "pubkey",
+                                11
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Mint",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "mint_authority",
+                        "docs": [
+                            "Optional authority used to mint new tokens. The mint authority may only be provided during",
+                            "mint creation. If no mint authority is present then the mint has a fixed supply and no",
+                            "further tokens may be minted."
+                        ],
+                        "type": {
+                            "option": "pubkey"
+                        }
+                    },
+                    {
+                        "name": "supply",
+                        "docs": [
+                            "Total supply of tokens."
+                        ],
+                        "type": "u64"
+                    },
+                    {
+                        "name": "decimals",
+                        "docs": [
+                            "Number of base 10 digits to the right of the decimal place."
+                        ],
+                        "type": "u8"
+                    },
+                    {
+                        "name": "is_initialized",
+                        "docs": [
+                            "Is `true` if this structure has been initialized"
+                        ],
+                        "type": "bool"
+                    },
+                    {
+                        "name": "freeze_authority",
+                        "docs": [
+                            "Optional authority to freeze token accounts."
+                        ],
+                        "type": {
+                            "option": "pubkey"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Token",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "mint",
+                        "docs": [
+                            "The mint associated with this account"
+                        ],
+                        "type": "pubkey"
+                    },
+                    {
+                        "name": "owner",
+                        "docs": [
+                            "The owner of this account."
+                        ],
+                        "type": "pubkey"
+                    },
+                    {
+                        "name": "amount",
+                        "docs": [
+                            "The amount of tokens this account holds."
+                        ],
+                        "type": "u64"
+                    },
+                    {
+                        "name": "delegate",
+                        "docs": [
+                            "If `delegate` is `Some` then `delegated_amount` represents",
+                            "the amount authorized by the delegate"
+                        ],
+                        "type": {
+                            "option": "pubkey"
+                        }
+                    },
+                    {
+                        "name": "state",
+                        "docs": [
+                            "The account's state"
+                        ],
+                        "type": {
+                            "defined": {
+                                "name": "AccountState"
+                            }
+                        }
+                    },
+                    {
+                        "name": "is_native",
+                        "docs": [
+                            "If is_some, this is a native token, and the value logs the rent-exempt reserve. An Account",
+                            "is required to be rent-exempt, so the value is used by the Processor to ensure that wrapped",
+                            "SOL accounts do not drop below this threshold."
+                        ],
+                        "type": {
+                            "option": "u64"
+                        }
+                    },
+                    {
+                        "name": "delegated_amount",
+                        "docs": [
+                            "The amount delegated"
+                        ],
+                        "type": "u64"
+                    },
+                    {
+                        "name": "close_authority",
+                        "docs": [
+                            "Optional authority to close the account."
+                        ],
+                        "type": {
+                            "option": "pubkey"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "TokenMetadataField",
+            "type": {
+                "kind": "enum",
+                "variants": [
+                    {
+                        "name": "name"
+                    },
+                    {
+                        "name": "symbol"
+                    },
+                    {
+                        "name": "uri"
+                    },
+                    {
+                        "name": "key"
+                    }
+                ]
+            }
+        }
+    ],
+    "constants": [
+        {
+            "name": "ACCOUNT_SIZE",
+            "type": "usize",
+            "value": "165"
+        },
+        {
+            "name": "MULTISIG_SIZE",
+            "type": "usize",
+            "value": "355"
+        },
+        {
+            "name": "ACCOUNT_TYPE_SIZE",
+            "type": "usize",
+            "value": "165"
+        },
+        {
+            "name": "TYPE_SIZE",
+            "type": "usize",
+            "value": "2"
+        },
+        {
+            "name": "LENGTH_SIZE",
+            "type": "usize",
+            "value": "2"
+        },
+        {
+            "name": "MAX_SIGNERS",
+            "type": "usize",
+            "value": "11"
+        }
+    ]
+}
