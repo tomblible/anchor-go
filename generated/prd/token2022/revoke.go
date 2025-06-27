@@ -72,7 +72,7 @@ func (inst *Revoke) GetRemainingAccounts() []*ag_solanago.AccountMeta {
 func (inst Revoke) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_Revoke,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_Revoke),
 	}}
 }
 

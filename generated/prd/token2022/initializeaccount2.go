@@ -100,7 +100,7 @@ func (inst *InitializeAccount2) GetRemainingAccounts() []*ag_solanago.AccountMet
 func (inst InitializeAccount2) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_InitializeAccount2,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_InitializeAccount2),
 	}}
 }
 

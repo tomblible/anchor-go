@@ -3,7 +3,6 @@
 package token2022
 
 import (
-	"fmt"
 	ag_binary "github.com/gagliardetto/binary"
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
@@ -27,14 +26,7 @@ type MintAccount struct {
 	FreezeAuthority *ag_solanago.PublicKey `bin:"optional"`
 }
 
-var MintAccountDiscriminator = [8]byte{0, 0, 0, 0, 0, 0, 0, 0}
-
 func (obj MintAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Write account discriminator:
-	err = encoder.WriteBytes(MintAccountDiscriminator[:], false)
-	if err != nil {
-		return err
-	}
 	// Serialize `MintAuthority` param (optional):
 	{
 		if obj.MintAuthority == nil {
@@ -90,19 +82,6 @@ func (obj MintAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error
 }
 
 func (obj *MintAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Read and check account discriminator:
-	{
-		discriminator, err := decoder.ReadTypeID()
-		if err != nil {
-			return err
-		}
-		if !discriminator.Equal(MintAccountDiscriminator[:]) {
-			return fmt.Errorf(
-				"wrong discriminator: wanted %s, got %s",
-				"[0 0 0 0 0 0 0 0]",
-				fmt.Sprint(discriminator[:]))
-		}
-	}
 	// Deserialize `MintAuthority` (optional):
 	{
 		ok, err := decoder.ReadBool()
@@ -176,14 +155,7 @@ type TokenAccount struct {
 	CloseAuthority *ag_solanago.PublicKey `bin:"optional"`
 }
 
-var TokenAccountDiscriminator = [8]byte{113, 66, 224, 54, 188, 119, 240, 101}
-
 func (obj TokenAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Write account discriminator:
-	err = encoder.WriteBytes(TokenAccountDiscriminator[:], false)
-	if err != nil {
-		return err
-	}
 	// Serialize `Mint` param:
 	err = encoder.Encode(obj.Mint)
 	if err != nil {
@@ -267,19 +239,6 @@ func (obj TokenAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err erro
 }
 
 func (obj *TokenAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Read and check account discriminator:
-	{
-		discriminator, err := decoder.ReadTypeID()
-		if err != nil {
-			return err
-		}
-		if !discriminator.Equal(TokenAccountDiscriminator[:]) {
-			return fmt.Errorf(
-				"wrong discriminator: wanted %s, got %s",
-				"[113 66 224 54 188 119 240 101]",
-				fmt.Sprint(discriminator[:]))
-		}
-	}
 	// Deserialize `Mint`:
 	err = decoder.Decode(&obj.Mint)
 	if err != nil {
@@ -361,14 +320,7 @@ type MultisigAccount struct {
 	Signers [11]ag_solanago.PublicKey
 }
 
-var MultisigAccountDiscriminator = [8]byte{0, 0, 0, 0, 0, 0, 0, 0}
-
 func (obj MultisigAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Write account discriminator:
-	err = encoder.WriteBytes(MultisigAccountDiscriminator[:], false)
-	if err != nil {
-		return err
-	}
 	// Serialize `M` param:
 	err = encoder.Encode(obj.M)
 	if err != nil {
@@ -393,19 +345,6 @@ func (obj MultisigAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err e
 }
 
 func (obj *MultisigAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Read and check account discriminator:
-	{
-		discriminator, err := decoder.ReadTypeID()
-		if err != nil {
-			return err
-		}
-		if !discriminator.Equal(MultisigAccountDiscriminator[:]) {
-			return fmt.Errorf(
-				"wrong discriminator: wanted %s, got %s",
-				"[0 0 0 0 0 0 0 0]",
-				fmt.Sprint(discriminator[:]))
-		}
-	}
 	// Deserialize `M`:
 	err = decoder.Decode(&obj.M)
 	if err != nil {

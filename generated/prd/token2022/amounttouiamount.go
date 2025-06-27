@@ -60,7 +60,7 @@ func (inst *AmountToUiAmount) GetRemainingAccounts() []*ag_solanago.AccountMeta 
 func (inst AmountToUiAmount) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_AmountToUiAmount,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_AmountToUiAmount),
 	}}
 }
 

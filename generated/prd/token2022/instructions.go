@@ -29,7 +29,7 @@ func init() {
 
 var ()
 
-var (
+const (
 	// Initializes a new mint and optionally deposits all the newly minted
 	// tokens in an account.
 	//
@@ -38,7 +38,7 @@ var (
 	// `CreateAccount` instruction that creates the account being initialized.
 	// Otherwise another party can acquire ownership of the uninitialized
 	// account.
-	Instruction_InitializeMint = ag_binary.TypeID([8]byte{209, 42, 195, 4, 129, 85, 209, 44})
+	Instruction_InitializeMint uint8 = iota
 
 	// Initializes a new account to hold tokens.  If this account is associated
 	// with the native mint then the token balance of the initialized account
@@ -51,7 +51,7 @@ var (
 	// `CreateAccount` instruction that creates the account being initialized.
 	// Otherwise another party can acquire ownership of the uninitialized
 	// account.
-	Instruction_InitializeAccount = ag_binary.TypeID([8]byte{74, 115, 99, 93, 197, 69, 103, 7})
+	Instruction_InitializeAccount
 
 	// Initializes a multisignature account with N provided signers.
 	//
@@ -65,41 +65,41 @@ var (
 	// `CreateAccount` instruction that creates the account being initialized.
 	// Otherwise another party can acquire ownership of the uninitialized
 	// account.
-	Instruction_InitializeMultisig = ag_binary.TypeID([8]byte{220, 130, 117, 21, 27, 227, 78, 213})
+	Instruction_InitializeMultisig
 
 	// Transfers tokens from one account to another either directly or via a
 	// delegate.  If this account is associated with the native mint then equal
 	// amounts of SOL and Tokens will be transferred to the destination
 	// account.
-	Instruction_Transfer = ag_binary.TypeID([8]byte{163, 52, 200, 231, 140, 3, 69, 186})
+	Instruction_Transfer
 
 	// Approves a delegate.  A delegate is given the authority over tokens on
 	// behalf of the source account's owner.
-	Instruction_Approve = ag_binary.TypeID([8]byte{69, 74, 217, 36, 115, 117, 97, 76})
+	Instruction_Approve
 
 	// Revokes the delegate's authority.
-	Instruction_Revoke = ag_binary.TypeID([8]byte{170, 23, 31, 34, 133, 173, 93, 242})
+	Instruction_Revoke
 
 	// Sets a new authority of a mint or account.
-	Instruction_SetAuthority = ag_binary.TypeID([8]byte{133, 250, 37, 21, 110, 163, 26, 121})
+	Instruction_SetAuthority
 
 	// Mints new tokens to an account.  The native mint does not support
 	// minting.
-	Instruction_MintTo = ag_binary.TypeID([8]byte{241, 34, 48, 186, 37, 179, 123, 192})
+	Instruction_MintTo
 
 	// Burns tokens by removing them from an account.  `Burn` does not support
 	// accounts associated with the native mint, use `CloseAccount` instead.
-	Instruction_Burn = ag_binary.TypeID([8]byte{116, 110, 29, 56, 107, 219, 42, 93})
+	Instruction_Burn
 
 	// Close an account by transferring all its SOL to the destination account.
 	// Non-native accounts may only be closed if its token amount is zero.
-	Instruction_CloseAccount = ag_binary.TypeID([8]byte{125, 255, 149, 14, 110, 34, 72, 24})
+	Instruction_CloseAccount
 
 	// Freeze an Initialized account using the Mint's freeze_authority (if set).
-	Instruction_FreezeAccount = ag_binary.TypeID([8]byte{253, 75, 82, 133, 167, 238, 43, 130})
+	Instruction_FreezeAccount
 
 	// Thaw a Frozen account using the Mint's freeze_authority (if set).
-	Instruction_ThawAccount = ag_binary.TypeID([8]byte{115, 152, 79, 213, 213, 169, 184, 35})
+	Instruction_ThawAccount
 
 	// Transfers tokens from one account to another either directly or via a
 	// delegate.  If this account is associated with the native mint then equal
@@ -109,7 +109,7 @@ var (
 	// This instruction differs from Transfer in that the token mint and
 	// decimals value is checked by the caller.  This may be useful when
 	// creating transactions offline or within a hardware wallet.
-	Instruction_TransferChecked = ag_binary.TypeID([8]byte{119, 250, 202, 24, 253, 135, 244, 121})
+	Instruction_TransferChecked
 
 	// Approves a delegate.  A delegate is given the authority over tokens on
 	// behalf of the source account's owner.
@@ -117,14 +117,14 @@ var (
 	// This instruction differs from Approve in that the token mint and
 	// decimals value is checked by the caller.  This may be useful when
 	// creating transactions offline or within a hardware wallet.
-	Instruction_ApproveChecked = ag_binary.TypeID([8]byte{47, 197, 254, 42, 58, 201, 58, 109})
+	Instruction_ApproveChecked
 
 	// Mints new tokens to an account.  The native mint does not support minting.
 	//
 	// This instruction differs from MintTo in that the decimals value is
 	// checked by the caller.  This may be useful when creating transactions
 	// offline or within a hardware wallet.
-	Instruction_MintToChecked = ag_binary.TypeID([8]byte{229, 236, 36, 240, 118, 225, 45, 125})
+	Instruction_MintToChecked
 
 	// Burns tokens by removing them from an account.  `BurnChecked` does not
 	// support accounts associated with the native mint, use `CloseAccount`
@@ -133,107 +133,173 @@ var (
 	// This instruction differs from Burn in that the decimals value is checked
 	// by the caller. This may be useful when creating transactions offline or
 	// within a hardware wallet.
-	Instruction_BurnChecked = ag_binary.TypeID([8]byte{198, 121, 200, 102, 120, 208, 155, 178})
+	Instruction_BurnChecked
 
 	// Like InitializeAccount, but the owner pubkey is passed via instruction data
 	// rather than the accounts list. This variant may be preferable when using
 	// Cross Program Invocation from an instruction that does not need the owner's
 	// `AccountInfo` otherwise.
-	Instruction_InitializeAccount2 = ag_binary.TypeID([8]byte{8, 182, 149, 144, 185, 31, 209, 105})
+	Instruction_InitializeAccount2
 
 	// Given a wrapped / native token account (a token account containing SOL)
 	// updates its amount field based on the account's underlying `lamports`.
 	// This is useful if a non-wrapped SOL account uses `system_instruction::transfer`
 	// to move lamports to a wrapped token account, and needs to have its token
 	// `amount` field updated.
-	Instruction_SyncNative = ag_binary.TypeID([8]byte{155, 219, 36, 36, 239, 128, 21, 65})
+	Instruction_SyncNative
 
 	// Like InitializeAccount2, but does not require the Rent sysvar to be provided.
-	Instruction_InitializeAccount3 = ag_binary.TypeID([8]byte{23, 142, 140, 135, 21, 160, 133, 64})
+	Instruction_InitializeAccount3
 
 	// Like InitializeMultisig, but does not require the Rent sysvar to be provided.
-	Instruction_InitializeMultisig2 = ag_binary.TypeID([8]byte{81, 239, 73, 39, 27, 148, 2, 146})
+	Instruction_InitializeMultisig2
 
 	// Like InitializeMint, but does not require the Rent sysvar to be provided.
-	Instruction_InitializeMint2 = ag_binary.TypeID([8]byte{95, 108, 198, 210, 72, 243, 143, 235})
+	Instruction_InitializeMint2
 
 	// Gets the required size of an account for the given mint as a little-endian `u64`
-	Instruction_GetAccountDataSize = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_GetAccountDataSize
 
 	// Initialize the Immutable Owner extension for the given token account
-	Instruction_InitializeImmutableOwner = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializeImmutableOwner
 
 	// Convert an Amount of tokens to a `UiAmount` string, using the given mint
-	Instruction_AmountToUiAmount = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_AmountToUiAmount
 
 	// Convert a `UiAmount` of tokens to a little-endian `u64` raw Amount
 	// using the given mint
-	Instruction_UiAmountToAmount = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_UiAmountToAmount
 
 	// Initialize the close account authority on a new mint.
-	Instruction_InitializeMintCloseAuthority = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializeMintCloseAuthority
 
-	// The common instruction prefix for Transfer Fee extension instructions.
-	Instruction_TransferFeeExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializeTransferFeeConfig
 
-	// The common instruction prefix for Confidential Transfer extension.
-	Instruction_ConfidentialTransferExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_TransferCheckedWithFee
 
-	// The common instruction prefix for Default Account State extension
-	Instruction_DefaultAccountStateExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_WithdrawWithheldTokensFromMint
+
+	Instruction_WithdrawWithheldTokensFromAccounts
+
+	Instruction_HarvestWithheldTokensToMint
+
+	Instruction_SetTransferFee
+
+	Instruction_InitializeConfidentialTransferMint
+
+	Instruction_UpdateConfidentialTransferMint
+
+	Instruction_ConfigureConfidentialTransferAccount
+
+	Instruction_ApproveConfidentialTransferAccount
+
+	Instruction_EmptyConfidentialTransferAccount
+
+	Instruction_ConfidentialDeposit
+
+	Instruction_ConfidentialWithdraw
+
+	Instruction_ConfidentialTransfer
+
+	Instruction_ApplyConfidentialPendingBalance
+
+	Instruction_EnableConfidentialCredits
+
+	Instruction_DisableConfidentialCredits
+
+	Instruction_EnableNonConfidentialCredits
+
+	Instruction_DisableNonConfidentialCredits
+
+	Instruction_ConfidentialTransferWithFee
+
+	Instruction_ConfigureAccountWithRegistry
+
+	Instruction_InitializeDefaultAccountState
+
+	Instruction_UpdateDefaultAccountState
 
 	// Check if a token account is large enough for a list of ExtensionTypes,
 	// and if not, use reallocation to increase the data size.
-	Instruction_Reallocate = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_Reallocate
 
-	// The common instruction prefix for Memo Transfer account extension instructions.
-	Instruction_MemoTransferExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_EnableMemoTransfers
+
+	Instruction_DisableMemoTransfers
 
 	// Creates the native mint.
-	Instruction_CreateNativeMint = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_CreateNativeMint
 
 	// Initialize the non transferable extension for the given mint account.
-	Instruction_InitializeNonTransferableMint = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializeNonTransferableMint
 
-	// The common instruction prefix for Interest Bearing extension instructions.
-	Instruction_InterestBearingMintExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializeInterestBearingMint
 
-	// The common instruction prefix for CPI Guard account extension instructions.
-	Instruction_CpiGuardExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_UpdateRateInterestBearingMint
+
+	Instruction_EnableCpiGuard
+
+	Instruction_DisableCpiGuard
 
 	// Initialize the permanent delegate on a new mint.
-	Instruction_InitializePermanentDelegate = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializePermanentDelegate
 
-	// The common instruction prefix for transfer hook extension instructions.
-	Instruction_TransferHookExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializeTransferHook
 
-	// The common instruction prefix for the confidential transfer fee extension instructions.
-	Instruction_ConfidentialTransferFeeExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_UpdateTransferHook
+
+	Instruction_InitializeConfidentialTransferFee
+
+	Instruction_WithdrawWithheldTokensFromMintForConfidentialTransferFee
+
+	Instruction_WithdrawWithheldTokensFromAccountsForConfidentialTransferFee
+
+	Instruction_HarvestWithheldTokensToMintForConfidentialTransferFee
+
+	Instruction_EnableHarvestToMint
+
+	Instruction_DisableHarvestToMint
 
 	// This instruction is to be used to rescue SOL sent to any `TokenProgram`
-	Instruction_WithdrawExcessLamports = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_WithdrawExcessLamports
 
-	// The common instruction prefix for metadata pointer extension instructions.
-	Instruction_MetadataPointerExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializeMetadataPointer
 
-	// The common instruction prefix for group pointer extension instructions.
-	Instruction_GroupPointerExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_UpdateMetadataPointer
 
-	// The common instruction prefix for group member pointer extension instructions.
-	Instruction_GroupMemberPointerExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializeGroupPointer
 
-	// Instruction prefix for instructions to the confidential-mint-burn extension
-	Instruction_ConfidentialMintBurnExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_UpdateGroupPointer
 
-	// Instruction prefix for instructions to the scaled ui amount extension
-	Instruction_ScaledUiAmountExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_InitializeGroupMemberPointer
 
-	// Instruction prefix for instructions to the pausable extension
-	Instruction_PausableExtension = ag_binary.TypeID([8]byte{150, 200, 100, 50, 200, 150, 100, 50})
+	Instruction_UpdateGroupMemberPointer
+
+	Instruction_InitializeConfidentialMintBurn
+
+	Instruction_RotateSupplyElgamalPubkey
+
+	Instruction_UpdateDecryptableSupply
+
+	Instruction_MintToken
+
+	Instruction_BurnToken
+
+	Instruction_ApplyPendingBurn
+
+	Instruction_InitializeScaledUiAmountMint
+
+	Instruction_UpdateMultiplierScaledUiMint
+
+	Instruction_InitializePausableConfig
+
+	Instruction_Pause
+
+	Instruction_Resume
 )
 
 // InstructionIDToName returns the name of the instruction given its ID.
-func InstructionIDToName(id ag_binary.TypeID) string {
+func InstructionIDToName(id uint8) string {
 	switch id {
 	case Instruction_InitializeMint:
 		return "InitializeMint"
@@ -287,44 +353,124 @@ func InstructionIDToName(id ag_binary.TypeID) string {
 		return "UiAmountToAmount"
 	case Instruction_InitializeMintCloseAuthority:
 		return "InitializeMintCloseAuthority"
-	case Instruction_TransferFeeExtension:
-		return "TransferFeeExtension"
-	case Instruction_ConfidentialTransferExtension:
-		return "ConfidentialTransferExtension"
-	case Instruction_DefaultAccountStateExtension:
-		return "DefaultAccountStateExtension"
+	case Instruction_InitializeTransferFeeConfig:
+		return "InitializeTransferFeeConfig"
+	case Instruction_TransferCheckedWithFee:
+		return "TransferCheckedWithFee"
+	case Instruction_WithdrawWithheldTokensFromMint:
+		return "WithdrawWithheldTokensFromMint"
+	case Instruction_WithdrawWithheldTokensFromAccounts:
+		return "WithdrawWithheldTokensFromAccounts"
+	case Instruction_HarvestWithheldTokensToMint:
+		return "HarvestWithheldTokensToMint"
+	case Instruction_SetTransferFee:
+		return "SetTransferFee"
+	case Instruction_InitializeConfidentialTransferMint:
+		return "InitializeConfidentialTransferMint"
+	case Instruction_UpdateConfidentialTransferMint:
+		return "UpdateConfidentialTransferMint"
+	case Instruction_ConfigureConfidentialTransferAccount:
+		return "ConfigureConfidentialTransferAccount"
+	case Instruction_ApproveConfidentialTransferAccount:
+		return "ApproveConfidentialTransferAccount"
+	case Instruction_EmptyConfidentialTransferAccount:
+		return "EmptyConfidentialTransferAccount"
+	case Instruction_ConfidentialDeposit:
+		return "ConfidentialDeposit"
+	case Instruction_ConfidentialWithdraw:
+		return "ConfidentialWithdraw"
+	case Instruction_ConfidentialTransfer:
+		return "ConfidentialTransfer"
+	case Instruction_ApplyConfidentialPendingBalance:
+		return "ApplyConfidentialPendingBalance"
+	case Instruction_EnableConfidentialCredits:
+		return "EnableConfidentialCredits"
+	case Instruction_DisableConfidentialCredits:
+		return "DisableConfidentialCredits"
+	case Instruction_EnableNonConfidentialCredits:
+		return "EnableNonConfidentialCredits"
+	case Instruction_DisableNonConfidentialCredits:
+		return "DisableNonConfidentialCredits"
+	case Instruction_ConfidentialTransferWithFee:
+		return "ConfidentialTransferWithFee"
+	case Instruction_ConfigureAccountWithRegistry:
+		return "ConfigureAccountWithRegistry"
+	case Instruction_InitializeDefaultAccountState:
+		return "InitializeDefaultAccountState"
+	case Instruction_UpdateDefaultAccountState:
+		return "UpdateDefaultAccountState"
 	case Instruction_Reallocate:
 		return "Reallocate"
-	case Instruction_MemoTransferExtension:
-		return "MemoTransferExtension"
+	case Instruction_EnableMemoTransfers:
+		return "EnableMemoTransfers"
+	case Instruction_DisableMemoTransfers:
+		return "DisableMemoTransfers"
 	case Instruction_CreateNativeMint:
 		return "CreateNativeMint"
 	case Instruction_InitializeNonTransferableMint:
 		return "InitializeNonTransferableMint"
-	case Instruction_InterestBearingMintExtension:
-		return "InterestBearingMintExtension"
-	case Instruction_CpiGuardExtension:
-		return "CpiGuardExtension"
+	case Instruction_InitializeInterestBearingMint:
+		return "InitializeInterestBearingMint"
+	case Instruction_UpdateRateInterestBearingMint:
+		return "UpdateRateInterestBearingMint"
+	case Instruction_EnableCpiGuard:
+		return "EnableCpiGuard"
+	case Instruction_DisableCpiGuard:
+		return "DisableCpiGuard"
 	case Instruction_InitializePermanentDelegate:
 		return "InitializePermanentDelegate"
-	case Instruction_TransferHookExtension:
-		return "TransferHookExtension"
-	case Instruction_ConfidentialTransferFeeExtension:
-		return "ConfidentialTransferFeeExtension"
+	case Instruction_InitializeTransferHook:
+		return "InitializeTransferHook"
+	case Instruction_UpdateTransferHook:
+		return "UpdateTransferHook"
+	case Instruction_InitializeConfidentialTransferFee:
+		return "InitializeConfidentialTransferFee"
+	case Instruction_WithdrawWithheldTokensFromMintForConfidentialTransferFee:
+		return "WithdrawWithheldTokensFromMintForConfidentialTransferFee"
+	case Instruction_WithdrawWithheldTokensFromAccountsForConfidentialTransferFee:
+		return "WithdrawWithheldTokensFromAccountsForConfidentialTransferFee"
+	case Instruction_HarvestWithheldTokensToMintForConfidentialTransferFee:
+		return "HarvestWithheldTokensToMintForConfidentialTransferFee"
+	case Instruction_EnableHarvestToMint:
+		return "EnableHarvestToMint"
+	case Instruction_DisableHarvestToMint:
+		return "DisableHarvestToMint"
 	case Instruction_WithdrawExcessLamports:
 		return "WithdrawExcessLamports"
-	case Instruction_MetadataPointerExtension:
-		return "MetadataPointerExtension"
-	case Instruction_GroupPointerExtension:
-		return "GroupPointerExtension"
-	case Instruction_GroupMemberPointerExtension:
-		return "GroupMemberPointerExtension"
-	case Instruction_ConfidentialMintBurnExtension:
-		return "ConfidentialMintBurnExtension"
-	case Instruction_ScaledUiAmountExtension:
-		return "ScaledUiAmountExtension"
-	case Instruction_PausableExtension:
-		return "PausableExtension"
+	case Instruction_InitializeMetadataPointer:
+		return "InitializeMetadataPointer"
+	case Instruction_UpdateMetadataPointer:
+		return "UpdateMetadataPointer"
+	case Instruction_InitializeGroupPointer:
+		return "InitializeGroupPointer"
+	case Instruction_UpdateGroupPointer:
+		return "UpdateGroupPointer"
+	case Instruction_InitializeGroupMemberPointer:
+		return "InitializeGroupMemberPointer"
+	case Instruction_UpdateGroupMemberPointer:
+		return "UpdateGroupMemberPointer"
+	case Instruction_InitializeConfidentialMintBurn:
+		return "InitializeConfidentialMintBurn"
+	case Instruction_RotateSupplyElgamalPubkey:
+		return "RotateSupplyElgamalPubkey"
+	case Instruction_UpdateDecryptableSupply:
+		return "UpdateDecryptableSupply"
+	case Instruction_MintToken:
+		return "MintToken"
+	case Instruction_BurnToken:
+		return "BurnToken"
+	case Instruction_ApplyPendingBurn:
+		return "ApplyPendingBurn"
+	case Instruction_InitializeScaledUiAmountMint:
+		return "InitializeScaledUiAmountMint"
+	case Instruction_UpdateMultiplierScaledUiMint:
+		return "UpdateMultiplierScaledUiMint"
+	case Instruction_InitializePausableConfig:
+		return "InitializePausableConfig"
+	case Instruction_Pause:
+		return "Pause"
+	case Instruction_Resume:
+		return "Resume"
 	default:
 		return ""
 	}
@@ -343,142 +489,262 @@ func (inst *Instruction) EncodeToTree(parent ag_treeout.Branches) {
 }
 
 var InstructionImplDef = ag_binary.NewVariantDefinition(
-	ag_binary.AnchorTypeIDEncoding,
+	ag_binary.Uint8TypeIDEncoding,
 	[]ag_binary.VariantType{
 		{
-			Name: "initialize_mint", Type: (*InitializeMint)(nil),
+			Name: "InitializeMint", Type: (*InitializeMint)(nil),
 		},
 		{
-			Name: "initialize_account", Type: (*InitializeAccount)(nil),
+			Name: "InitializeAccount", Type: (*InitializeAccount)(nil),
 		},
 		{
-			Name: "initialize_multisig", Type: (*InitializeMultisig)(nil),
+			Name: "InitializeMultisig", Type: (*InitializeMultisig)(nil),
 		},
 		{
-			Name: "transfer", Type: (*Transfer)(nil),
+			Name: "Transfer", Type: (*Transfer)(nil),
 		},
 		{
-			Name: "approve", Type: (*Approve)(nil),
+			Name: "Approve", Type: (*Approve)(nil),
 		},
 		{
-			Name: "revoke", Type: (*Revoke)(nil),
+			Name: "Revoke", Type: (*Revoke)(nil),
 		},
 		{
-			Name: "set_authority", Type: (*SetAuthority)(nil),
+			Name: "SetAuthority", Type: (*SetAuthority)(nil),
 		},
 		{
-			Name: "mint_to", Type: (*MintTo)(nil),
+			Name: "MintTo", Type: (*MintTo)(nil),
 		},
 		{
-			Name: "burn", Type: (*Burn)(nil),
+			Name: "Burn", Type: (*Burn)(nil),
 		},
 		{
-			Name: "close_account", Type: (*CloseAccount)(nil),
+			Name: "CloseAccount", Type: (*CloseAccount)(nil),
 		},
 		{
-			Name: "freeze_account", Type: (*FreezeAccount)(nil),
+			Name: "FreezeAccount", Type: (*FreezeAccount)(nil),
 		},
 		{
-			Name: "thaw_account", Type: (*ThawAccount)(nil),
+			Name: "ThawAccount", Type: (*ThawAccount)(nil),
 		},
 		{
-			Name: "transfer_checked", Type: (*TransferChecked)(nil),
+			Name: "TransferChecked", Type: (*TransferChecked)(nil),
 		},
 		{
-			Name: "approve_checked", Type: (*ApproveChecked)(nil),
+			Name: "ApproveChecked", Type: (*ApproveChecked)(nil),
 		},
 		{
-			Name: "mint_to_checked", Type: (*MintToChecked)(nil),
+			Name: "MintToChecked", Type: (*MintToChecked)(nil),
 		},
 		{
-			Name: "burn_checked", Type: (*BurnChecked)(nil),
+			Name: "BurnChecked", Type: (*BurnChecked)(nil),
 		},
 		{
-			Name: "initialize_account2", Type: (*InitializeAccount2)(nil),
+			Name: "InitializeAccount2", Type: (*InitializeAccount2)(nil),
 		},
 		{
-			Name: "sync_native", Type: (*SyncNative)(nil),
+			Name: "SyncNative", Type: (*SyncNative)(nil),
 		},
 		{
-			Name: "initialize_account3", Type: (*InitializeAccount3)(nil),
+			Name: "InitializeAccount3", Type: (*InitializeAccount3)(nil),
 		},
 		{
-			Name: "initialize_multisig2", Type: (*InitializeMultisig2)(nil),
+			Name: "InitializeMultisig2", Type: (*InitializeMultisig2)(nil),
 		},
 		{
-			Name: "initialize_mint2", Type: (*InitializeMint2)(nil),
+			Name: "InitializeMint2", Type: (*InitializeMint2)(nil),
 		},
 		{
-			Name: "get_account_data_size", Type: (*GetAccountDataSize)(nil),
+			Name: "GetAccountDataSize", Type: (*GetAccountDataSize)(nil),
 		},
 		{
-			Name: "initialize_immutable_owner", Type: (*InitializeImmutableOwner)(nil),
+			Name: "InitializeImmutableOwner", Type: (*InitializeImmutableOwner)(nil),
 		},
 		{
-			Name: "amount_to_ui_amount", Type: (*AmountToUiAmount)(nil),
+			Name: "AmountToUiAmount", Type: (*AmountToUiAmount)(nil),
 		},
 		{
-			Name: "ui_amount_to_amount", Type: (*UiAmountToAmount)(nil),
+			Name: "UiAmountToAmount", Type: (*UiAmountToAmount)(nil),
 		},
 		{
-			Name: "initialize_mint_close_authority", Type: (*InitializeMintCloseAuthority)(nil),
+			Name: "InitializeMintCloseAuthority", Type: (*InitializeMintCloseAuthority)(nil),
 		},
 		{
-			Name: "transfer_fee_extension", Type: (*TransferFeeExtension)(nil),
+			Name: "InitializeTransferFeeConfig", Type: (*InitializeTransferFeeConfig)(nil),
 		},
 		{
-			Name: "confidential_transfer_extension", Type: (*ConfidentialTransferExtension)(nil),
+			Name: "TransferCheckedWithFee", Type: (*TransferCheckedWithFee)(nil),
 		},
 		{
-			Name: "default_account_state_extension", Type: (*DefaultAccountStateExtension)(nil),
+			Name: "WithdrawWithheldTokensFromMint", Type: (*WithdrawWithheldTokensFromMint)(nil),
 		},
 		{
-			Name: "reallocate", Type: (*Reallocate)(nil),
+			Name: "WithdrawWithheldTokensFromAccounts", Type: (*WithdrawWithheldTokensFromAccounts)(nil),
 		},
 		{
-			Name: "memo_transfer_extension", Type: (*MemoTransferExtension)(nil),
+			Name: "HarvestWithheldTokensToMint", Type: (*HarvestWithheldTokensToMint)(nil),
 		},
 		{
-			Name: "create_native_mint", Type: (*CreateNativeMint)(nil),
+			Name: "SetTransferFee", Type: (*SetTransferFee)(nil),
 		},
 		{
-			Name: "initialize_non_transferable_mint", Type: (*InitializeNonTransferableMint)(nil),
+			Name: "InitializeConfidentialTransferMint", Type: (*InitializeConfidentialTransferMint)(nil),
 		},
 		{
-			Name: "interest_bearing_mint_extension", Type: (*InterestBearingMintExtension)(nil),
+			Name: "UpdateConfidentialTransferMint", Type: (*UpdateConfidentialTransferMint)(nil),
 		},
 		{
-			Name: "cpi_guard_extension", Type: (*CpiGuardExtension)(nil),
+			Name: "ConfigureConfidentialTransferAccount", Type: (*ConfigureConfidentialTransferAccount)(nil),
 		},
 		{
-			Name: "initialize_permanent_delegate", Type: (*InitializePermanentDelegate)(nil),
+			Name: "ApproveConfidentialTransferAccount", Type: (*ApproveConfidentialTransferAccount)(nil),
 		},
 		{
-			Name: "transfer_hook_extension", Type: (*TransferHookExtension)(nil),
+			Name: "EmptyConfidentialTransferAccount", Type: (*EmptyConfidentialTransferAccount)(nil),
 		},
 		{
-			Name: "confidential_transfer_fee_extension", Type: (*ConfidentialTransferFeeExtension)(nil),
+			Name: "ConfidentialDeposit", Type: (*ConfidentialDeposit)(nil),
 		},
 		{
-			Name: "withdraw_excess_lamports", Type: (*WithdrawExcessLamports)(nil),
+			Name: "ConfidentialWithdraw", Type: (*ConfidentialWithdraw)(nil),
 		},
 		{
-			Name: "metadata_pointer_extension", Type: (*MetadataPointerExtension)(nil),
+			Name: "ConfidentialTransfer", Type: (*ConfidentialTransfer)(nil),
 		},
 		{
-			Name: "group_pointer_extension", Type: (*GroupPointerExtension)(nil),
+			Name: "ApplyConfidentialPendingBalance", Type: (*ApplyConfidentialPendingBalance)(nil),
 		},
 		{
-			Name: "group_member_pointer_extension", Type: (*GroupMemberPointerExtension)(nil),
+			Name: "EnableConfidentialCredits", Type: (*EnableConfidentialCredits)(nil),
 		},
 		{
-			Name: "confidential_mint_burn_extension", Type: (*ConfidentialMintBurnExtension)(nil),
+			Name: "DisableConfidentialCredits", Type: (*DisableConfidentialCredits)(nil),
 		},
 		{
-			Name: "scaled_ui_amount_extension", Type: (*ScaledUiAmountExtension)(nil),
+			Name: "EnableNonConfidentialCredits", Type: (*EnableNonConfidentialCredits)(nil),
 		},
 		{
-			Name: "pausable_extension", Type: (*PausableExtension)(nil),
+			Name: "DisableNonConfidentialCredits", Type: (*DisableNonConfidentialCredits)(nil),
+		},
+		{
+			Name: "ConfidentialTransferWithFee", Type: (*ConfidentialTransferWithFee)(nil),
+		},
+		{
+			Name: "ConfigureAccountWithRegistry", Type: (*ConfigureAccountWithRegistry)(nil),
+		},
+		{
+			Name: "InitializeDefaultAccountState", Type: (*InitializeDefaultAccountState)(nil),
+		},
+		{
+			Name: "UpdateDefaultAccountState", Type: (*UpdateDefaultAccountState)(nil),
+		},
+		{
+			Name: "Reallocate", Type: (*Reallocate)(nil),
+		},
+		{
+			Name: "EnableMemoTransfers", Type: (*EnableMemoTransfers)(nil),
+		},
+		{
+			Name: "DisableMemoTransfers", Type: (*DisableMemoTransfers)(nil),
+		},
+		{
+			Name: "CreateNativeMint", Type: (*CreateNativeMint)(nil),
+		},
+		{
+			Name: "InitializeNonTransferableMint", Type: (*InitializeNonTransferableMint)(nil),
+		},
+		{
+			Name: "InitializeInterestBearingMint", Type: (*InitializeInterestBearingMint)(nil),
+		},
+		{
+			Name: "UpdateRateInterestBearingMint", Type: (*UpdateRateInterestBearingMint)(nil),
+		},
+		{
+			Name: "EnableCpiGuard", Type: (*EnableCpiGuard)(nil),
+		},
+		{
+			Name: "DisableCpiGuard", Type: (*DisableCpiGuard)(nil),
+		},
+		{
+			Name: "InitializePermanentDelegate", Type: (*InitializePermanentDelegate)(nil),
+		},
+		{
+			Name: "InitializeTransferHook", Type: (*InitializeTransferHook)(nil),
+		},
+		{
+			Name: "UpdateTransferHook", Type: (*UpdateTransferHook)(nil),
+		},
+		{
+			Name: "InitializeConfidentialTransferFee", Type: (*InitializeConfidentialTransferFee)(nil),
+		},
+		{
+			Name: "WithdrawWithheldTokensFromMintForConfidentialTransferFee", Type: (*WithdrawWithheldTokensFromMintForConfidentialTransferFee)(nil),
+		},
+		{
+			Name: "WithdrawWithheldTokensFromAccountsForConfidentialTransferFee", Type: (*WithdrawWithheldTokensFromAccountsForConfidentialTransferFee)(nil),
+		},
+		{
+			Name: "HarvestWithheldTokensToMintForConfidentialTransferFee", Type: (*HarvestWithheldTokensToMintForConfidentialTransferFee)(nil),
+		},
+		{
+			Name: "EnableHarvestToMint", Type: (*EnableHarvestToMint)(nil),
+		},
+		{
+			Name: "DisableHarvestToMint", Type: (*DisableHarvestToMint)(nil),
+		},
+		{
+			Name: "WithdrawExcessLamports", Type: (*WithdrawExcessLamports)(nil),
+		},
+		{
+			Name: "InitializeMetadataPointer", Type: (*InitializeMetadataPointer)(nil),
+		},
+		{
+			Name: "UpdateMetadataPointer", Type: (*UpdateMetadataPointer)(nil),
+		},
+		{
+			Name: "InitializeGroupPointer", Type: (*InitializeGroupPointer)(nil),
+		},
+		{
+			Name: "UpdateGroupPointer", Type: (*UpdateGroupPointer)(nil),
+		},
+		{
+			Name: "InitializeGroupMemberPointer", Type: (*InitializeGroupMemberPointer)(nil),
+		},
+		{
+			Name: "UpdateGroupMemberPointer", Type: (*UpdateGroupMemberPointer)(nil),
+		},
+		{
+			Name: "InitializeConfidentialMintBurn", Type: (*InitializeConfidentialMintBurn)(nil),
+		},
+		{
+			Name: "RotateSupplyElgamalPubkey", Type: (*RotateSupplyElgamalPubkey)(nil),
+		},
+		{
+			Name: "UpdateDecryptableSupply", Type: (*UpdateDecryptableSupply)(nil),
+		},
+		{
+			Name: "MintToken", Type: (*MintToken)(nil),
+		},
+		{
+			Name: "BurnToken", Type: (*BurnToken)(nil),
+		},
+		{
+			Name: "ApplyPendingBurn", Type: (*ApplyPendingBurn)(nil),
+		},
+		{
+			Name: "InitializeScaledUiAmountMint", Type: (*InitializeScaledUiAmountMint)(nil),
+		},
+		{
+			Name: "UpdateMultiplierScaledUiMint", Type: (*UpdateMultiplierScaledUiMint)(nil),
+		},
+		{
+			Name: "InitializePausableConfig", Type: (*InitializePausableConfig)(nil),
+		},
+		{
+			Name: "Pause", Type: (*Pause)(nil),
+		},
+		{
+			Name: "Resume", Type: (*Resume)(nil),
 		},
 	},
 )
@@ -508,7 +774,7 @@ func (inst *Instruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) error 
 }
 
 func (inst *Instruction) MarshalWithEncoder(encoder *ag_binary.Encoder) error {
-	err := encoder.WriteBytes(inst.TypeID.Bytes(), false)
+	err := encoder.WriteUint8(inst.TypeID.Uint8())
 	if err != nil {
 		return fmt.Errorf("unable to write variant type: %w", err)
 	}

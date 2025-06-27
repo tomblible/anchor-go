@@ -98,7 +98,7 @@ func (inst *Approve) GetRemainingAccounts() []*ag_solanago.AccountMeta {
 func (inst Approve) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_Approve,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_Approve),
 	}}
 }
 

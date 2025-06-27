@@ -60,7 +60,7 @@ func (inst *InitializePermanentDelegate) GetRemainingAccounts() []*ag_solanago.A
 func (inst InitializePermanentDelegate) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_InitializePermanentDelegate,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_InitializePermanentDelegate),
 	}}
 }
 

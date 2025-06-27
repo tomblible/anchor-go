@@ -89,7 +89,7 @@ func (inst *CloseAccount) GetRemainingAccounts() []*ag_solanago.AccountMeta {
 func (inst CloseAccount) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_CloseAccount,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_CloseAccount),
 	}}
 }
 

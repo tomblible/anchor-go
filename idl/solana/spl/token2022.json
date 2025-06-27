@@ -1083,7 +1083,12 @@
                 100,
                 50
             ],
-            "accounts": [],
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                }
+            ],
             "args": []
         },
         {
@@ -1170,58 +1175,546 @@
             ]
         },
         {
-            "name": "transfer_fee_extension",
-            "docs": [
-                "The common instruction prefix for Transfer Fee extension instructions."
+            "name": "initialize_transfer_fee_config",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
+            "args": [
+                {
+                    "name": "transferFeeConfigAuthority",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                },
+                {
+                    "name": "withdrawWithheldAuthority",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                },
+                {
+                    "name": "transferFeeBasisPoints",
+                    "type": "u16"
+                },
+                {
+                    "name": "maximumFee",
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "transfer_checked_With_fee",
+            "accounts": [
+                {
+                    "name": "source",
+                    "writable": true
+                },
+                {
+                    "name": "mint"
+                },
+                {
+                    "name": "destination",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
             ],
-            "accounts": [],
+            "args": [
+                {
+                    "name": "amount",
+                    "type": "u64"
+                },
+                {
+                    "name": "decimals",
+                    "type": "u8"
+                },
+                {
+                    "name": "fee",
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "withdraw_withheld_tokens_from_mint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "destination",
+                    "writable": true
+                },
+                {
+                    "name": "withdrawAuthority",
+                    "signer": true
+                }
+            ],
             "args": []
         },
         {
-            "name": "confidential_transfer_extension",
-            "docs": [
-                "The common instruction prefix for Confidential Transfer extension."
+            "name": "withdraw_withheld_tokens_from_accounts",
+            "accounts": [
+                {
+                    "name": "mint"
+                },
+                {
+                    "name": "destination",
+                    "writable": true
+                },
+                {
+                    "name": "withdrawAuthority",
+                    "signer": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
+            "args": [
+                {
+                    "name": "numTokenAccounts",
+                    "type": "u8"
+                }
+            ]
+        },
+        {
+            "name": "harvest_withheld_tokens_to_mint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
             ],
-            "accounts": [],
             "args": []
         },
         {
-            "name": "default_account_state_extension",
-            "docs": [
-                "The common instruction prefix for Default Account State extension"
+            "name": "set_transfer_fee",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "feeAuthority",
+                    "signer": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
+            "args": [
+                {
+                    "name": "transferFeeBasisPoints",
+                    "type": "u16"
+                },
+                {
+                    "name": "maximumFee",
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "initialize_confidential_transfer_mint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
             ],
-            "accounts": [],
             "args": []
+        },
+        {
+            "name": "update_confidential_transfer_mint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "mintAuthority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "autoApproveNewAccounts",
+                    "type": "bool"
+                },
+                {
+                    "name": "auditorElgamalPubkey",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "configure_confidential_transfer_account",
+            "accounts": [
+                {
+                    "name": "tokenAccount",
+                    "writable": true
+                },
+                {
+                    "name": "mint"
+                },
+                {
+                    "name": "instructionsOrContextState"
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "decryptableZeroBalance",
+                    "type": {
+                        "defined": {
+                            "name": "DecryptableBalance"
+                        }
+                    }
+                },
+                {
+                    "name": "maximumPendingBalanceCreditCounter",
+                    "type": "u64"
+                },
+                {
+                    "name": "proofInstructionOffset",
+                    "type": "i8"
+                }
+            ]
+        },
+        {
+            "name": "approve_confidential_transfer_account",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "mint"
+                },
+                {
+                    "name": "mintAuthority",
+                    "signer": true
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "empty_confidential_transfer_account",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "instructionsOrContextState"
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "proofInstructionOffset",
+                    "type": "i8"
+                }
+            ]
+        },
+        {
+            "name": "confidential_deposit",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "mint"
+                },
+                {
+                    "name": "ownerOrDelegate",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "type": "u64"
+                },
+                {
+                    "name": "decimals",
+                    "type": "u8"
+                }
+            ]
+        },
+        {
+            "name": "confidential_withdraw",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "mint"
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "amount",
+                    "type": "u64"
+                },
+                {
+                    "name": "decimals",
+                    "type": "u8"
+                },
+                {
+                    "name": "newDecryptableAvailableBalance",
+                    "type": {
+                        "defined": {
+                            "name": "DecryptableBalance"
+                        }
+                    }
+                },
+                {
+                    "name": "equalityProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "rangeProofInstructionOffset",
+                    "type": "i8"
+                }
+            ]
+        },
+        {
+            "name": "confidential_transfer",
+            "accounts": [
+                {
+                    "name": "source",
+                    "writable": true
+                },
+                {
+                    "name": "mint"
+                },
+                {
+                    "name": "destination",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "newSourceDecryptableAvailableBalance",
+                     "type": {
+                        "defined": {
+                            "name": "DecryptableBalance"
+                        }
+                    }
+                },
+                {
+                    "name": "equalityProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "ciphertextValidityProofInstructionOffset",
+                    "type": "i8"
+                }
+            ]
+        },
+        {
+            "name": "apply_confidential_pending_balance",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "expectedPendingBalanceCreditCounter",
+                    "type": "u64"
+                },
+                {
+                    "name": "newDecryptableAvailableBalance",
+                     "type": {
+                        "defined": {
+                            "name": "DecryptableBalance"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "enable_confidential_credits",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "disable_confidential_credits",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "enable_non_confidential_credits",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "disable_non_confidential_credits",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "confidential_Transfer_With_fee",
+            "accounts": [
+                {
+                    "name": "source",
+                    "writable": true
+                },
+                {
+                    "name": "destination",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "newSourceDecryptableAvailableBalance",
+                     "type": {
+                        "defined": {
+                            "name": "DecryptableBalance"
+                        }
+                    }
+                },
+                {
+                    "name": "equalityProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "transferAmountCiphertextValidityProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "feeSigmaProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "feeCiphertextValidityProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "rangeProofInstructionOffset",
+                    "type": "i8"
+                }
+            ]
+        },
+        {
+            "name": "configure_account_with_registry",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "payer",
+                    "signer": true,
+                    "writable": true
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "initialize_default_account_state",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "state",
+                    "type": {
+                        "defined": {
+                            "name": "AccountState"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "update_default_account_state",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "freezeAuthority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "state",
+                    "type": {
+                        "defined": {
+                            "name": "AccountState"
+                        }
+                    }
+                }
+            ]
         },
         {
             "name": "reallocate",
@@ -1271,21 +1764,31 @@
             ]
         },
         {
-            "name": "memo_transfer_extension",
-            "docs": [
-                "The common instruction prefix for Memo Transfer account extension instructions."
+            "name": "enable_memo_transfers",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
+            "args": []
+        },
+        {
+            "name": "disable_memo_transfers",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
             ],
-            "accounts": [],
             "args": []
         },
         {
@@ -1343,39 +1846,69 @@
             "args": []
         },
         {
-            "name": "interest_bearing_mint_extension",
-            "docs": [
-                "The common instruction prefix for Interest Bearing extension instructions."
+            "name": "initialize_interest_bearing_mint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
+            "args": [
+                {
+                    "name": "rateAuthority",
+                    "type": "pubkey"
+                },
+                {
+                    "name": "initialRateBasisPoints",
+                    "type": "u16"
+                }
+            ]
+        },
+        {
+            "name": "update_rate_interest_bearingMint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "rateAuthority",
+                    "signer": true
+                }
             ],
-            "accounts": [],
+            "args": [
+                {
+                    "name": "newRateBasisPoints",
+                    "type": "u16"
+                }
+            ]
+        },
+        {
+            "name": "enable_cpi_guard",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
+            ],
             "args": []
         },
         {
-            "name": "cpi_guard_extension",
-            "docs": [
-                "The common instruction prefix for CPI Guard account extension instructions."
+            "name": "disable_cpi_guard",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "owner",
+                    "signer": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
-            ],
-            "accounts": [],
             "args": []
         },
         {
@@ -1407,39 +1940,170 @@
             ]
         },
         {
-            "name": "transfer_hook_extension",
-            "docs": [
-                "The common instruction prefix for transfer hook extension instructions."
+            "name": "initialize_transfer_hook",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
+            "args": [
+                {
+                    "name": "authority",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                },
+                {
+                    "name": "programId",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "update_transfer_hook",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
             ],
-            "accounts": [],
+            "args": [
+                {
+                    "name": "programId",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "initialize_confidential_transfer_fee",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "authority",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                },
+                {
+                    "name": "withdrawWithheldAuthorityElGamalPubkey",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "withdraw_withheld_tokens_from_mint_for_confidential_transfer_fee",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "fee_receiver",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "proofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "newDecryptableAvailableBalance",
+                    "type": {
+                        "defined": {
+                            "name": "DecryptableBalance"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "withdraw_withheld_tokens_from_accounts_for_confidential_transfer_fee",
+            "accounts": [
+                {
+                    "name": "fee_receiver",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "numTokenAccounts",
+                    "type": "u8"
+                },
+                {
+                    "name": "proofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "newDecryptableAvailableBalance",
+                   "type": {
+                        "defined": {
+                            "name": "DecryptableBalance"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "harvest_withheld_tokens_to_mint_for_confidential_transfer_fee",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
+            ],
             "args": []
         },
         {
-            "name": "confidential_transfer_fee_extension",
-            "docs": [
-                "The common instruction prefix for the confidential transfer fee extension instructions."
+            "name": "enable_harvest_to_mint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
+            "args": []
+        },
+        {
+            "name": "disable_harvest_to_mint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
             ],
-            "accounts": [],
             "args": []
         },
         {
@@ -1474,111 +2138,408 @@
             "args": []
         },
         {
-            "name": "metadata_pointer_extension",
-            "docs": [
-                "The common instruction prefix for metadata pointer extension instructions."
+            "name": "initialize_metadata_pointer",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
+            "args": [
+                {
+                    "name": "authority",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                },
+                {
+                    "name": "metadataAddress",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "update_metadata_pointer",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
             ],
-            "accounts": [],
+            "args": [
+                {
+                    "name": "metadataAddress",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "initialize_group_pointer",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "authority",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                },
+                {
+                    "name": "groupAddress",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "update_group_pointer",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "groupAddress",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "initialize_group_member_pointer",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "authority",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                },
+                {
+                    "name": "memberAddress",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "update_group_member_pointer",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+  {
+    "name": "memberAddress",
+    "type": {
+      "option": "pubkey"
+    }
+  }
+]
+
+        },
+        {
+            "name": "initialize_confidential_mint_burn",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "supplyElgamalPubkey",
+                    "type": {
+      "option": "pubkey"
+    }
+                },
+                {
+                    "name": "decryptableSupply",
+                    "type": {
+                        "array": ["u8", 36]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "rotate_supply_elgamal_pubkey",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+           "args": [
+                {
+                    "name": "newSupplyElgamalPubkey",
+                    "type": {
+      "option": "pubkey"
+    }
+                },
+                {
+                    "name": "proofInstructionOffset",
+                    "type": "i8"
+                }
+            ]
+        },
+        {
+            "name": "update_decryptable_supply",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "newDecryptableSupply",
+                    "type": {
+                        "array": ["u8", 36]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "mint_token",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+               {
+                    "name": "newDecryptableSupply",
+                    "type": {
+                        "array": ["u8", 36]
+                    }
+                },
+                {
+                    "name": "mintAmountAuditorCiphertextLo",
+                    "type": {
+                        "array": ["u8", 64]
+                    }
+                },
+                {
+                    "name": "mintAmountAuditorCiphertextHi",
+                    "type": {
+                        "array": ["u8", 64]
+                    }
+                },
+                {
+                    "name": "equalityProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "ciphertextValidityProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "rangeProofInstructionOffset",
+                    "type": "i8"
+                }
+            ]
+        },
+        {
+            "name": "burn_token",
+            "accounts": [
+                {
+                    "name": "account",
+                    "writable": true
+                },
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "newDecryptableAvailableBalance",
+                    "type": {
+                        "defined": {
+                            "name": "DecryptableBalance"
+                        }
+                    }
+                },
+                {
+                    "name": "burnAmountAuditorCiphertextLo",
+                    "type": {
+                        "array": ["u8", 64]
+                    }
+                },
+                {
+                    "name": "burnAmountAuditorCiphertextHi",
+                    "type": {
+                        "array": ["u8", 64]
+                    }
+                },
+                {
+                    "name": "equalityProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "ciphertextValidityProofInstructionOffset",
+                    "type": "i8"
+                },
+                {
+                    "name": "rangeProofInstructionOffset",
+                    "type": "i8"
+                }
+            ]
+        },
+        {
+            "name": "apply_pending_burn",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
             "args": []
         },
         {
-            "name": "group_pointer_extension",
-            "docs": [
-                "The common instruction prefix for group pointer extension instructions."
+            "name": "initialize_scaled_ui_amount_mint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
+            "args": [
+                {
+                    "name": "authority",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                },
+                {
+                    "name": "multiplier",
+                    "type": "f64"
+                }
+            ]
+        },
+        {
+            "name": "update_multiplier_scaled_ui_mint",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
             ],
-            "accounts": [],
+        "args": [
+            {
+                "name": "multiplier",
+                "type": "f64"
+            },
+            {
+                "name": "effectiveTimestamp",
+                "type": "i64"
+            }
+        ]
+        },
+        {
+            "name": "initialize_pausable_config",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                }
+            ],
+            "args": [
+                {
+                    "name": "authority",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "pause",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
+            ],
             "args": []
         },
         {
-            "name": "group_member_pointer_extension",
-            "docs": [
-                "The common instruction prefix for group member pointer extension instructions."
+            "name": "resume",
+            "accounts": [
+                {
+                    "name": "mint",
+                    "writable": true
+                },
+                {
+                    "name": "authority",
+                    "signer": true
+                }
             ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
-            ],
-            "accounts": [],
-            "args": []
-        },
-        {
-            "name": "confidential_mint_burn_extension",
-            "docs": [
-                "Instruction prefix for instructions to the confidential-mint-burn extension"
-            ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
-            ],
-            "accounts": [],
-            "args": []
-        },
-        {
-            "name": "scaled_ui_amount_extension",
-            "docs": [
-                "Instruction prefix for instructions to the scaled ui amount extension"
-            ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
-            ],
-            "accounts": [],
-            "args": []
-        },
-        {
-            "name": "pausable_extension",
-            "docs": [
-                "Instruction prefix for instructions to the pausable extension"
-            ],
-            "discriminator": [
-                150,
-                200,
-                100,
-                50,
-                200,
-                150,
-                100,
-                50
-            ],
-            "accounts": [],
             "args": []
         }
     ],
@@ -1820,7 +2781,6 @@
                                         "name": "encryptedBalance"
                                     }
                                 }
-                                
                             },
                             {
                                 "name": "pendingBalanceHigh",
@@ -1840,7 +2800,7 @@
                             },
                             {
                                 "name": "decryptableAvailableBalance",
-                                 "type": {
+                                "type": {
                                     "defined": {
                                         "name": "decryptableBalance"
                                     }
@@ -1987,8 +2947,8 @@
                             },
                             {
                                 "name": "withheldAmount",
-                                "type":{
-                                    "defined":{
+                                "type": {
+                                    "defined": {
                                         "name": "encryptedBalance"
                                     }
                                 }
@@ -2000,8 +2960,8 @@
                         "fields": [
                             {
                                 "name": "withheldAmount",
-                               "type":{
-                                    "defined":{
+                                "type": {
+                                    "defined": {
                                         "name": "encryptedBalance"
                                     }
                                 }

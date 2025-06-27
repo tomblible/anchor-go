@@ -3,6 +3,7 @@
 package token2022
 
 import (
+	"errors"
 	ag_binary "github.com/gagliardetto/binary"
 	ag_solanago "github.com/gagliardetto/solana-go"
 	ag_format "github.com/gagliardetto/solana-go/text/format"
@@ -11,15 +12,28 @@ import (
 
 // Initialize the Immutable Owner extension for the given token account
 type InitializeImmutableOwner struct {
+
+	// [0] = [WRITE] account
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
 // NewInitializeImmutableOwnerInstructionBuilder creates a new `InitializeImmutableOwner` instruction builder.
 func NewInitializeImmutableOwnerInstructionBuilder() *InitializeImmutableOwner {
 	nd := &InitializeImmutableOwner{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 0),
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 1),
 	}
 	return nd
+}
+
+// SetAccountAccount sets the "account" account.
+func (inst *InitializeImmutableOwner) SetAccountAccount(account ag_solanago.PublicKey) *InitializeImmutableOwner {
+	inst.AccountMetaSlice[0] = ag_solanago.Meta(account).WRITE()
+	return inst
+}
+
+// GetAccountAccount gets the "account" account.
+func (inst *InitializeImmutableOwner) GetAccountAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(0)
 }
 
 func (inst *InitializeImmutableOwner) SetAccounts(accounts []*ag_solanago.AccountMeta) error {
@@ -28,18 +42,18 @@ func (inst *InitializeImmutableOwner) SetAccounts(accounts []*ag_solanago.Accoun
 }
 
 func (inst *InitializeImmutableOwner) SetRemainingAccounts(metas []*ag_solanago.AccountMeta) *InitializeImmutableOwner {
-	inst.AccountMetaSlice = append(inst.AccountMetaSlice[0:0], metas...)
+	inst.AccountMetaSlice = append(inst.AccountMetaSlice[0:1], metas...)
 	return inst
 }
 
 func (inst *InitializeImmutableOwner) GetRemainingAccounts() []*ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice[0:]
+	return inst.AccountMetaSlice[1:]
 }
 
 func (inst InitializeImmutableOwner) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_InitializeImmutableOwner,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_InitializeImmutableOwner),
 	}}
 }
 
@@ -54,6 +68,16 @@ func (inst InitializeImmutableOwner) ValidateAndBuild() (*Instruction, error) {
 }
 
 func (inst *InitializeImmutableOwner) Validate() error {
+	if len(inst.AccountMetaSlice) < 1 {
+		return errors.New("accounts slice has wrong length: expected 1 accounts")
+	}
+
+	// Check whether all (required) accounts are set:
+	{
+		if inst.AccountMetaSlice[0] == nil {
+			return errors.New("accounts.Account is not set")
+		}
+	}
 	return nil
 }
 
@@ -69,7 +93,9 @@ func (inst *InitializeImmutableOwner) EncodeToTree(parent ag_treeout.Branches) {
 					instructionBranch.Child("Params[len=0]").ParentFunc(func(paramsBranch ag_treeout.Branches) {})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=0]").ParentFunc(func(accountsBranch ag_treeout.Branches) {})
+					instructionBranch.Child("Accounts[len=1]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+						accountsBranch.Child(ag_format.Meta("account", inst.AccountMetaSlice.Get(0)))
+					})
 				})
 		})
 }
@@ -82,11 +108,17 @@ func (obj *InitializeImmutableOwner) UnmarshalWithDecoder(decoder *ag_binary.Dec
 }
 
 // NewInitializeImmutableOwnerInstruction declares a new InitializeImmutableOwner instruction with the provided parameters and accounts.
-func NewInitializeImmutableOwnerInstruction() *InitializeImmutableOwner {
-	return NewInitializeImmutableOwnerInstructionBuilder()
+func NewInitializeImmutableOwnerInstruction(
+	// Accounts:
+	account ag_solanago.PublicKey) *InitializeImmutableOwner {
+	return NewInitializeImmutableOwnerInstructionBuilder().
+		SetAccountAccount(account)
 }
 
 // NewSimpleInitializeImmutableOwnerInstruction declares a new InitializeImmutableOwner instruction with the provided parameters and accounts.
-func NewSimpleInitializeImmutableOwnerInstruction() *InitializeImmutableOwner {
-	return NewInitializeImmutableOwnerInstructionBuilder()
+func NewSimpleInitializeImmutableOwnerInstruction(
+	// Accounts:
+	account ag_solanago.PublicKey) *InitializeImmutableOwner {
+	return NewInitializeImmutableOwnerInstructionBuilder().
+		SetAccountAccount(account)
 }

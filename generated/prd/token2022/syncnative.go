@@ -60,7 +60,7 @@ func (inst *SyncNative) GetRemainingAccounts() []*ag_solanago.AccountMeta {
 func (inst SyncNative) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_SyncNative,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_SyncNative),
 	}}
 }
 

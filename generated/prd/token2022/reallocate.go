@@ -100,7 +100,7 @@ func (inst *Reallocate) GetRemainingAccounts() []*ag_solanago.AccountMeta {
 func (inst Reallocate) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_Reallocate,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_Reallocate),
 	}}
 }
 

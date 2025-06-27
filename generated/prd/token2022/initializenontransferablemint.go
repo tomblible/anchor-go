@@ -53,7 +53,7 @@ func (inst *InitializeNonTransferableMint) GetRemainingAccounts() []*ag_solanago
 func (inst InitializeNonTransferableMint) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_InitializeNonTransferableMint,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_InitializeNonTransferableMint),
 	}}
 }
 

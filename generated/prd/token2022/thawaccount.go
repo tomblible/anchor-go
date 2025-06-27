@@ -88,7 +88,7 @@ func (inst *ThawAccount) GetRemainingAccounts() []*ag_solanago.AccountMeta {
 func (inst ThawAccount) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_ThawAccount,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_ThawAccount),
 	}}
 }
 

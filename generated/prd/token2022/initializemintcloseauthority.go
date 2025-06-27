@@ -60,7 +60,7 @@ func (inst *InitializeMintCloseAuthority) GetRemainingAccounts() []*ag_solanago.
 func (inst InitializeMintCloseAuthority) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_InitializeMintCloseAuthority,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_InitializeMintCloseAuthority),
 	}}
 }
 

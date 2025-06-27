@@ -130,7 +130,7 @@ func (inst *TransferChecked) GetRemainingAccounts() []*ag_solanago.AccountMeta {
 func (inst TransferChecked) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_TransferChecked,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_TransferChecked),
 	}}
 }
 

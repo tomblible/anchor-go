@@ -81,7 +81,7 @@ func (inst *InitializeMultisig2) GetRemainingAccounts() []*ag_solanago.AccountMe
 func (inst InitializeMultisig2) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_InitializeMultisig2,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_InitializeMultisig2),
 	}}
 }
 

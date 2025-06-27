@@ -79,7 +79,7 @@ func (inst *WithdrawExcessLamports) GetRemainingAccounts() []*ag_solanago.Accoun
 func (inst WithdrawExcessLamports) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_WithdrawExcessLamports,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_WithdrawExcessLamports),
 	}}
 }
 

@@ -91,7 +91,7 @@ func (inst *SetAuthority) GetRemainingAccounts() []*ag_solanago.AccountMeta {
 func (inst SetAuthority) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_SetAuthority,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_SetAuthority),
 	}}
 }
 

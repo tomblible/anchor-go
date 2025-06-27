@@ -108,7 +108,7 @@ func (inst *InitializeMint) GetRemainingAccounts() []*ag_solanago.AccountMeta {
 func (inst InitializeMint) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: Instruction_InitializeMint,
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_InitializeMint),
 	}}
 }
 
