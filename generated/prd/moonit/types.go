@@ -7,99 +7,176 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
-type Currency ag_binary.BorshEnum
-
-const (
-	CurrencySol Currency = iota
-)
-
-func (value Currency) String() string {
-	switch value {
-	case CurrencySol:
-		return "Sol"
-	default:
-		return ""
-	}
+type TokenMintParams struct {
+	Name               string
+	Symbol             string
+	Uri                string
+	Decimals           uint8
+	CollateralCurrency uint8
+	Amount             uint64
+	CurveType          uint8
+	MigrationTarget    uint8
 }
 
-type CurveType ag_binary.BorshEnum
-
-const (
-	CurveTypeLinearV1 CurveType = iota
-	CurveTypeConstantProductV1
-	CurveTypeConstantProductV2
-	CurveTypeFlatCurveV1
-)
-
-func (value CurveType) String() string {
-	switch value {
-	case CurveTypeLinearV1:
-		return "LinearV1"
-	case CurveTypeConstantProductV1:
-		return "ConstantProductV1"
-	case CurveTypeConstantProductV2:
-		return "ConstantProductV2"
-	case CurveTypeFlatCurveV1:
-		return "FlatCurveV1"
-	default:
-		return ""
+func (obj TokenMintParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Name` param:
+	err = encoder.Encode(obj.Name)
+	if err != nil {
+		return err
 	}
+	// Serialize `Symbol` param:
+	err = encoder.Encode(obj.Symbol)
+	if err != nil {
+		return err
+	}
+	// Serialize `Uri` param:
+	err = encoder.Encode(obj.Uri)
+	if err != nil {
+		return err
+	}
+	// Serialize `Decimals` param:
+	err = encoder.Encode(obj.Decimals)
+	if err != nil {
+		return err
+	}
+	// Serialize `CollateralCurrency` param:
+	err = encoder.Encode(obj.CollateralCurrency)
+	if err != nil {
+		return err
+	}
+	// Serialize `Amount` param:
+	err = encoder.Encode(obj.Amount)
+	if err != nil {
+		return err
+	}
+	// Serialize `CurveType` param:
+	err = encoder.Encode(obj.CurveType)
+	if err != nil {
+		return err
+	}
+	// Serialize `MigrationTarget` param:
+	err = encoder.Encode(obj.MigrationTarget)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-type MigrationTarget ag_binary.BorshEnum
-
-const (
-	MigrationTargetRaydium MigrationTarget = iota
-	MigrationTargetMeteora
-)
-
-func (value MigrationTarget) String() string {
-	switch value {
-	case MigrationTargetRaydium:
-		return "Raydium"
-	case MigrationTargetMeteora:
-		return "Meteora"
-	default:
-		return ""
+func (obj *TokenMintParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Name`:
+	err = decoder.Decode(&obj.Name)
+	if err != nil {
+		return err
 	}
+	// Deserialize `Symbol`:
+	err = decoder.Decode(&obj.Symbol)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Uri`:
+	err = decoder.Decode(&obj.Uri)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Decimals`:
+	err = decoder.Decode(&obj.Decimals)
+	if err != nil {
+		return err
+	}
+	// Deserialize `CollateralCurrency`:
+	err = decoder.Decode(&obj.CollateralCurrency)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Amount`:
+	err = decoder.Decode(&obj.Amount)
+	if err != nil {
+		return err
+	}
+	// Deserialize `CurveType`:
+	err = decoder.Decode(&obj.CurveType)
+	if err != nil {
+		return err
+	}
+	// Deserialize `MigrationTarget`:
+	err = decoder.Decode(&obj.MigrationTarget)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-type TradeType ag_binary.BorshEnum
+type TradeParams struct {
+	TokenAmount      uint64
+	CollateralAmount uint64
+	FixedSide        uint8
+	SlippageBps      uint64
+}
 
-const (
-	TradeTypeBuy TradeType = iota
-	TradeTypeSell
-)
-
-func (value TradeType) String() string {
-	switch value {
-	case TradeTypeBuy:
-		return "Buy"
-	case TradeTypeSell:
-		return "Sell"
-	default:
-		return ""
+func (obj TradeParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `TokenAmount` param:
+	err = encoder.Encode(obj.TokenAmount)
+	if err != nil {
+		return err
 	}
+	// Serialize `CollateralAmount` param:
+	err = encoder.Encode(obj.CollateralAmount)
+	if err != nil {
+		return err
+	}
+	// Serialize `FixedSide` param:
+	err = encoder.Encode(obj.FixedSide)
+	if err != nil {
+		return err
+	}
+	// Serialize `SlippageBps` param:
+	err = encoder.Encode(obj.SlippageBps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *TradeParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `TokenAmount`:
+	err = decoder.Decode(&obj.TokenAmount)
+	if err != nil {
+		return err
+	}
+	// Deserialize `CollateralAmount`:
+	err = decoder.Decode(&obj.CollateralAmount)
+	if err != nil {
+		return err
+	}
+	// Deserialize `FixedSide`:
+	err = decoder.Decode(&obj.FixedSide)
+	if err != nil {
+		return err
+	}
+	// Deserialize `SlippageBps`:
+	err = decoder.Decode(&obj.SlippageBps)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 type ConfigParams struct {
-	MigrationAuthority             *ag_solanago.PublicKey `bin:"optional"`
-	BackendAuthority               *ag_solanago.PublicKey `bin:"optional"`
-	ConfigAuthority                *ag_solanago.PublicKey `bin:"optional"`
-	HelioFee                       *ag_solanago.PublicKey `bin:"optional"`
-	DexFee                         *ag_solanago.PublicKey `bin:"optional"`
-	FeeBps                         *uint16                `bin:"optional"`
-	DexFeeShare                    *uint8                 `bin:"optional"`
-	MigrationFee                   *uint64                `bin:"optional"`
-	LinearCurveMcapThreshold       *uint64                `bin:"optional"`
-	MarketcapCurrency              *uint8                 `bin:"optional"`
-	MinSupportedDecimalPlaces      *uint8                 `bin:"optional"`
-	MaxSupportedDecimalPlaces      *uint8                 `bin:"optional"`
-	MinSupportedTokenSupply        *uint64                `bin:"optional"`
-	MaxSupportedTokenSupply        *uint64                `bin:"optional"`
-	CoefB                          *uint32                `bin:"optional"`
-	ConstantProductV1McapThreshold *uint64                `bin:"optional"`
-	ConstantProductV2McapThreshold *uint64                `bin:"optional"`
+	MigrationAuthority        *ag_solanago.PublicKey `bin:"optional"`
+	BackendAuthority          *ag_solanago.PublicKey `bin:"optional"`
+	ConfigAuthority           *ag_solanago.PublicKey `bin:"optional"`
+	HelioFee                  *ag_solanago.PublicKey `bin:"optional"`
+	DexFee                    *ag_solanago.PublicKey `bin:"optional"`
+	FeeBps                    *uint16                `bin:"optional"`
+	DexFeeShare               *uint8                 `bin:"optional"`
+	MigrationFee              *uint64                `bin:"optional"`
+	MarketcapThreshold        *uint64                `bin:"optional"`
+	MarketcapCurrency         *uint8                 `bin:"optional"`
+	MinSupportedDecimalPlaces *uint8                 `bin:"optional"`
+	MaxSupportedDecimalPlaces *uint8                 `bin:"optional"`
+	MinSupportedTokenSupply   *uint64                `bin:"optional"`
+	MaxSupportedTokenSupply   *uint64                `bin:"optional"`
+	CoefB                     *uint32                `bin:"optional"`
 }
 
 func (obj ConfigParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -247,9 +324,9 @@ func (obj ConfigParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err erro
 			}
 		}
 	}
-	// Serialize `LinearCurveMcapThreshold` param (optional):
+	// Serialize `MarketcapThreshold` param (optional):
 	{
-		if obj.LinearCurveMcapThreshold == nil {
+		if obj.MarketcapThreshold == nil {
 			err = encoder.WriteBool(false)
 			if err != nil {
 				return err
@@ -259,7 +336,7 @@ func (obj ConfigParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err erro
 			if err != nil {
 				return err
 			}
-			err = encoder.Encode(obj.LinearCurveMcapThreshold)
+			err = encoder.Encode(obj.MarketcapThreshold)
 			if err != nil {
 				return err
 			}
@@ -373,42 +450,6 @@ func (obj ConfigParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err erro
 			}
 		}
 	}
-	// Serialize `ConstantProductV1McapThreshold` param (optional):
-	{
-		if obj.ConstantProductV1McapThreshold == nil {
-			err = encoder.WriteBool(false)
-			if err != nil {
-				return err
-			}
-		} else {
-			err = encoder.WriteBool(true)
-			if err != nil {
-				return err
-			}
-			err = encoder.Encode(obj.ConstantProductV1McapThreshold)
-			if err != nil {
-				return err
-			}
-		}
-	}
-	// Serialize `ConstantProductV2McapThreshold` param (optional):
-	{
-		if obj.ConstantProductV2McapThreshold == nil {
-			err = encoder.WriteBool(false)
-			if err != nil {
-				return err
-			}
-		} else {
-			err = encoder.WriteBool(true)
-			if err != nil {
-				return err
-			}
-			err = encoder.Encode(obj.ConstantProductV2McapThreshold)
-			if err != nil {
-				return err
-			}
-		}
-	}
 	return nil
 }
 
@@ -517,14 +558,14 @@ func (obj *ConfigParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err e
 			}
 		}
 	}
-	// Deserialize `LinearCurveMcapThreshold` (optional):
+	// Deserialize `MarketcapThreshold` (optional):
 	{
 		ok, err := decoder.ReadBool()
 		if err != nil {
 			return err
 		}
 		if ok {
-			err = decoder.Decode(&obj.LinearCurveMcapThreshold)
+			err = decoder.Decode(&obj.MarketcapThreshold)
 			if err != nil {
 				return err
 			}
@@ -608,230 +649,113 @@ func (obj *ConfigParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err e
 			}
 		}
 	}
-	// Deserialize `ConstantProductV1McapThreshold` (optional):
-	{
-		ok, err := decoder.ReadBool()
-		if err != nil {
-			return err
-		}
-		if ok {
-			err = decoder.Decode(&obj.ConstantProductV1McapThreshold)
-			if err != nil {
-				return err
-			}
-		}
-	}
-	// Deserialize `ConstantProductV2McapThreshold` (optional):
-	{
-		ok, err := decoder.ReadBool()
-		if err != nil {
-			return err
-		}
-		if ok {
-			err = decoder.Decode(&obj.ConstantProductV2McapThreshold)
-			if err != nil {
-				return err
-			}
-		}
-	}
 	return nil
 }
 
-type TokenMintParams struct {
-	Name                string
-	Symbol              string
-	Uri                 string
-	Decimals            uint8
-	CollateralCurrency  uint8
-	Amount              uint64
-	CurveType           uint8
-	MigrationTarget     uint8
-	PriceIncrease       uint16
-	CollateralCollected uint64
+type Currency ag_binary.BorshEnum
+
+const (
+	CurrencySol Currency = iota
+)
+
+func (value Currency) String() string {
+	switch value {
+	case CurrencySol:
+		return "Sol"
+	default:
+		return ""
+	}
 }
 
-func (obj TokenMintParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `Name` param:
-	err = encoder.Encode(obj.Name)
-	if err != nil {
-		return err
+type CurveType ag_binary.BorshEnum
+
+const (
+	CurveTypeLinearV1 CurveType = iota
+	CurveTypeConstantProductV1
+)
+
+func (value CurveType) String() string {
+	switch value {
+	case CurveTypeLinearV1:
+		return "LinearV1"
+	case CurveTypeConstantProductV1:
+		return "ConstantProductV1"
+	default:
+		return ""
 	}
-	// Serialize `Symbol` param:
-	err = encoder.Encode(obj.Symbol)
-	if err != nil {
-		return err
-	}
-	// Serialize `Uri` param:
-	err = encoder.Encode(obj.Uri)
-	if err != nil {
-		return err
-	}
-	// Serialize `Decimals` param:
-	err = encoder.Encode(obj.Decimals)
-	if err != nil {
-		return err
-	}
-	// Serialize `CollateralCurrency` param:
-	err = encoder.Encode(obj.CollateralCurrency)
-	if err != nil {
-		return err
-	}
-	// Serialize `Amount` param:
-	err = encoder.Encode(obj.Amount)
-	if err != nil {
-		return err
-	}
-	// Serialize `CurveType` param:
-	err = encoder.Encode(obj.CurveType)
-	if err != nil {
-		return err
-	}
-	// Serialize `MigrationTarget` param:
-	err = encoder.Encode(obj.MigrationTarget)
-	if err != nil {
-		return err
-	}
-	// Serialize `PriceIncrease` param:
-	err = encoder.Encode(obj.PriceIncrease)
-	if err != nil {
-		return err
-	}
-	// Serialize `CollateralCollected` param:
-	err = encoder.Encode(obj.CollateralCollected)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
-func (obj *TokenMintParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `Name`:
-	err = decoder.Decode(&obj.Name)
-	if err != nil {
-		return err
+type MigrationTarget ag_binary.BorshEnum
+
+const (
+	MigrationTargetRaydium MigrationTarget = iota
+	MigrationTargetMeteora
+)
+
+func (value MigrationTarget) String() string {
+	switch value {
+	case MigrationTargetRaydium:
+		return "Raydium"
+	case MigrationTargetMeteora:
+		return "Meteora"
+	default:
+		return ""
 	}
-	// Deserialize `Symbol`:
-	err = decoder.Decode(&obj.Symbol)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Uri`:
-	err = decoder.Decode(&obj.Uri)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Decimals`:
-	err = decoder.Decode(&obj.Decimals)
-	if err != nil {
-		return err
-	}
-	// Deserialize `CollateralCurrency`:
-	err = decoder.Decode(&obj.CollateralCurrency)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Amount`:
-	err = decoder.Decode(&obj.Amount)
-	if err != nil {
-		return err
-	}
-	// Deserialize `CurveType`:
-	err = decoder.Decode(&obj.CurveType)
-	if err != nil {
-		return err
-	}
-	// Deserialize `MigrationTarget`:
-	err = decoder.Decode(&obj.MigrationTarget)
-	if err != nil {
-		return err
-	}
-	// Deserialize `PriceIncrease`:
-	err = decoder.Decode(&obj.PriceIncrease)
-	if err != nil {
-		return err
-	}
-	// Deserialize `CollateralCollected`:
-	err = decoder.Decode(&obj.CollateralCollected)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
-type TradeParams struct {
-	TokenAmount      uint64
-	CollateralAmount uint64
-	FixedSide        uint8
-	SlippageBps      uint64
+type TradeType ag_binary.BorshEnum
+
+const (
+	TradeTypeBuy TradeType = iota
+	TradeTypeSell
+)
+
+func (value TradeType) String() string {
+	switch value {
+	case TradeTypeBuy:
+		return "Buy"
+	case TradeTypeSell:
+		return "Sell"
+	default:
+		return ""
+	}
 }
 
-func (obj TradeParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `TokenAmount` param:
-	err = encoder.Encode(obj.TokenAmount)
-	if err != nil {
-		return err
-	}
-	// Serialize `CollateralAmount` param:
-	err = encoder.Encode(obj.CollateralAmount)
-	if err != nil {
-		return err
-	}
-	// Serialize `FixedSide` param:
-	err = encoder.Encode(obj.FixedSide)
-	if err != nil {
-		return err
-	}
-	// Serialize `SlippageBps` param:
-	err = encoder.Encode(obj.SlippageBps)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+type FixedSide ag_binary.BorshEnum
 
-func (obj *TradeParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `TokenAmount`:
-	err = decoder.Decode(&obj.TokenAmount)
-	if err != nil {
-		return err
+const (
+	FixedSideExactIn FixedSide = iota
+	FixedSideExactOut
+)
+
+func (value FixedSide) String() string {
+	switch value {
+	case FixedSideExactIn:
+		return "ExactIn"
+	case FixedSideExactOut:
+		return "ExactOut"
+	default:
+		return ""
 	}
-	// Deserialize `CollateralAmount`:
-	err = decoder.Decode(&obj.CollateralAmount)
-	if err != nil {
-		return err
-	}
-	// Deserialize `FixedSide`:
-	err = decoder.Decode(&obj.FixedSide)
-	if err != nil {
-		return err
-	}
-	// Deserialize `SlippageBps`:
-	err = decoder.Decode(&obj.SlippageBps)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 type ConfigAccount struct {
-	MigrationAuthority             ag_solanago.PublicKey
-	BackendAuthority               ag_solanago.PublicKey
-	ConfigAuthority                ag_solanago.PublicKey
-	HelioFee                       ag_solanago.PublicKey
-	DexFee                         ag_solanago.PublicKey
-	FeeBps                         uint16
-	DexFeeShare                    uint8
-	MigrationFee                   uint64
-	LinearCurveMcapThreshold       uint64
-	MarketcapCurrency              Currency
-	MinSupportedDecimalPlaces      uint8
-	MaxSupportedDecimalPlaces      uint8
-	MinSupportedTokenSupply        uint64
-	MaxSupportedTokenSupply        uint64
-	Bump                           uint8
-	CoefB                          uint32
-	ConstantProductV1McapThreshold uint64
-	ConstantProductV2McapThreshold uint64
+	MigrationAuthority        ag_solanago.PublicKey
+	BackendAuthority          ag_solanago.PublicKey
+	ConfigAuthority           ag_solanago.PublicKey
+	HelioFee                  ag_solanago.PublicKey
+	DexFee                    ag_solanago.PublicKey
+	FeeBps                    uint16
+	DexFeeShare               uint8
+	MigrationFee              uint64
+	MarketcapThreshold        uint64
+	MarketcapCurrency         Currency
+	MinSupportedDecimalPlaces uint8
+	MaxSupportedDecimalPlaces uint8
+	MinSupportedTokenSupply   uint64
+	MaxSupportedTokenSupply   uint64
+	Bump                      uint8
+	CoefB                     uint32
 }
 
 func (obj ConfigAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -875,8 +799,8 @@ func (obj ConfigAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err err
 	if err != nil {
 		return err
 	}
-	// Serialize `LinearCurveMcapThreshold` param:
-	err = encoder.Encode(obj.LinearCurveMcapThreshold)
+	// Serialize `MarketcapThreshold` param:
+	err = encoder.Encode(obj.MarketcapThreshold)
 	if err != nil {
 		return err
 	}
@@ -912,16 +836,6 @@ func (obj ConfigAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err err
 	}
 	// Serialize `CoefB` param:
 	err = encoder.Encode(obj.CoefB)
-	if err != nil {
-		return err
-	}
-	// Serialize `ConstantProductV1McapThreshold` param:
-	err = encoder.Encode(obj.ConstantProductV1McapThreshold)
-	if err != nil {
-		return err
-	}
-	// Serialize `ConstantProductV2McapThreshold` param:
-	err = encoder.Encode(obj.ConstantProductV2McapThreshold)
 	if err != nil {
 		return err
 	}
@@ -969,8 +883,8 @@ func (obj *ConfigAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 	if err != nil {
 		return err
 	}
-	// Deserialize `LinearCurveMcapThreshold`:
-	err = decoder.Decode(&obj.LinearCurveMcapThreshold)
+	// Deserialize `MarketcapThreshold`:
+	err = decoder.Decode(&obj.MarketcapThreshold)
 	if err != nil {
 		return err
 	}
@@ -1009,16 +923,6 @@ func (obj *ConfigAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 	if err != nil {
 		return err
 	}
-	// Deserialize `ConstantProductV1McapThreshold`:
-	err = decoder.Decode(&obj.ConstantProductV1McapThreshold)
-	if err != nil {
-		return err
-	}
-	// Deserialize `ConstantProductV2McapThreshold`:
-	err = decoder.Decode(&obj.ConstantProductV2McapThreshold)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -1035,7 +939,6 @@ type CurveAccount struct {
 	CoefB              uint32
 	Bump               uint8
 	MigrationTarget    MigrationTarget
-	PriceIncrease      uint16
 }
 
 func (obj CurveAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -1096,11 +999,6 @@ func (obj CurveAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err erro
 	}
 	// Serialize `MigrationTarget` param:
 	err = encoder.Encode(obj.MigrationTarget)
-	if err != nil {
-		return err
-	}
-	// Serialize `PriceIncrease` param:
-	err = encoder.Encode(obj.PriceIncrease)
 	if err != nil {
 		return err
 	}
@@ -1165,77 +1063,6 @@ func (obj *CurveAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err e
 	}
 	// Deserialize `MigrationTarget`:
 	err = decoder.Decode(&obj.MigrationTarget)
-	if err != nil {
-		return err
-	}
-	// Deserialize `PriceIncrease`:
-	err = decoder.Decode(&obj.PriceIncrease)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type MigrationEvent struct {
-	TokensMigrated     uint64
-	TokensBurned       uint64
-	CollateralMigrated uint64
-	Fee                uint64
-	Label              string
-}
-
-func (obj MigrationEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `TokensMigrated` param:
-	err = encoder.Encode(obj.TokensMigrated)
-	if err != nil {
-		return err
-	}
-	// Serialize `TokensBurned` param:
-	err = encoder.Encode(obj.TokensBurned)
-	if err != nil {
-		return err
-	}
-	// Serialize `CollateralMigrated` param:
-	err = encoder.Encode(obj.CollateralMigrated)
-	if err != nil {
-		return err
-	}
-	// Serialize `Fee` param:
-	err = encoder.Encode(obj.Fee)
-	if err != nil {
-		return err
-	}
-	// Serialize `Label` param:
-	err = encoder.Encode(obj.Label)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (obj *MigrationEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `TokensMigrated`:
-	err = decoder.Decode(&obj.TokensMigrated)
-	if err != nil {
-		return err
-	}
-	// Deserialize `TokensBurned`:
-	err = decoder.Decode(&obj.TokensBurned)
-	if err != nil {
-		return err
-	}
-	// Deserialize `CollateralMigrated`:
-	err = decoder.Decode(&obj.CollateralMigrated)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Fee`:
-	err = decoder.Decode(&obj.Fee)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Label`:
-	err = decoder.Decode(&obj.Label)
 	if err != nil {
 		return err
 	}
@@ -1352,6 +1179,72 @@ func (obj *TradeEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err err
 	}
 	// Deserialize `Type`:
 	err = decoder.Decode(&obj.Type)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Label`:
+	err = decoder.Decode(&obj.Label)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type MigrationEvent struct {
+	TokensMigrated     uint64
+	TokensBurned       uint64
+	CollateralMigrated uint64
+	Fee                uint64
+	Label              string
+}
+
+func (obj MigrationEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `TokensMigrated` param:
+	err = encoder.Encode(obj.TokensMigrated)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokensBurned` param:
+	err = encoder.Encode(obj.TokensBurned)
+	if err != nil {
+		return err
+	}
+	// Serialize `CollateralMigrated` param:
+	err = encoder.Encode(obj.CollateralMigrated)
+	if err != nil {
+		return err
+	}
+	// Serialize `Fee` param:
+	err = encoder.Encode(obj.Fee)
+	if err != nil {
+		return err
+	}
+	// Serialize `Label` param:
+	err = encoder.Encode(obj.Label)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *MigrationEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `TokensMigrated`:
+	err = decoder.Decode(&obj.TokensMigrated)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokensBurned`:
+	err = decoder.Decode(&obj.TokensBurned)
+	if err != nil {
+		return err
+	}
+	// Deserialize `CollateralMigrated`:
+	err = decoder.Decode(&obj.CollateralMigrated)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Fee`:
+	err = decoder.Decode(&obj.Fee)
 	if err != nil {
 		return err
 	}

@@ -173,17 +173,7 @@ const (
 	// Initialize the close account authority on a new mint.
 	Instruction_InitializeMintCloseAuthority
 
-	Instruction_InitializeTransferFeeConfig
-
-	Instruction_TransferCheckedWithFee
-
-	Instruction_WithdrawWithheldTokensFromMint
-
-	Instruction_WithdrawWithheldTokensFromAccounts
-
-	Instruction_HarvestWithheldTokensToMint
-
-	Instruction_SetTransferFee
+	Instruction_TransferFeeInstruction
 
 	Instruction_InitializeConfidentialTransferMint
 
@@ -353,18 +343,8 @@ func InstructionIDToName(id uint8) string {
 		return "UiAmountToAmount"
 	case Instruction_InitializeMintCloseAuthority:
 		return "InitializeMintCloseAuthority"
-	case Instruction_InitializeTransferFeeConfig:
-		return "InitializeTransferFeeConfig"
-	case Instruction_TransferCheckedWithFee:
-		return "TransferCheckedWithFee"
-	case Instruction_WithdrawWithheldTokensFromMint:
-		return "WithdrawWithheldTokensFromMint"
-	case Instruction_WithdrawWithheldTokensFromAccounts:
-		return "WithdrawWithheldTokensFromAccounts"
-	case Instruction_HarvestWithheldTokensToMint:
-		return "HarvestWithheldTokensToMint"
-	case Instruction_SetTransferFee:
-		return "SetTransferFee"
+	case Instruction_TransferFeeInstruction:
+		return "TransferFeeInstruction"
 	case Instruction_InitializeConfidentialTransferMint:
 		return "InitializeConfidentialTransferMint"
 	case Instruction_UpdateConfidentialTransferMint:
@@ -570,22 +550,7 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 			Name: "InitializeMintCloseAuthority", Type: (*InitializeMintCloseAuthority)(nil),
 		},
 		{
-			Name: "InitializeTransferFeeConfig", Type: (*InitializeTransferFeeConfig)(nil),
-		},
-		{
-			Name: "TransferCheckedWithFee", Type: (*TransferCheckedWithFee)(nil),
-		},
-		{
-			Name: "WithdrawWithheldTokensFromMint", Type: (*WithdrawWithheldTokensFromMint)(nil),
-		},
-		{
-			Name: "WithdrawWithheldTokensFromAccounts", Type: (*WithdrawWithheldTokensFromAccounts)(nil),
-		},
-		{
-			Name: "HarvestWithheldTokensToMint", Type: (*HarvestWithheldTokensToMint)(nil),
-		},
-		{
-			Name: "SetTransferFee", Type: (*SetTransferFee)(nil),
+			Name: "TransferFeeInstruction", Type: (*TransferFeeInstruction)(nil),
 		},
 		{
 			Name: "InitializeConfidentialTransferMint", Type: (*InitializeConfidentialTransferMint)(nil),

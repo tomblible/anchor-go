@@ -390,19 +390,6 @@
   ],
   "events": [
     {
-      "name": "MigrationEvent",
-      "discriminator": [
-        255,
-        202,
-        76,
-        147,
-        91,
-        231,
-        73,
-        22
-      ]
-    },
-    {
       "name": "TradeEvent",
       "discriminator": [
         189,
@@ -413,6 +400,19 @@
         230,
         97,
         238
+      ]
+    },
+    {
+      "name": "MigrationEvent",
+      "discriminator": [
+        255,
+        202,
+        76,
+        147,
+        91,
+        231,
+        73,
+        22
       ]
     }
   ],
@@ -600,60 +600,65 @@
   ],
   "types": [
     {
-      "name": "Currency",
+      "name": "TokenMintParams",
       "type": {
-        "kind": "enum",
-        "variants": [
+        "kind": "struct",
+        "fields": [
           {
-            "name": "Sol"
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "name": "decimals",
+            "type": "u8"
+          },
+          {
+            "name": "collateral_currency",
+            "type": "u8"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "curve_type",
+            "type": "u8"
+          },
+          {
+            "name": "migration_target",
+            "type": "u8"
           }
         ]
       }
     },
     {
-      "name": "CurveType",
+      "name": "TradeParams",
       "type": {
-        "kind": "enum",
-        "variants": [
+        "kind": "struct",
+        "fields": [
           {
-            "name": "LinearV1"
+            "name": "token_amount",
+            "type": "u64"
           },
           {
-            "name": "ConstantProductV1"
+            "name": "collateral_amount",
+            "type": "u64"
           },
           {
-            "name": "ConstantProductV2"
+            "name": "fixed_side",
+            "type": "u8"
           },
           {
-            "name": "FlatCurveV1"
-          }
-        ]
-      }
-    },
-    {
-      "name": "MigrationTarget",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Raydium"
-          },
-          {
-            "name": "Meteora"
-          }
-        ]
-      }
-    },
-    {
-      "name": "TradeType",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Buy"
-          },
-          {
-            "name": "Sell"
+            "name": "slippage_bps",
+            "type": "u64"
           }
         ]
       }
@@ -712,7 +717,7 @@
             }
           },
           {
-            "name": "linear_curve_mcap_threshold",
+            "name": "marketcap_threshold",
             "type": {
               "option": "u64"
             }
@@ -752,90 +757,73 @@
             "type": {
               "option": "u32"
             }
-          },
-          {
-            "name": "constant_product_v1_mcap_threshold",
-            "type": {
-              "option": "u64"
-            }
-          },
-          {
-            "name": "constant_product_v2_mcap_threshold",
-            "type": {
-              "option": "u64"
-            }
           }
         ]
       }
     },
     {
-      "name": "TokenMintParams",
+      "name": "Currency",
       "type": {
-        "kind": "struct",
-        "fields": [
+        "kind": "enum",
+        "variants": [
           {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "symbol",
-            "type": "string"
-          },
-          {
-            "name": "uri",
-            "type": "string"
-          },
-          {
-            "name": "decimals",
-            "type": "u8"
-          },
-          {
-            "name": "collateral_currency",
-            "type": "u8"
-          },
-          {
-            "name": "amount",
-            "type": "u64"
-          },
-          {
-            "name": "curve_type",
-            "type": "u8"
-          },
-          {
-            "name": "migration_target",
-            "type": "u8"
-          },
-          {
-            "name": "price_increase",
-            "type": "u16"
-          },
-          {
-            "name": "collateral_collected",
-            "type": "u64"
+            "name": "Sol"
           }
         ]
       }
     },
     {
-      "name": "TradeParams",
+      "name": "CurveType",
       "type": {
-        "kind": "struct",
-        "fields": [
+        "kind": "enum",
+        "variants": [
           {
-            "name": "token_amount",
-            "type": "u64"
+            "name": "LinearV1"
           },
           {
-            "name": "collateral_amount",
-            "type": "u64"
+            "name": "ConstantProductV1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MigrationTarget",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Raydium"
           },
           {
-            "name": "fixed_side",
-            "type": "u8"
+            "name": "Meteora"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Buy"
           },
           {
-            "name": "slippage_bps",
-            "type": "u64"
+            "name": "Sell"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FixedSide",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "ExactIn"
+          },
+          {
+            "name": "ExactOut"
           }
         ]
       }
@@ -878,7 +866,7 @@
             "type": "u64"
           },
           {
-            "name": "linear_curve_mcap_threshold",
+            "name": "marketcap_threshold",
             "type": "u64"
           },
           {
@@ -912,14 +900,6 @@
           {
             "name": "coef_b",
             "type": "u32"
-          },
-          {
-            "name": "constant_product_v1_mcap_threshold",
-            "type": "u64"
-          },
-          {
-            "name": "constant_product_v2_mcap_threshold",
-            "type": "u64"
           }
         ]
       }
@@ -992,38 +972,6 @@
                 "name": "MigrationTarget"
               }
             }
-          },
-          {
-            "name": "price_increase",
-            "type": "u16"
-          }
-        ]
-      }
-    },
-    {
-      "name": "MigrationEvent",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "tokens_migrated",
-            "type": "u64"
-          },
-          {
-            "name": "tokens_burned",
-            "type": "u64"
-          },
-          {
-            "name": "collateral_migrated",
-            "type": "u64"
-          },
-          {
-            "name": "fee",
-            "type": "u64"
-          },
-          {
-            "name": "label",
-            "type": "string"
           }
         ]
       }
@@ -1072,6 +1020,34 @@
                 "name": "TradeType"
               }
             }
+          },
+          {
+            "name": "label",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MigrationEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tokens_migrated",
+            "type": "u64"
+          },
+          {
+            "name": "tokens_burned",
+            "type": "u64"
+          },
+          {
+            "name": "collateral_migrated",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
           },
           {
             "name": "label",

@@ -9,24 +9,22 @@ import (
 )
 
 type ConfigAccountAccount struct {
-	MigrationAuthority             ag_solanago.PublicKey
-	BackendAuthority               ag_solanago.PublicKey
-	ConfigAuthority                ag_solanago.PublicKey
-	HelioFee                       ag_solanago.PublicKey
-	DexFee                         ag_solanago.PublicKey
-	FeeBps                         uint16
-	DexFeeShare                    uint8
-	MigrationFee                   uint64
-	LinearCurveMcapThreshold       uint64
-	MarketcapCurrency              Currency
-	MinSupportedDecimalPlaces      uint8
-	MaxSupportedDecimalPlaces      uint8
-	MinSupportedTokenSupply        uint64
-	MaxSupportedTokenSupply        uint64
-	Bump                           uint8
-	CoefB                          uint32
-	ConstantProductV1McapThreshold uint64
-	ConstantProductV2McapThreshold uint64
+	MigrationAuthority        ag_solanago.PublicKey
+	BackendAuthority          ag_solanago.PublicKey
+	ConfigAuthority           ag_solanago.PublicKey
+	HelioFee                  ag_solanago.PublicKey
+	DexFee                    ag_solanago.PublicKey
+	FeeBps                    uint16
+	DexFeeShare               uint8
+	MigrationFee              uint64
+	MarketcapThreshold        uint64
+	MarketcapCurrency         Currency
+	MinSupportedDecimalPlaces uint8
+	MaxSupportedDecimalPlaces uint8
+	MinSupportedTokenSupply   uint64
+	MaxSupportedTokenSupply   uint64
+	Bump                      uint8
+	CoefB                     uint32
 }
 
 var ConfigAccountAccountDiscriminator = [8]byte{189, 255, 97, 70, 186, 189, 24, 102}
@@ -77,8 +75,8 @@ func (obj ConfigAccountAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (
 	if err != nil {
 		return err
 	}
-	// Serialize `LinearCurveMcapThreshold` param:
-	err = encoder.Encode(obj.LinearCurveMcapThreshold)
+	// Serialize `MarketcapThreshold` param:
+	err = encoder.Encode(obj.MarketcapThreshold)
 	if err != nil {
 		return err
 	}
@@ -114,16 +112,6 @@ func (obj ConfigAccountAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (
 	}
 	// Serialize `CoefB` param:
 	err = encoder.Encode(obj.CoefB)
-	if err != nil {
-		return err
-	}
-	// Serialize `ConstantProductV1McapThreshold` param:
-	err = encoder.Encode(obj.ConstantProductV1McapThreshold)
-	if err != nil {
-		return err
-	}
-	// Serialize `ConstantProductV2McapThreshold` param:
-	err = encoder.Encode(obj.ConstantProductV2McapThreshold)
 	if err != nil {
 		return err
 	}
@@ -184,8 +172,8 @@ func (obj *ConfigAccountAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 	if err != nil {
 		return err
 	}
-	// Deserialize `LinearCurveMcapThreshold`:
-	err = decoder.Decode(&obj.LinearCurveMcapThreshold)
+	// Deserialize `MarketcapThreshold`:
+	err = decoder.Decode(&obj.MarketcapThreshold)
 	if err != nil {
 		return err
 	}
@@ -224,16 +212,6 @@ func (obj *ConfigAccountAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 	if err != nil {
 		return err
 	}
-	// Deserialize `ConstantProductV1McapThreshold`:
-	err = decoder.Decode(&obj.ConstantProductV1McapThreshold)
-	if err != nil {
-		return err
-	}
-	// Deserialize `ConstantProductV2McapThreshold`:
-	err = decoder.Decode(&obj.ConstantProductV2McapThreshold)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -250,7 +228,6 @@ type CurveAccountAccount struct {
 	CoefB              uint32
 	Bump               uint8
 	MigrationTarget    MigrationTarget
-	PriceIncrease      uint16
 }
 
 var CurveAccountAccountDiscriminator = [8]byte{8, 91, 83, 28, 132, 216, 248, 22}
@@ -318,11 +295,6 @@ func (obj CurveAccountAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (e
 	}
 	// Serialize `MigrationTarget` param:
 	err = encoder.Encode(obj.MigrationTarget)
-	if err != nil {
-		return err
-	}
-	// Serialize `PriceIncrease` param:
-	err = encoder.Encode(obj.PriceIncrease)
 	if err != nil {
 		return err
 	}
@@ -400,11 +372,6 @@ func (obj *CurveAccountAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder)
 	}
 	// Deserialize `MigrationTarget`:
 	err = decoder.Decode(&obj.MigrationTarget)
-	if err != nil {
-		return err
-	}
-	// Deserialize `PriceIncrease`:
-	err = decoder.Decode(&obj.PriceIncrease)
 	if err != nil {
 		return err
 	}

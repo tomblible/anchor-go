@@ -135,7 +135,7 @@ func (obj *TransferFee) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err er
 	return nil
 }
 
-type EncryptedBalance [64]byte
+type EncryptedBalance struct{}
 
 func (obj EncryptedBalance) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -145,7 +145,7 @@ func (obj *EncryptedBalance) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 	return nil
 }
 
-type DecryptableBalance [36]byte
+type DecryptableBalance struct{}
 
 func (obj DecryptableBalance) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil

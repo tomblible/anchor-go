@@ -1175,142 +1175,84 @@
             ]
         },
         {
-            "name": "initialize_transfer_fee_config",
-            "accounts": [
-                {
-                    "name": "mint",
-                    "writable": true
-                }
-            ],
-            "args": [
-                {
-                    "name": "transferFeeConfigAuthority",
-                    "type": {
-                        "option": "pubkey"
+            "name": "transferFeeInstruction",
+            "type": {
+                "kind": "enum",
+                "variants": [
+                    {
+                        "name": "initializeTransferFeeConfig",
+                        "fields": [
+                            {
+                                "name": "transferFeeConfigAuthority",
+                                "type": {
+                                    "option": "publicKey"
+                                }
+                            },
+                            {
+                                "name": "withdrawWithheldAuthority",
+                                "type": {
+                                    "option": "publicKey"
+                                }
+                            },
+                            {
+                                "name": "transferFeeBasisPoints",
+                                "type": "u16"
+                            },
+                            {
+                                "name": "maximumFee",
+                                "type": "u64"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "transferCheckedWithFee",
+                        "fields": [
+                            {
+                                "name": "amount",
+                                "type": "u64"
+                            },
+                            {
+                                "name": "decimals",
+                                "type": "u8"
+                            },
+                            {
+                                "name": "fee",
+                                "type": "u64"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "withdrawWithheldTokensFromMint",
+                        "fields": []
+                    },
+                    {
+                        "name": "withdrawWithheldTokensFromAccounts",
+                        "fields": [
+                            {
+                                "name": "numTokenAccounts",
+                                "type": "u8"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "harvestWithheldTokensToMint",
+                        "fields": []
+                    },
+                    {
+                        "name": "setTransferFee",
+                        "fields": [
+                            {
+                                "name": "transferFeeBasisPoints",
+                                "type": "u16"
+                            },
+                            {
+                                "name": "maximumFee",
+                                "type": "u64"
+                            }
+                        ]
                     }
-                },
-                {
-                    "name": "withdrawWithheldAuthority",
-                    "type": {
-                        "option": "pubkey"
-                    }
-                },
-                {
-                    "name": "transferFeeBasisPoints",
-                    "type": "u16"
-                },
-                {
-                    "name": "maximumFee",
-                    "type": "u64"
-                }
-            ]
-        },
-        {
-            "name": "transfer_checked_With_fee",
-            "accounts": [
-                {
-                    "name": "source",
-                    "writable": true
-                },
-                {
-                    "name": "mint"
-                },
-                {
-                    "name": "destination",
-                    "writable": true
-                },
-                {
-                    "name": "authority",
-                    "signer": true
-                }
-            ],
-            "args": [
-                {
-                    "name": "amount",
-                    "type": "u64"
-                },
-                {
-                    "name": "decimals",
-                    "type": "u8"
-                },
-                {
-                    "name": "fee",
-                    "type": "u64"
-                }
-            ]
-        },
-        {
-            "name": "withdraw_withheld_tokens_from_mint",
-            "accounts": [
-                {
-                    "name": "mint",
-                    "writable": true
-                },
-                {
-                    "name": "destination",
-                    "writable": true
-                },
-                {
-                    "name": "withdrawAuthority",
-                    "signer": true
-                }
-            ],
-            "args": []
-        },
-        {
-            "name": "withdraw_withheld_tokens_from_accounts",
-            "accounts": [
-                {
-                    "name": "mint"
-                },
-                {
-                    "name": "destination",
-                    "writable": true
-                },
-                {
-                    "name": "withdrawAuthority",
-                    "signer": true
-                }
-            ],
-            "args": [
-                {
-                    "name": "numTokenAccounts",
-                    "type": "u8"
-                }
-            ]
-        },
-        {
-            "name": "harvest_withheld_tokens_to_mint",
-            "accounts": [
-                {
-                    "name": "mint",
-                    "writable": true
-                }
-            ],
-            "args": []
-        },
-        {
-            "name": "set_transfer_fee",
-            "accounts": [
-                {
-                    "name": "mint",
-                    "writable": true
-                },
-                {
-                    "name": "feeAuthority",
-                    "signer": true
-                }
-            ],
-            "args": [
-                {
-                    "name": "transferFeeBasisPoints",
-                    "type": "u16"
-                },
-                {
-                    "name": "maximumFee",
-                    "type": "u64"
-                }
-            ]
+                ]
+            }
         },
         {
             "name": "initialize_confidential_transfer_mint",
@@ -1513,7 +1455,7 @@
             "args": [
                 {
                     "name": "newSourceDecryptableAvailableBalance",
-                     "type": {
+                    "type": {
                         "defined": {
                             "name": "DecryptableBalance"
                         }
@@ -1548,7 +1490,7 @@
                 },
                 {
                     "name": "newDecryptableAvailableBalance",
-                     "type": {
+                    "type": {
                         "defined": {
                             "name": "DecryptableBalance"
                         }
@@ -1631,7 +1573,7 @@
             "args": [
                 {
                     "name": "newSourceDecryptableAvailableBalance",
-                     "type": {
+                    "type": {
                         "defined": {
                             "name": "DecryptableBalance"
                         }
@@ -2060,7 +2002,7 @@
                 },
                 {
                     "name": "newDecryptableAvailableBalance",
-                   "type": {
+                    "type": {
                         "defined": {
                             "name": "DecryptableBalance"
                         }
@@ -2261,14 +2203,13 @@
                 }
             ],
             "args": [
-  {
-    "name": "memberAddress",
-    "type": {
-      "option": "pubkey"
-    }
-  }
-]
-
+                {
+                    "name": "memberAddress",
+                    "type": {
+                        "option": "pubkey"
+                    }
+                }
+            ]
         },
         {
             "name": "initialize_confidential_mint_burn",
@@ -2282,13 +2223,16 @@
                 {
                     "name": "supplyElgamalPubkey",
                     "type": {
-      "option": "pubkey"
-    }
+                        "option": "pubkey"
+                    }
                 },
                 {
                     "name": "decryptableSupply",
                     "type": {
-                        "array": ["u8", 36]
+                        "array": [
+                            "u8",
+                            36
+                        ]
                     }
                 }
             ]
@@ -2305,12 +2249,12 @@
                     "signer": true
                 }
             ],
-           "args": [
+            "args": [
                 {
                     "name": "newSupplyElgamalPubkey",
                     "type": {
-      "option": "pubkey"
-    }
+                        "option": "pubkey"
+                    }
                 },
                 {
                     "name": "proofInstructionOffset",
@@ -2334,7 +2278,10 @@
                 {
                     "name": "newDecryptableSupply",
                     "type": {
-                        "array": ["u8", 36]
+                        "array": [
+                            "u8",
+                            36
+                        ]
                     }
                 }
             ]
@@ -2356,22 +2303,31 @@
                 }
             ],
             "args": [
-               {
+                {
                     "name": "newDecryptableSupply",
                     "type": {
-                        "array": ["u8", 36]
+                        "array": [
+                            "u8",
+                            36
+                        ]
                     }
                 },
                 {
                     "name": "mintAmountAuditorCiphertextLo",
                     "type": {
-                        "array": ["u8", 64]
+                        "array": [
+                            "u8",
+                            64
+                        ]
                     }
                 },
                 {
                     "name": "mintAmountAuditorCiphertextHi",
                     "type": {
-                        "array": ["u8", 64]
+                        "array": [
+                            "u8",
+                            64
+                        ]
                     }
                 },
                 {
@@ -2416,13 +2372,19 @@
                 {
                     "name": "burnAmountAuditorCiphertextLo",
                     "type": {
-                        "array": ["u8", 64]
+                        "array": [
+                            "u8",
+                            64
+                        ]
                     }
                 },
                 {
                     "name": "burnAmountAuditorCiphertextHi",
                     "type": {
-                        "array": ["u8", 64]
+                        "array": [
+                            "u8",
+                            64
+                        ]
                     }
                 },
                 {
@@ -2486,16 +2448,16 @@
                     "signer": true
                 }
             ],
-        "args": [
-            {
-                "name": "multiplier",
-                "type": "f64"
-            },
-            {
-                "name": "effectiveTimestamp",
-                "type": "i64"
-            }
-        ]
+            "args": [
+                {
+                    "name": "multiplier",
+                    "type": "f64"
+                },
+                {
+                    "name": "effectiveTimestamp",
+                    "type": "i64"
+                }
+            ]
         },
         {
             "name": "initialize_pausable_config",

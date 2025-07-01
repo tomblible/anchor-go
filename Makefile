@@ -57,6 +57,10 @@ vr:build
 token2022:build
 	./anchor-go -type-id=uint8 -src=./idl/solana/spl/token2022.json -pkg=token2022 -dst=./generated/prd/token2022
 
+hpnf:build
+	anchor idl convert ./idl/dex/hpnf.json >./idl/dex/hpnf_new.json
+	./anchor-go -src=./idl/dex/hpnf.json -pkg=hpnf -dst=./generated/prd/hpnf
+
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 
 	
