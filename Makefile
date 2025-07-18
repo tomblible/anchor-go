@@ -61,6 +61,9 @@ hpnf:build
 	anchor idl convert ./idl/dex/hpnf.json >./idl/dex/hpnf_new.json
 	./anchor-go -src=./idl/dex/hpnf.json -pkg=hpnf -dst=./generated/prd/hpnf
 
+saros_dlmm:build
+	./anchor-go -src=./idl/dex/saros_dlmm.json -pkg=saros_dlmm -dst=./generated/prd/saros_dlmm
+
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 
 	
