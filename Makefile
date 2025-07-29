@@ -64,6 +64,9 @@ hpnf:build
 saros_dlmm:build
 	./anchor-go -src=./idl/dex/saros_dlmm.json -pkg=saros_dlmm -dst=./generated/prd/saros_dlmm
 
+7HrX:build
+	./anchor-go -src=./idl/dex/hrx.json -pkg=hrx -dst=./generated/prd/hrx
+
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 
 	
