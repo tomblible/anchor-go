@@ -38,19 +38,24 @@ type Buy struct {
 	// [10] = [] event_authority
 	//
 	// [11] = [] program
+	//
+	// [12] = [WRITE] global_volume_accumulator
+	//
+	// [13] = [WRITE] user_volume_accumulator
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
 // NewBuyInstructionBuilder creates a new `Buy` instruction builder.
 func NewBuyInstructionBuilder() *Buy {
 	nd := &Buy{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 12),
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 14),
 	}
 	nd.AccountMetaSlice[0] = ag_solanago.Meta(GlobalPDA)
 	nd.AccountMetaSlice[7] = ag_solanago.Meta(SystemProgram)
 	nd.AccountMetaSlice[8] = ag_solanago.Meta(TokenProgram)
 	nd.AccountMetaSlice[10] = ag_solanago.Meta(EventAuthorityPDA)
 	nd.AccountMetaSlice[11] = ag_solanago.Meta(ProgramID)
+	nd.AccountMetaSlice[12] = ag_solanago.Meta(GlobalVolumeAccumulatorPDA).WRITE()
 	return nd
 }
 
@@ -198,18 +203,40 @@ func (inst *Buy) GetProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(11)
 }
 
+// SetGlobalVolumeAccumulatorAccount sets the "global_volume_accumulator" account.
+func (inst *Buy) SetGlobalVolumeAccumulatorAccount(globalVolumeAccumulator ag_solanago.PublicKey) *Buy {
+	inst.AccountMetaSlice[12] = ag_solanago.Meta(globalVolumeAccumulator).WRITE()
+	return inst
+}
+
+// GetGlobalVolumeAccumulatorAccount gets the "global_volume_accumulator" account.
+func (inst *Buy) GetGlobalVolumeAccumulatorAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(12)
+}
+
+// SetUserVolumeAccumulatorAccount sets the "user_volume_accumulator" account.
+func (inst *Buy) SetUserVolumeAccumulatorAccount(userVolumeAccumulator ag_solanago.PublicKey) *Buy {
+	inst.AccountMetaSlice[13] = ag_solanago.Meta(userVolumeAccumulator).WRITE()
+	return inst
+}
+
+// GetUserVolumeAccumulatorAccount gets the "user_volume_accumulator" account.
+func (inst *Buy) GetUserVolumeAccumulatorAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(13)
+}
+
 func (inst *Buy) SetAccounts(accounts []*ag_solanago.AccountMeta) error {
 	inst.AccountMetaSlice = accounts
 	return inst.Validate()
 }
 
 func (inst *Buy) SetRemainingAccounts(metas []*ag_solanago.AccountMeta) *Buy {
-	inst.AccountMetaSlice = append(inst.AccountMetaSlice[0:12], metas...)
+	inst.AccountMetaSlice = append(inst.AccountMetaSlice[0:14], metas...)
 	return inst
 }
 
 func (inst *Buy) GetRemainingAccounts() []*ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice[12:]
+	return inst.AccountMetaSlice[14:]
 }
 
 func (inst Buy) Build() *Instruction {
@@ -240,8 +267,8 @@ func (inst *Buy) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) < 12 {
-		return errors.New("accounts slice has wrong length: expected 12 accounts")
+	if len(inst.AccountMetaSlice) < 14 {
+		return errors.New("accounts slice has wrong length: expected 14 accounts")
 	}
 
 	// Check whether all (required) accounts are set:
@@ -282,6 +309,12 @@ func (inst *Buy) Validate() error {
 		if inst.AccountMetaSlice[11] == nil {
 			return errors.New("accounts.Program is not set")
 		}
+		if inst.AccountMetaSlice[12] == nil {
+			return errors.New("accounts.GlobalVolumeAccumulator is not set")
+		}
+		if inst.AccountMetaSlice[13] == nil {
+			return errors.New("accounts.UserVolumeAccumulator is not set")
+		}
 	}
 	return nil
 }
@@ -301,19 +334,21 @@ func (inst *Buy) EncodeToTree(parent ag_treeout.Branches) {
 					})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=12]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
-						accountsBranch.Child(ag_format.Meta("                  global", inst.AccountMetaSlice.Get(0)))
-						accountsBranch.Child(ag_format.Meta("           fee_recipient", inst.AccountMetaSlice.Get(1)))
-						accountsBranch.Child(ag_format.Meta("                    mint", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("           bonding_curve", inst.AccountMetaSlice.Get(3)))
-						accountsBranch.Child(ag_format.Meta("associated_bonding_curve", inst.AccountMetaSlice.Get(4)))
-						accountsBranch.Child(ag_format.Meta("         associated_user", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("                    user", inst.AccountMetaSlice.Get(6)))
-						accountsBranch.Child(ag_format.Meta("          system_program", inst.AccountMetaSlice.Get(7)))
-						accountsBranch.Child(ag_format.Meta("           token_program", inst.AccountMetaSlice.Get(8)))
-						accountsBranch.Child(ag_format.Meta("           creator_vault", inst.AccountMetaSlice.Get(9)))
-						accountsBranch.Child(ag_format.Meta("         event_authority", inst.AccountMetaSlice.Get(10)))
-						accountsBranch.Child(ag_format.Meta("                 program", inst.AccountMetaSlice.Get(11)))
+					instructionBranch.Child("Accounts[len=14]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+						accountsBranch.Child(ag_format.Meta("                   global", inst.AccountMetaSlice.Get(0)))
+						accountsBranch.Child(ag_format.Meta("            fee_recipient", inst.AccountMetaSlice.Get(1)))
+						accountsBranch.Child(ag_format.Meta("                     mint", inst.AccountMetaSlice.Get(2)))
+						accountsBranch.Child(ag_format.Meta("            bonding_curve", inst.AccountMetaSlice.Get(3)))
+						accountsBranch.Child(ag_format.Meta(" associated_bonding_curve", inst.AccountMetaSlice.Get(4)))
+						accountsBranch.Child(ag_format.Meta("          associated_user", inst.AccountMetaSlice.Get(5)))
+						accountsBranch.Child(ag_format.Meta("                     user", inst.AccountMetaSlice.Get(6)))
+						accountsBranch.Child(ag_format.Meta("           system_program", inst.AccountMetaSlice.Get(7)))
+						accountsBranch.Child(ag_format.Meta("            token_program", inst.AccountMetaSlice.Get(8)))
+						accountsBranch.Child(ag_format.Meta("            creator_vault", inst.AccountMetaSlice.Get(9)))
+						accountsBranch.Child(ag_format.Meta("          event_authority", inst.AccountMetaSlice.Get(10)))
+						accountsBranch.Child(ag_format.Meta("                  program", inst.AccountMetaSlice.Get(11)))
+						accountsBranch.Child(ag_format.Meta("global_volume_accumulator", inst.AccountMetaSlice.Get(12)))
+						accountsBranch.Child(ag_format.Meta("  user_volume_accumulator", inst.AccountMetaSlice.Get(13)))
 					})
 				})
 		})
@@ -357,7 +392,8 @@ func NewBuyInstruction(
 	associatedBondingCurve ag_solanago.PublicKey,
 	associatedUser ag_solanago.PublicKey,
 	user ag_solanago.PublicKey,
-	creatorVault ag_solanago.PublicKey) *Buy {
+	creatorVault ag_solanago.PublicKey,
+	userVolumeAccumulator ag_solanago.PublicKey) *Buy {
 	return NewBuyInstructionBuilder().
 		SetAmount(amount).
 		SetMaxSolCost(max_sol_cost).
@@ -367,7 +403,8 @@ func NewBuyInstruction(
 		SetAssociatedBondingCurveAccount(associatedBondingCurve).
 		SetAssociatedUserAccount(associatedUser).
 		SetUserAccount(user).
-		SetCreatorVaultAccount(creatorVault)
+		SetCreatorVaultAccount(creatorVault).
+		SetUserVolumeAccumulatorAccount(userVolumeAccumulator)
 }
 
 // NewSimpleBuyInstruction declares a new Buy instruction with the provided parameters and accounts.
@@ -382,6 +419,7 @@ func NewSimpleBuyInstruction(
 	user ag_solanago.PublicKey,
 	creatorVault ag_solanago.PublicKey) *Buy {
 	bondingCurve := MustFindBondingCurveAddress(mint)
+	userVolumeAccumulator := MustFindUserVolumeAccumulatorAddress(user)
 	return NewBuyInstructionBuilder().
 		SetAmount(amount).
 		SetMaxSolCost(max_sol_cost).
@@ -391,5 +429,6 @@ func NewSimpleBuyInstruction(
 		SetAssociatedBondingCurveAccount(associatedBondingCurve).
 		SetAssociatedUserAccount(associatedUser).
 		SetUserAccount(user).
-		SetCreatorVaultAccount(creatorVault)
+		SetCreatorVaultAccount(creatorVault).
+		SetUserVolumeAccumulatorAccount(userVolumeAccumulator)
 }

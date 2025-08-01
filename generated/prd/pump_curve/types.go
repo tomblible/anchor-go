@@ -7,6 +7,138 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
+type AdminSetCreatorEvent struct {
+	Timestamp                int64
+	AdminSetCreatorAuthority ag_solanago.PublicKey
+	Mint                     ag_solanago.PublicKey
+	BondingCurve             ag_solanago.PublicKey
+	OldCreator               ag_solanago.PublicKey
+	NewCreator               ag_solanago.PublicKey
+}
+
+func (obj AdminSetCreatorEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Timestamp` param:
+	err = encoder.Encode(obj.Timestamp)
+	if err != nil {
+		return err
+	}
+	// Serialize `AdminSetCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	// Serialize `Mint` param:
+	err = encoder.Encode(obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Serialize `BondingCurve` param:
+	err = encoder.Encode(obj.BondingCurve)
+	if err != nil {
+		return err
+	}
+	// Serialize `OldCreator` param:
+	err = encoder.Encode(obj.OldCreator)
+	if err != nil {
+		return err
+	}
+	// Serialize `NewCreator` param:
+	err = encoder.Encode(obj.NewCreator)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *AdminSetCreatorEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Timestamp`:
+	err = decoder.Decode(&obj.Timestamp)
+	if err != nil {
+		return err
+	}
+	// Deserialize `AdminSetCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Mint`:
+	err = decoder.Decode(&obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `BondingCurve`:
+	err = decoder.Decode(&obj.BondingCurve)
+	if err != nil {
+		return err
+	}
+	// Deserialize `OldCreator`:
+	err = decoder.Decode(&obj.OldCreator)
+	if err != nil {
+		return err
+	}
+	// Deserialize `NewCreator`:
+	err = decoder.Decode(&obj.NewCreator)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type AdminUpdateTokenIncentivesEvent struct {
+	StartTime         int64
+	EndTime           int64
+	DayNumber         uint64
+	TokenSupplyPerDay uint64
+}
+
+func (obj AdminUpdateTokenIncentivesEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `StartTime` param:
+	err = encoder.Encode(obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `EndTime` param:
+	err = encoder.Encode(obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `DayNumber` param:
+	err = encoder.Encode(obj.DayNumber)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenSupplyPerDay` param:
+	err = encoder.Encode(obj.TokenSupplyPerDay)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *AdminUpdateTokenIncentivesEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `StartTime`:
+	err = decoder.Decode(&obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `EndTime`:
+	err = decoder.Decode(&obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `DayNumber`:
+	err = decoder.Decode(&obj.DayNumber)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenSupplyPerDay`:
+	err = decoder.Decode(&obj.TokenSupplyPerDay)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 type BondingCurve struct {
 	VirtualTokenReserves uint64
 	VirtualSolReserves   uint64
@@ -89,6 +221,50 @@ func (obj *BondingCurve) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err e
 	}
 	// Deserialize `Creator`:
 	err = decoder.Decode(&obj.Creator)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type ClaimTokenIncentivesEvent struct {
+	User   ag_solanago.PublicKey
+	Mint   ag_solanago.PublicKey
+	Amount uint64
+}
+
+func (obj ClaimTokenIncentivesEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `User` param:
+	err = encoder.Encode(obj.User)
+	if err != nil {
+		return err
+	}
+	// Serialize `Mint` param:
+	err = encoder.Encode(obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Serialize `Amount` param:
+	err = encoder.Encode(obj.Amount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *ClaimTokenIncentivesEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `User`:
+	err = decoder.Decode(&obj.User)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Mint`:
+	err = decoder.Decode(&obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Amount`:
+	err = decoder.Decode(&obj.Amount)
 	if err != nil {
 		return err
 	}
@@ -515,11 +691,12 @@ type Global struct {
 	WithdrawAuthority           ag_solanago.PublicKey
 
 	// Unused
-	EnableMigrate         bool
-	PoolMigrationFee      uint64
-	CreatorFeeBasisPoints uint64
-	FeeRecipients         [7]ag_solanago.PublicKey
-	SetCreatorAuthority   ag_solanago.PublicKey
+	EnableMigrate            bool
+	PoolMigrationFee         uint64
+	CreatorFeeBasisPoints    uint64
+	FeeRecipients            [7]ag_solanago.PublicKey
+	SetCreatorAuthority      ag_solanago.PublicKey
+	AdminSetCreatorAuthority ag_solanago.PublicKey
 }
 
 func (obj Global) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -590,6 +767,11 @@ func (obj Global) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	}
 	// Serialize `SetCreatorAuthority` param:
 	err = encoder.Encode(obj.SetCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	// Serialize `AdminSetCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCreatorAuthority)
 	if err != nil {
 		return err
 	}
@@ -664,6 +846,88 @@ func (obj *Global) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) 
 	}
 	// Deserialize `SetCreatorAuthority`:
 	err = decoder.Decode(&obj.SetCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	// Deserialize `AdminSetCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type GlobalVolumeAccumulator struct {
+	StartTime        int64
+	EndTime          int64
+	SecondsInADay    int64
+	Mint             ag_solanago.PublicKey
+	TotalTokenSupply [30]uint64
+	SolVolumes       [30]uint64
+}
+
+func (obj GlobalVolumeAccumulator) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `StartTime` param:
+	err = encoder.Encode(obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `EndTime` param:
+	err = encoder.Encode(obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `SecondsInADay` param:
+	err = encoder.Encode(obj.SecondsInADay)
+	if err != nil {
+		return err
+	}
+	// Serialize `Mint` param:
+	err = encoder.Encode(obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalTokenSupply` param:
+	err = encoder.Encode(obj.TotalTokenSupply)
+	if err != nil {
+		return err
+	}
+	// Serialize `SolVolumes` param:
+	err = encoder.Encode(obj.SolVolumes)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *GlobalVolumeAccumulator) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `StartTime`:
+	err = decoder.Decode(&obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `EndTime`:
+	err = decoder.Decode(&obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `SecondsInADay`:
+	err = decoder.Decode(&obj.SecondsInADay)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Mint`:
+	err = decoder.Decode(&obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalTokenSupply`:
+	err = decoder.Decode(&obj.TotalTokenSupply)
+	if err != nil {
+		return err
+	}
+	// Deserialize `SolVolumes`:
+	err = decoder.Decode(&obj.SolVolumes)
 	if err != nil {
 		return err
 	}
@@ -805,6 +1069,7 @@ type SetParamsEvent struct {
 	FeeRecipients               [8]ag_solanago.PublicKey
 	Timestamp                   int64
 	SetCreatorAuthority         ag_solanago.PublicKey
+	AdminSetCreatorAuthority    ag_solanago.PublicKey
 }
 
 func (obj SetParamsEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -870,6 +1135,11 @@ func (obj SetParamsEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err er
 	}
 	// Serialize `SetCreatorAuthority` param:
 	err = encoder.Encode(obj.SetCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	// Serialize `AdminSetCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCreatorAuthority)
 	if err != nil {
 		return err
 	}
@@ -939,6 +1209,55 @@ func (obj *SetParamsEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 	}
 	// Deserialize `SetCreatorAuthority`:
 	err = decoder.Decode(&obj.SetCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	// Deserialize `AdminSetCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type SyncUserVolumeAccumulatorEvent struct {
+	User                     ag_solanago.PublicKey
+	TotalClaimedTokensBefore uint64
+	TotalClaimedTokensAfter  uint64
+}
+
+func (obj SyncUserVolumeAccumulatorEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `User` param:
+	err = encoder.Encode(obj.User)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalClaimedTokensBefore` param:
+	err = encoder.Encode(obj.TotalClaimedTokensBefore)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalClaimedTokensAfter` param:
+	err = encoder.Encode(obj.TotalClaimedTokensAfter)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SyncUserVolumeAccumulatorEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `User`:
+	err = decoder.Decode(&obj.User)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalClaimedTokensBefore`:
+	err = decoder.Decode(&obj.TotalClaimedTokensBefore)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalClaimedTokensAfter`:
+	err = decoder.Decode(&obj.TotalClaimedTokensAfter)
 	if err != nil {
 		return err
 	}
@@ -1181,6 +1500,94 @@ func (obj *UpdateGlobalAuthorityEvent) UnmarshalWithDecoder(decoder *ag_binary.D
 	}
 	// Deserialize `Timestamp`:
 	err = decoder.Decode(&obj.Timestamp)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type UserVolumeAccumulator struct {
+	User                  ag_solanago.PublicKey
+	NeedsClaim            bool
+	TotalUnclaimedTokens  uint64
+	TotalClaimedTokens    uint64
+	CurrentSolVolume      uint64
+	LastUpdateTimestamp   int64
+	HasTotalClaimedTokens bool
+}
+
+func (obj UserVolumeAccumulator) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `User` param:
+	err = encoder.Encode(obj.User)
+	if err != nil {
+		return err
+	}
+	// Serialize `NeedsClaim` param:
+	err = encoder.Encode(obj.NeedsClaim)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalUnclaimedTokens` param:
+	err = encoder.Encode(obj.TotalUnclaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalClaimedTokens` param:
+	err = encoder.Encode(obj.TotalClaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Serialize `CurrentSolVolume` param:
+	err = encoder.Encode(obj.CurrentSolVolume)
+	if err != nil {
+		return err
+	}
+	// Serialize `LastUpdateTimestamp` param:
+	err = encoder.Encode(obj.LastUpdateTimestamp)
+	if err != nil {
+		return err
+	}
+	// Serialize `HasTotalClaimedTokens` param:
+	err = encoder.Encode(obj.HasTotalClaimedTokens)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *UserVolumeAccumulator) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `User`:
+	err = decoder.Decode(&obj.User)
+	if err != nil {
+		return err
+	}
+	// Deserialize `NeedsClaim`:
+	err = decoder.Decode(&obj.NeedsClaim)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalUnclaimedTokens`:
+	err = decoder.Decode(&obj.TotalUnclaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalClaimedTokens`:
+	err = decoder.Decode(&obj.TotalClaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Deserialize `CurrentSolVolume`:
+	err = decoder.Decode(&obj.CurrentSolVolume)
+	if err != nil {
+		return err
+	}
+	// Deserialize `LastUpdateTimestamp`:
+	err = decoder.Decode(&obj.LastUpdateTimestamp)
+	if err != nil {
+		return err
+	}
+	// Deserialize `HasTotalClaimedTokens`:
+	err = decoder.Decode(&obj.HasTotalClaimedTokens)
 	if err != nil {
 		return err
 	}

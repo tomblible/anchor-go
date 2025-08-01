@@ -12,10 +12,11 @@ import (
 
 // CreateConfig is the `create_config` instruction.
 type CreateConfig struct {
-	LpFeeBasisPoints          *uint64
-	ProtocolFeeBasisPoints    *uint64
-	ProtocolFeeRecipients     *[8]ag_solanago.PublicKey
-	CoinCreatorFeeBasisPoints *uint64
+	LpFeeBasisPoints             *uint64
+	ProtocolFeeBasisPoints       *uint64
+	ProtocolFeeRecipients        *[8]ag_solanago.PublicKey
+	CoinCreatorFeeBasisPoints    *uint64
+	AdminSetCoinCreatorAuthority *ag_solanago.PublicKey
 
 	// [0] = [WRITE, SIGNER] admin
 	//
@@ -63,6 +64,12 @@ func (inst *CreateConfig) SetProtocolFeeRecipients(protocol_fee_recipients [8]ag
 // SetCoinCreatorFeeBasisPoints sets the "coin_creator_fee_basis_points" parameter.
 func (inst *CreateConfig) SetCoinCreatorFeeBasisPoints(coin_creator_fee_basis_points uint64) *CreateConfig {
 	inst.CoinCreatorFeeBasisPoints = &coin_creator_fee_basis_points
+	return inst
+}
+
+// SetAdminSetCoinCreatorAuthority sets the "admin_set_coin_creator_authority" parameter.
+func (inst *CreateConfig) SetAdminSetCoinCreatorAuthority(admin_set_coin_creator_authority ag_solanago.PublicKey) *CreateConfig {
+	inst.AdminSetCoinCreatorAuthority = &admin_set_coin_creator_authority
 	return inst
 }
 
@@ -167,6 +174,9 @@ func (inst *CreateConfig) Validate() error {
 		if inst.CoinCreatorFeeBasisPoints == nil {
 			return errors.New("coinCreatorFeeBasisPoints parameter is not set")
 		}
+		if inst.AdminSetCoinCreatorAuthority == nil {
+			return errors.New("adminSetCoinCreatorAuthority parameter is not set")
+		}
 	}
 
 	if len(inst.AccountMetaSlice) < 5 {
@@ -203,11 +213,12 @@ func (inst *CreateConfig) EncodeToTree(parent ag_treeout.Branches) {
 				ParentFunc(func(instructionBranch ag_treeout.Branches) {
 
 					// Parameters of the instruction:
-					instructionBranch.Child("Params[len=4]").ParentFunc(func(paramsBranch ag_treeout.Branches) {
-						paramsBranch.Child(ag_format.Param("             LpFeeBasisPoints", *inst.LpFeeBasisPoints))
-						paramsBranch.Child(ag_format.Param("       ProtocolFeeBasisPoints", *inst.ProtocolFeeBasisPoints))
-						paramsBranch.Child(ag_format.Param("        ProtocolFeeRecipients", *inst.ProtocolFeeRecipients))
-						paramsBranch.Child(ag_format.Param("    CoinCreatorFeeBasisPoints", *inst.CoinCreatorFeeBasisPoints))
+					instructionBranch.Child("Params[len=5]").ParentFunc(func(paramsBranch ag_treeout.Branches) {
+						paramsBranch.Child(ag_format.Param("                LpFeeBasisPoints", *inst.LpFeeBasisPoints))
+						paramsBranch.Child(ag_format.Param("          ProtocolFeeBasisPoints", *inst.ProtocolFeeBasisPoints))
+						paramsBranch.Child(ag_format.Param("           ProtocolFeeRecipients", *inst.ProtocolFeeRecipients))
+						paramsBranch.Child(ag_format.Param("       CoinCreatorFeeBasisPoints", *inst.CoinCreatorFeeBasisPoints))
+						paramsBranch.Child(ag_format.Param("    AdminSetCoinCreatorAuthority", *inst.AdminSetCoinCreatorAuthority))
 					})
 
 					// Accounts of the instruction:
@@ -243,6 +254,11 @@ func (obj CreateConfig) MarshalWithEncoder(encoder *ag_binary.Encoder) (err erro
 	if err != nil {
 		return err
 	}
+	// Serialize `AdminSetCoinCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCoinCreatorAuthority)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 func (obj *CreateConfig) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
@@ -266,6 +282,11 @@ func (obj *CreateConfig) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err e
 	if err != nil {
 		return err
 	}
+	// Deserialize `AdminSetCoinCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCoinCreatorAuthority)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -275,12 +296,14 @@ func NewCreateConfigInstruction(
 	lp_fee_basis_points uint64,
 	protocol_fee_basis_points uint64,
 	protocol_fee_recipients [8]ag_solanago.PublicKey,
-	coin_creator_fee_basis_points uint64) *CreateConfig {
+	coin_creator_fee_basis_points uint64,
+	admin_set_coin_creator_authority ag_solanago.PublicKey) *CreateConfig {
 	return NewCreateConfigInstructionBuilder().
 		SetLpFeeBasisPoints(lp_fee_basis_points).
 		SetProtocolFeeBasisPoints(protocol_fee_basis_points).
 		SetProtocolFeeRecipients(protocol_fee_recipients).
-		SetCoinCreatorFeeBasisPoints(coin_creator_fee_basis_points)
+		SetCoinCreatorFeeBasisPoints(coin_creator_fee_basis_points).
+		SetAdminSetCoinCreatorAuthority(admin_set_coin_creator_authority)
 }
 
 // NewSimpleCreateConfigInstruction declares a new CreateConfig instruction with the provided parameters and accounts.
@@ -289,10 +312,12 @@ func NewSimpleCreateConfigInstruction(
 	lp_fee_basis_points uint64,
 	protocol_fee_basis_points uint64,
 	protocol_fee_recipients [8]ag_solanago.PublicKey,
-	coin_creator_fee_basis_points uint64) *CreateConfig {
+	coin_creator_fee_basis_points uint64,
+	admin_set_coin_creator_authority ag_solanago.PublicKey) *CreateConfig {
 	return NewCreateConfigInstructionBuilder().
 		SetLpFeeBasisPoints(lp_fee_basis_points).
 		SetProtocolFeeBasisPoints(protocol_fee_basis_points).
 		SetProtocolFeeRecipients(protocol_fee_recipients).
-		SetCoinCreatorFeeBasisPoints(coin_creator_fee_basis_points)
+		SetCoinCreatorFeeBasisPoints(coin_creator_fee_basis_points).
+		SetAdminSetCoinCreatorAuthority(admin_set_coin_creator_authority)
 }

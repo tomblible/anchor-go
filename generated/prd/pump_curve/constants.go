@@ -4,22 +4,6 @@ package pump_curve
 
 import ag_solanago "github.com/gagliardetto/solana-go"
 
-func FindCreatorVaultAddress(bondingCurveCreator ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x63726561746f722d7661756c74
-	seeds = append(seeds, []byte{byte(0x63), byte(0x72), byte(0x65), byte(0x61), byte(0x74), byte(0x6f), byte(0x72), byte(0x2d), byte(0x76), byte(0x61), byte(0x75), byte(0x6c), byte(0x74)})
-	// path: bondingCurveCreator
-	seeds = append(seeds, bondingCurveCreator.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindCreatorVaultAddress(bondingCurveCreator ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindCreatorVaultAddress(bondingCurveCreator)
-	return
-}
-
 func FindPoolAuthorityAddress(mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// const: 0x706f6f6c2d617574686f72697479
@@ -49,5 +33,37 @@ func FindBondingCurveAddress(mint ag_solanago.PublicKey) (pda ag_solanago.Public
 
 func MustFindBondingCurveAddress(mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
 	pda, _, _ = FindBondingCurveAddress(mint)
+	return
+}
+
+func FindCreatorVaultAddress(bondingCurveCreator ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x63726561746f722d7661756c74
+	seeds = append(seeds, []byte{byte(0x63), byte(0x72), byte(0x65), byte(0x61), byte(0x74), byte(0x6f), byte(0x72), byte(0x2d), byte(0x76), byte(0x61), byte(0x75), byte(0x6c), byte(0x74)})
+	// path: bondingCurveCreator
+	seeds = append(seeds, bondingCurveCreator.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindCreatorVaultAddress(bondingCurveCreator ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindCreatorVaultAddress(bondingCurveCreator)
+	return
+}
+
+func FindUserVolumeAccumulatorAddress(user ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x757365725f766f6c756d655f616363756d756c61746f72
+	seeds = append(seeds, []byte{byte(0x75), byte(0x73), byte(0x65), byte(0x72), byte(0x5f), byte(0x76), byte(0x6f), byte(0x6c), byte(0x75), byte(0x6d), byte(0x65), byte(0x5f), byte(0x61), byte(0x63), byte(0x63), byte(0x75), byte(0x6d), byte(0x75), byte(0x6c), byte(0x61), byte(0x74), byte(0x6f), byte(0x72)})
+	// path: user
+	seeds = append(seeds, user.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindUserVolumeAccumulatorAddress(user ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindUserVolumeAccumulatorAddress(user)
 	return
 }

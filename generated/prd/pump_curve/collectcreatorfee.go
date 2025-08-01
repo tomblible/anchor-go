@@ -13,7 +13,7 @@ import (
 // Collects creator_fee from creator_vault to the coin creator account
 type CollectCreatorFee struct {
 
-	// [0] = [WRITE, SIGNER] creator
+	// [0] = [WRITE] creator
 	//
 	// [1] = [WRITE] creator_vault
 	//
@@ -38,7 +38,7 @@ func NewCollectCreatorFeeInstructionBuilder() *CollectCreatorFee {
 
 // SetCreatorAccount sets the "creator" account.
 func (inst *CollectCreatorFee) SetCreatorAccount(creator ag_solanago.PublicKey) *CollectCreatorFee {
-	inst.AccountMetaSlice[0] = ag_solanago.Meta(creator).WRITE().SIGNER()
+	inst.AccountMetaSlice[0] = ag_solanago.Meta(creator).WRITE()
 	return inst
 }
 

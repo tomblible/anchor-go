@@ -23,6 +23,22 @@ func MustFindCoinCreatorVaultAuthorityAddress(poolCoinCreator ag_solanago.Public
 	return
 }
 
+func FindUserVolumeAccumulatorAddress(user ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x757365725f766f6c756d655f616363756d756c61746f72
+	seeds = append(seeds, []byte{byte(0x75), byte(0x73), byte(0x65), byte(0x72), byte(0x5f), byte(0x76), byte(0x6f), byte(0x6c), byte(0x75), byte(0x6d), byte(0x65), byte(0x5f), byte(0x61), byte(0x63), byte(0x63), byte(0x75), byte(0x6d), byte(0x75), byte(0x6c), byte(0x61), byte(0x74), byte(0x6f), byte(0x72)})
+	// path: user
+	seeds = append(seeds, user.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindUserVolumeAccumulatorAddress(user ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindUserVolumeAccumulatorAddress(user)
+	return
+}
+
 func FindPoolAddress(index uint16, creator ag_solanago.PublicKey, baseMint ag_solanago.PublicKey, quoteMint ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// const: 0x706f6f6c

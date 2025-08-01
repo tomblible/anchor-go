@@ -139,6 +139,9 @@ type GlobalConfigAccount struct {
 
 	// The coin creator fee in basis points (0.01%)
 	CoinCreatorFeeBasisPoints uint64
+
+	// The admin authority for setting coin creators
+	AdminSetCoinCreatorAuthority ag_solanago.PublicKey
 }
 
 var GlobalConfigAccountDiscriminator = [8]byte{149, 8, 156, 202, 160, 252, 176, 217}
@@ -176,6 +179,11 @@ func (obj GlobalConfigAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (e
 	}
 	// Serialize `CoinCreatorFeeBasisPoints` param:
 	err = encoder.Encode(obj.CoinCreatorFeeBasisPoints)
+	if err != nil {
+		return err
+	}
+	// Serialize `AdminSetCoinCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCoinCreatorAuthority)
 	if err != nil {
 		return err
 	}
@@ -223,6 +231,108 @@ func (obj *GlobalConfigAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder)
 	}
 	// Deserialize `CoinCreatorFeeBasisPoints`:
 	err = decoder.Decode(&obj.CoinCreatorFeeBasisPoints)
+	if err != nil {
+		return err
+	}
+	// Deserialize `AdminSetCoinCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCoinCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type GlobalVolumeAccumulatorAccount struct {
+	StartTime        int64
+	EndTime          int64
+	SecondsInADay    int64
+	Mint             ag_solanago.PublicKey
+	TotalTokenSupply [30]uint64
+	SolVolumes       [30]uint64
+}
+
+var GlobalVolumeAccumulatorAccountDiscriminator = [8]byte{202, 42, 246, 43, 142, 190, 30, 255}
+
+func (obj GlobalVolumeAccumulatorAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(GlobalVolumeAccumulatorAccountDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `StartTime` param:
+	err = encoder.Encode(obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `EndTime` param:
+	err = encoder.Encode(obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `SecondsInADay` param:
+	err = encoder.Encode(obj.SecondsInADay)
+	if err != nil {
+		return err
+	}
+	// Serialize `Mint` param:
+	err = encoder.Encode(obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalTokenSupply` param:
+	err = encoder.Encode(obj.TotalTokenSupply)
+	if err != nil {
+		return err
+	}
+	// Serialize `SolVolumes` param:
+	err = encoder.Encode(obj.SolVolumes)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *GlobalVolumeAccumulatorAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(GlobalVolumeAccumulatorAccountDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[202 42 246 43 142 190 30 255]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `StartTime`:
+	err = decoder.Decode(&obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `EndTime`:
+	err = decoder.Decode(&obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `SecondsInADay`:
+	err = decoder.Decode(&obj.SecondsInADay)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Mint`:
+	err = decoder.Decode(&obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalTokenSupply`:
+	err = decoder.Decode(&obj.TotalTokenSupply)
+	if err != nil {
+		return err
+	}
+	// Deserialize `SolVolumes`:
+	err = decoder.Decode(&obj.SolVolumes)
 	if err != nil {
 		return err
 	}
@@ -366,6 +476,114 @@ func (obj *PoolAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err er
 	}
 	// Deserialize `CoinCreator`:
 	err = decoder.Decode(&obj.CoinCreator)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type UserVolumeAccumulatorAccount struct {
+	User                  ag_solanago.PublicKey
+	NeedsClaim            bool
+	TotalUnclaimedTokens  uint64
+	TotalClaimedTokens    uint64
+	CurrentSolVolume      uint64
+	LastUpdateTimestamp   int64
+	HasTotalClaimedTokens bool
+}
+
+var UserVolumeAccumulatorAccountDiscriminator = [8]byte{86, 255, 112, 14, 102, 53, 154, 250}
+
+func (obj UserVolumeAccumulatorAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(UserVolumeAccumulatorAccountDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `User` param:
+	err = encoder.Encode(obj.User)
+	if err != nil {
+		return err
+	}
+	// Serialize `NeedsClaim` param:
+	err = encoder.Encode(obj.NeedsClaim)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalUnclaimedTokens` param:
+	err = encoder.Encode(obj.TotalUnclaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalClaimedTokens` param:
+	err = encoder.Encode(obj.TotalClaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Serialize `CurrentSolVolume` param:
+	err = encoder.Encode(obj.CurrentSolVolume)
+	if err != nil {
+		return err
+	}
+	// Serialize `LastUpdateTimestamp` param:
+	err = encoder.Encode(obj.LastUpdateTimestamp)
+	if err != nil {
+		return err
+	}
+	// Serialize `HasTotalClaimedTokens` param:
+	err = encoder.Encode(obj.HasTotalClaimedTokens)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *UserVolumeAccumulatorAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(UserVolumeAccumulatorAccountDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[86 255 112 14 102 53 154 250]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `User`:
+	err = decoder.Decode(&obj.User)
+	if err != nil {
+		return err
+	}
+	// Deserialize `NeedsClaim`:
+	err = decoder.Decode(&obj.NeedsClaim)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalUnclaimedTokens`:
+	err = decoder.Decode(&obj.TotalUnclaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalClaimedTokens`:
+	err = decoder.Decode(&obj.TotalClaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Deserialize `CurrentSolVolume`:
+	err = decoder.Decode(&obj.CurrentSolVolume)
+	if err != nil {
+		return err
+	}
+	// Deserialize `LastUpdateTimestamp`:
+	err = decoder.Decode(&obj.LastUpdateTimestamp)
+	if err != nil {
+		return err
+	}
+	// Deserialize `HasTotalClaimedTokens`:
+	err = decoder.Decode(&obj.HasTotalClaimedTokens)
 	if err != nil {
 		return err
 	}

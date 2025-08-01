@@ -7,6 +7,138 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
+type AdminSetCoinCreatorEvent struct {
+	Timestamp                    int64
+	AdminSetCoinCreatorAuthority ag_solanago.PublicKey
+	BaseMint                     ag_solanago.PublicKey
+	Pool                         ag_solanago.PublicKey
+	OldCoinCreator               ag_solanago.PublicKey
+	NewCoinCreator               ag_solanago.PublicKey
+}
+
+func (obj AdminSetCoinCreatorEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Timestamp` param:
+	err = encoder.Encode(obj.Timestamp)
+	if err != nil {
+		return err
+	}
+	// Serialize `AdminSetCoinCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCoinCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	// Serialize `BaseMint` param:
+	err = encoder.Encode(obj.BaseMint)
+	if err != nil {
+		return err
+	}
+	// Serialize `Pool` param:
+	err = encoder.Encode(obj.Pool)
+	if err != nil {
+		return err
+	}
+	// Serialize `OldCoinCreator` param:
+	err = encoder.Encode(obj.OldCoinCreator)
+	if err != nil {
+		return err
+	}
+	// Serialize `NewCoinCreator` param:
+	err = encoder.Encode(obj.NewCoinCreator)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *AdminSetCoinCreatorEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Timestamp`:
+	err = decoder.Decode(&obj.Timestamp)
+	if err != nil {
+		return err
+	}
+	// Deserialize `AdminSetCoinCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCoinCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	// Deserialize `BaseMint`:
+	err = decoder.Decode(&obj.BaseMint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Pool`:
+	err = decoder.Decode(&obj.Pool)
+	if err != nil {
+		return err
+	}
+	// Deserialize `OldCoinCreator`:
+	err = decoder.Decode(&obj.OldCoinCreator)
+	if err != nil {
+		return err
+	}
+	// Deserialize `NewCoinCreator`:
+	err = decoder.Decode(&obj.NewCoinCreator)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type AdminUpdateTokenIncentivesEvent struct {
+	StartTime         int64
+	EndTime           int64
+	DayNumber         uint64
+	TokenSupplyPerDay uint64
+}
+
+func (obj AdminUpdateTokenIncentivesEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `StartTime` param:
+	err = encoder.Encode(obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `EndTime` param:
+	err = encoder.Encode(obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `DayNumber` param:
+	err = encoder.Encode(obj.DayNumber)
+	if err != nil {
+		return err
+	}
+	// Serialize `TokenSupplyPerDay` param:
+	err = encoder.Encode(obj.TokenSupplyPerDay)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *AdminUpdateTokenIncentivesEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `StartTime`:
+	err = decoder.Decode(&obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `EndTime`:
+	err = decoder.Decode(&obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `DayNumber`:
+	err = decoder.Decode(&obj.DayNumber)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TokenSupplyPerDay`:
+	err = decoder.Decode(&obj.TokenSupplyPerDay)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 type BondingCurve struct {
 	VirtualTokenReserves uint64
 	VirtualSolReserves   uint64
@@ -359,6 +491,50 @@ func (obj *BuyEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error
 	return nil
 }
 
+type ClaimTokenIncentivesEvent struct {
+	User   ag_solanago.PublicKey
+	Mint   ag_solanago.PublicKey
+	Amount uint64
+}
+
+func (obj ClaimTokenIncentivesEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `User` param:
+	err = encoder.Encode(obj.User)
+	if err != nil {
+		return err
+	}
+	// Serialize `Mint` param:
+	err = encoder.Encode(obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Serialize `Amount` param:
+	err = encoder.Encode(obj.Amount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *ClaimTokenIncentivesEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `User`:
+	err = decoder.Decode(&obj.User)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Mint`:
+	err = decoder.Decode(&obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Amount`:
+	err = decoder.Decode(&obj.Amount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 type CollectCoinCreatorFeeEvent struct {
 	Timestamp               int64
 	CoinCreator             ag_solanago.PublicKey
@@ -426,12 +602,13 @@ func (obj *CollectCoinCreatorFeeEvent) UnmarshalWithDecoder(decoder *ag_binary.D
 }
 
 type CreateConfigEvent struct {
-	Timestamp                 int64
-	Admin                     ag_solanago.PublicKey
-	LpFeeBasisPoints          uint64
-	ProtocolFeeBasisPoints    uint64
-	ProtocolFeeRecipients     [8]ag_solanago.PublicKey
-	CoinCreatorFeeBasisPoints uint64
+	Timestamp                    int64
+	Admin                        ag_solanago.PublicKey
+	LpFeeBasisPoints             uint64
+	ProtocolFeeBasisPoints       uint64
+	ProtocolFeeRecipients        [8]ag_solanago.PublicKey
+	CoinCreatorFeeBasisPoints    uint64
+	AdminSetCoinCreatorAuthority ag_solanago.PublicKey
 }
 
 func (obj CreateConfigEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -462,6 +639,11 @@ func (obj CreateConfigEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err
 	}
 	// Serialize `CoinCreatorFeeBasisPoints` param:
 	err = encoder.Encode(obj.CoinCreatorFeeBasisPoints)
+	if err != nil {
+		return err
+	}
+	// Serialize `AdminSetCoinCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCoinCreatorAuthority)
 	if err != nil {
 		return err
 	}
@@ -496,6 +678,11 @@ func (obj *CreateConfigEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 	}
 	// Deserialize `CoinCreatorFeeBasisPoints`:
 	err = decoder.Decode(&obj.CoinCreatorFeeBasisPoints)
+	if err != nil {
+		return err
+	}
+	// Deserialize `AdminSetCoinCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCoinCreatorAuthority)
 	if err != nil {
 		return err
 	}
@@ -1097,6 +1284,9 @@ type GlobalConfig struct {
 
 	// The coin creator fee in basis points (0.01%)
 	CoinCreatorFeeBasisPoints uint64
+
+	// The admin authority for setting coin creators
+	AdminSetCoinCreatorAuthority ag_solanago.PublicKey
 }
 
 func (obj GlobalConfig) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -1127,6 +1317,11 @@ func (obj GlobalConfig) MarshalWithEncoder(encoder *ag_binary.Encoder) (err erro
 	}
 	// Serialize `CoinCreatorFeeBasisPoints` param:
 	err = encoder.Encode(obj.CoinCreatorFeeBasisPoints)
+	if err != nil {
+		return err
+	}
+	// Serialize `AdminSetCoinCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCoinCreatorAuthority)
 	if err != nil {
 		return err
 	}
@@ -1161,6 +1356,88 @@ func (obj *GlobalConfig) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err e
 	}
 	// Deserialize `CoinCreatorFeeBasisPoints`:
 	err = decoder.Decode(&obj.CoinCreatorFeeBasisPoints)
+	if err != nil {
+		return err
+	}
+	// Deserialize `AdminSetCoinCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCoinCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type GlobalVolumeAccumulator struct {
+	StartTime        int64
+	EndTime          int64
+	SecondsInADay    int64
+	Mint             ag_solanago.PublicKey
+	TotalTokenSupply [30]uint64
+	SolVolumes       [30]uint64
+}
+
+func (obj GlobalVolumeAccumulator) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `StartTime` param:
+	err = encoder.Encode(obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `EndTime` param:
+	err = encoder.Encode(obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Serialize `SecondsInADay` param:
+	err = encoder.Encode(obj.SecondsInADay)
+	if err != nil {
+		return err
+	}
+	// Serialize `Mint` param:
+	err = encoder.Encode(obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalTokenSupply` param:
+	err = encoder.Encode(obj.TotalTokenSupply)
+	if err != nil {
+		return err
+	}
+	// Serialize `SolVolumes` param:
+	err = encoder.Encode(obj.SolVolumes)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *GlobalVolumeAccumulator) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `StartTime`:
+	err = decoder.Decode(&obj.StartTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `EndTime`:
+	err = decoder.Decode(&obj.EndTime)
+	if err != nil {
+		return err
+	}
+	// Deserialize `SecondsInADay`:
+	err = decoder.Decode(&obj.SecondsInADay)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Mint`:
+	err = decoder.Decode(&obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalTokenSupply`:
+	err = decoder.Decode(&obj.TotalTokenSupply)
+	if err != nil {
+		return err
+	}
+	// Deserialize `SolVolumes`:
+	err = decoder.Decode(&obj.SolVolumes)
 	if err != nil {
 		return err
 	}
@@ -1686,6 +1963,50 @@ func (obj *SetMetaplexCoinCreatorEvent) UnmarshalWithDecoder(decoder *ag_binary.
 	return nil
 }
 
+type SyncUserVolumeAccumulatorEvent struct {
+	User                     ag_solanago.PublicKey
+	TotalClaimedTokensBefore uint64
+	TotalClaimedTokensAfter  uint64
+}
+
+func (obj SyncUserVolumeAccumulatorEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `User` param:
+	err = encoder.Encode(obj.User)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalClaimedTokensBefore` param:
+	err = encoder.Encode(obj.TotalClaimedTokensBefore)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalClaimedTokensAfter` param:
+	err = encoder.Encode(obj.TotalClaimedTokensAfter)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SyncUserVolumeAccumulatorEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `User`:
+	err = decoder.Decode(&obj.User)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalClaimedTokensBefore`:
+	err = decoder.Decode(&obj.TotalClaimedTokensBefore)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalClaimedTokensAfter`:
+	err = decoder.Decode(&obj.TotalClaimedTokensAfter)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 type UpdateAdminEvent struct {
 	Timestamp int64
 	Admin     ag_solanago.PublicKey
@@ -1731,12 +2052,13 @@ func (obj *UpdateAdminEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 }
 
 type UpdateFeeConfigEvent struct {
-	Timestamp                 int64
-	Admin                     ag_solanago.PublicKey
-	LpFeeBasisPoints          uint64
-	ProtocolFeeBasisPoints    uint64
-	ProtocolFeeRecipients     [8]ag_solanago.PublicKey
-	CoinCreatorFeeBasisPoints uint64
+	Timestamp                    int64
+	Admin                        ag_solanago.PublicKey
+	LpFeeBasisPoints             uint64
+	ProtocolFeeBasisPoints       uint64
+	ProtocolFeeRecipients        [8]ag_solanago.PublicKey
+	CoinCreatorFeeBasisPoints    uint64
+	AdminSetCoinCreatorAuthority ag_solanago.PublicKey
 }
 
 func (obj UpdateFeeConfigEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
@@ -1767,6 +2089,11 @@ func (obj UpdateFeeConfigEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (
 	}
 	// Serialize `CoinCreatorFeeBasisPoints` param:
 	err = encoder.Encode(obj.CoinCreatorFeeBasisPoints)
+	if err != nil {
+		return err
+	}
+	// Serialize `AdminSetCoinCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCoinCreatorAuthority)
 	if err != nil {
 		return err
 	}
@@ -1801,6 +2128,99 @@ func (obj *UpdateFeeConfigEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 	}
 	// Deserialize `CoinCreatorFeeBasisPoints`:
 	err = decoder.Decode(&obj.CoinCreatorFeeBasisPoints)
+	if err != nil {
+		return err
+	}
+	// Deserialize `AdminSetCoinCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCoinCreatorAuthority)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type UserVolumeAccumulator struct {
+	User                  ag_solanago.PublicKey
+	NeedsClaim            bool
+	TotalUnclaimedTokens  uint64
+	TotalClaimedTokens    uint64
+	CurrentSolVolume      uint64
+	LastUpdateTimestamp   int64
+	HasTotalClaimedTokens bool
+}
+
+func (obj UserVolumeAccumulator) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `User` param:
+	err = encoder.Encode(obj.User)
+	if err != nil {
+		return err
+	}
+	// Serialize `NeedsClaim` param:
+	err = encoder.Encode(obj.NeedsClaim)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalUnclaimedTokens` param:
+	err = encoder.Encode(obj.TotalUnclaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Serialize `TotalClaimedTokens` param:
+	err = encoder.Encode(obj.TotalClaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Serialize `CurrentSolVolume` param:
+	err = encoder.Encode(obj.CurrentSolVolume)
+	if err != nil {
+		return err
+	}
+	// Serialize `LastUpdateTimestamp` param:
+	err = encoder.Encode(obj.LastUpdateTimestamp)
+	if err != nil {
+		return err
+	}
+	// Serialize `HasTotalClaimedTokens` param:
+	err = encoder.Encode(obj.HasTotalClaimedTokens)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *UserVolumeAccumulator) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `User`:
+	err = decoder.Decode(&obj.User)
+	if err != nil {
+		return err
+	}
+	// Deserialize `NeedsClaim`:
+	err = decoder.Decode(&obj.NeedsClaim)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalUnclaimedTokens`:
+	err = decoder.Decode(&obj.TotalUnclaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Deserialize `TotalClaimedTokens`:
+	err = decoder.Decode(&obj.TotalClaimedTokens)
+	if err != nil {
+		return err
+	}
+	// Deserialize `CurrentSolVolume`:
+	err = decoder.Decode(&obj.CurrentSolVolume)
+	if err != nil {
+		return err
+	}
+	// Deserialize `LastUpdateTimestamp`:
+	err = decoder.Decode(&obj.LastUpdateTimestamp)
+	if err != nil {
+		return err
+	}
+	// Deserialize `HasTotalClaimedTokens`:
+	err = decoder.Decode(&obj.HasTotalClaimedTokens)
 	if err != nil {
 		return err
 	}

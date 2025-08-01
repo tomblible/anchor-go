@@ -22,6 +22,7 @@ type SetParams struct {
 	PoolMigrationFee            *uint64
 	CreatorFeeBasisPoints       *uint64
 	SetCreatorAuthority         *ag_solanago.PublicKey
+	AdminSetCreatorAuthority    *ag_solanago.PublicKey
 
 	// [0] = [WRITE] global
 	//
@@ -101,6 +102,12 @@ func (inst *SetParams) SetCreatorFeeBasisPoints(creator_fee_basis_points uint64)
 // SetSetCreatorAuthority sets the "set_creator_authority" parameter.
 func (inst *SetParams) SetSetCreatorAuthority(set_creator_authority ag_solanago.PublicKey) *SetParams {
 	inst.SetCreatorAuthority = &set_creator_authority
+	return inst
+}
+
+// SetAdminSetCreatorAuthority sets the "admin_set_creator_authority" parameter.
+func (inst *SetParams) SetAdminSetCreatorAuthority(admin_set_creator_authority ag_solanago.PublicKey) *SetParams {
+	inst.AdminSetCreatorAuthority = &admin_set_creator_authority
 	return inst
 }
 
@@ -212,6 +219,9 @@ func (inst *SetParams) Validate() error {
 		if inst.SetCreatorAuthority == nil {
 			return errors.New("setCreatorAuthority parameter is not set")
 		}
+		if inst.AdminSetCreatorAuthority == nil {
+			return errors.New("adminSetCreatorAuthority parameter is not set")
+		}
 	}
 
 	if len(inst.AccountMetaSlice) < 4 {
@@ -245,7 +255,7 @@ func (inst *SetParams) EncodeToTree(parent ag_treeout.Branches) {
 				ParentFunc(func(instructionBranch ag_treeout.Branches) {
 
 					// Parameters of the instruction:
-					instructionBranch.Child("Params[len=10]").ParentFunc(func(paramsBranch ag_treeout.Branches) {
+					instructionBranch.Child("Params[len=11]").ParentFunc(func(paramsBranch ag_treeout.Branches) {
 						paramsBranch.Child(ag_format.Param("   InitialVirtualTokenReserves", *inst.InitialVirtualTokenReserves))
 						paramsBranch.Child(ag_format.Param("     InitialVirtualSolReserves", *inst.InitialVirtualSolReserves))
 						paramsBranch.Child(ag_format.Param("      InitialRealTokenReserves", *inst.InitialRealTokenReserves))
@@ -256,6 +266,7 @@ func (inst *SetParams) EncodeToTree(parent ag_treeout.Branches) {
 						paramsBranch.Child(ag_format.Param("              PoolMigrationFee", *inst.PoolMigrationFee))
 						paramsBranch.Child(ag_format.Param("         CreatorFeeBasisPoints", *inst.CreatorFeeBasisPoints))
 						paramsBranch.Child(ag_format.Param("           SetCreatorAuthority", *inst.SetCreatorAuthority))
+						paramsBranch.Child(ag_format.Param("      AdminSetCreatorAuthority", *inst.AdminSetCreatorAuthority))
 					})
 
 					// Accounts of the instruction:
@@ -320,6 +331,11 @@ func (obj SetParams) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) 
 	if err != nil {
 		return err
 	}
+	// Serialize `AdminSetCreatorAuthority` param:
+	err = encoder.Encode(obj.AdminSetCreatorAuthority)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 func (obj *SetParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
@@ -373,6 +389,11 @@ func (obj *SetParams) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err erro
 	if err != nil {
 		return err
 	}
+	// Deserialize `AdminSetCreatorAuthority`:
+	err = decoder.Decode(&obj.AdminSetCreatorAuthority)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -389,6 +410,7 @@ func NewSetParamsInstruction(
 	pool_migration_fee uint64,
 	creator_fee_basis_points uint64,
 	set_creator_authority ag_solanago.PublicKey,
+	admin_set_creator_authority ag_solanago.PublicKey,
 	authority ag_solanago.PublicKey) *SetParams {
 	return NewSetParamsInstructionBuilder().
 		SetInitialVirtualTokenReserves(initial_virtual_token_reserves).
@@ -401,6 +423,7 @@ func NewSetParamsInstruction(
 		SetPoolMigrationFee(pool_migration_fee).
 		SetCreatorFeeBasisPoints(creator_fee_basis_points).
 		SetSetCreatorAuthority(set_creator_authority).
+		SetAdminSetCreatorAuthority(admin_set_creator_authority).
 		SetAuthorityAccount(authority)
 }
 
@@ -417,6 +440,7 @@ func NewSimpleSetParamsInstruction(
 	pool_migration_fee uint64,
 	creator_fee_basis_points uint64,
 	set_creator_authority ag_solanago.PublicKey,
+	admin_set_creator_authority ag_solanago.PublicKey,
 	authority ag_solanago.PublicKey) *SetParams {
 	return NewSetParamsInstructionBuilder().
 		SetInitialVirtualTokenReserves(initial_virtual_token_reserves).
@@ -429,5 +453,6 @@ func NewSimpleSetParamsInstruction(
 		SetPoolMigrationFee(pool_migration_fee).
 		SetCreatorFeeBasisPoints(creator_fee_basis_points).
 		SetSetCreatorAuthority(set_creator_authority).
+		SetAdminSetCreatorAuthority(admin_set_creator_authority).
 		SetAuthorityAccount(authority)
 }

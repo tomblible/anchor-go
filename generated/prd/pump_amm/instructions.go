@@ -36,6 +36,8 @@ var (
 
 	GlobalConfigPDA = ag_solanago.MustPublicKeyFromBase58("ADyA8hdefvWN2dbGGWFotbzWxrAvLW83WG6QCVXvJKqw")
 
+	GlobalVolumeAccumulatorPDA = ag_solanago.MustPublicKeyFromBase58("C2aFPdENg4A2HQsmrd5rTw5TaYBX5Ku887cWjbFKtZpw")
+
 	SystemProgram = ag_solanago.MustPublicKeyFromBase58("11111111111111111111111111111111")
 
 	Token22Program = ag_solanago.MustPublicKeyFromBase58("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb")
@@ -44,7 +46,14 @@ var (
 )
 
 var (
+	// Overrides the coin creator for a canonical pump pool
+	Instruction_AdminSetCoinCreator = ag_binary.TypeID([8]byte{242, 40, 117, 145, 73, 96, 105, 104})
+
+	Instruction_AdminUpdateTokenIncentives = ag_binary.TypeID([8]byte{209, 11, 115, 87, 213, 23, 124, 204})
+
 	Instruction_Buy = ag_binary.TypeID([8]byte{102, 6, 61, 18, 1, 218, 235, 234})
+
+	Instruction_ClaimTokenIncentives = ag_binary.TypeID([8]byte{16, 4, 71, 28, 204, 1, 40, 27})
 
 	Instruction_CollectCoinCreatorFee = ag_binary.TypeID([8]byte{160, 57, 89, 42, 181, 139, 43, 66})
 
@@ -63,6 +72,8 @@ var (
 	// Sets Pool::coin_creator from Metaplex metadata creator or BondingCurve::creator
 	Instruction_SetCoinCreator = ag_binary.TypeID([8]byte{210, 149, 128, 45, 188, 58, 78, 175})
 
+	Instruction_SyncUserVolumeAccumulator = ag_binary.TypeID([8]byte{86, 31, 192, 87, 163, 87, 79, 238})
+
 	Instruction_UpdateAdmin = ag_binary.TypeID([8]byte{161, 176, 40, 213, 60, 184, 179, 228})
 
 	Instruction_UpdateFeeConfig = ag_binary.TypeID([8]byte{104, 184, 103, 242, 88, 151, 107, 20})
@@ -73,8 +84,14 @@ var (
 // InstructionIDToName returns the name of the instruction given its ID.
 func InstructionIDToName(id ag_binary.TypeID) string {
 	switch id {
+	case Instruction_AdminSetCoinCreator:
+		return "AdminSetCoinCreator"
+	case Instruction_AdminUpdateTokenIncentives:
+		return "AdminUpdateTokenIncentives"
 	case Instruction_Buy:
 		return "Buy"
+	case Instruction_ClaimTokenIncentives:
+		return "ClaimTokenIncentives"
 	case Instruction_CollectCoinCreatorFee:
 		return "CollectCoinCreatorFee"
 	case Instruction_CreateConfig:
@@ -91,6 +108,8 @@ func InstructionIDToName(id ag_binary.TypeID) string {
 		return "Sell"
 	case Instruction_SetCoinCreator:
 		return "SetCoinCreator"
+	case Instruction_SyncUserVolumeAccumulator:
+		return "SyncUserVolumeAccumulator"
 	case Instruction_UpdateAdmin:
 		return "UpdateAdmin"
 	case Instruction_UpdateFeeConfig:
@@ -118,7 +137,16 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 	ag_binary.AnchorTypeIDEncoding,
 	[]ag_binary.VariantType{
 		{
+			Name: "admin_set_coin_creator", Type: (*AdminSetCoinCreator)(nil),
+		},
+		{
+			Name: "admin_update_token_incentives", Type: (*AdminUpdateTokenIncentives)(nil),
+		},
+		{
 			Name: "buy", Type: (*Buy)(nil),
+		},
+		{
+			Name: "claim_token_incentives", Type: (*ClaimTokenIncentives)(nil),
 		},
 		{
 			Name: "collect_coin_creator_fee", Type: (*CollectCoinCreatorFee)(nil),
@@ -143,6 +171,9 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 		},
 		{
 			Name: "set_coin_creator", Type: (*SetCoinCreator)(nil),
+		},
+		{
+			Name: "sync_user_volume_accumulator", Type: (*SyncUserVolumeAccumulator)(nil),
 		},
 		{
 			Name: "update_admin", Type: (*UpdateAdmin)(nil),

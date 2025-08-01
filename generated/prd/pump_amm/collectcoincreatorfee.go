@@ -17,7 +17,7 @@ type CollectCoinCreatorFee struct {
 	//
 	// [1] = [] quote_token_program
 	//
-	// [2] = [SIGNER] coin_creator
+	// [2] = [] coin_creator
 	//
 	// [3] = [] coin_creator_vault_authority
 	//
@@ -65,7 +65,7 @@ func (inst *CollectCoinCreatorFee) GetQuoteTokenProgramAccount() *ag_solanago.Ac
 
 // SetCoinCreatorAccount sets the "coin_creator" account.
 func (inst *CollectCoinCreatorFee) SetCoinCreatorAccount(coinCreator ag_solanago.PublicKey) *CollectCoinCreatorFee {
-	inst.AccountMetaSlice[2] = ag_solanago.Meta(coinCreator).SIGNER()
+	inst.AccountMetaSlice[2] = ag_solanago.Meta(coinCreator)
 	return inst
 }
 

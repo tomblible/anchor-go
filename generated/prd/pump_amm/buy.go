@@ -52,18 +52,23 @@ type Buy struct {
 	// [17] = [WRITE] coin_creator_vault_ata
 	//
 	// [18] = [] coin_creator_vault_authority
+	//
+	// [19] = [WRITE] global_volume_accumulator
+	//
+	// [20] = [WRITE] user_volume_accumulator
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
 // NewBuyInstructionBuilder creates a new `Buy` instruction builder.
 func NewBuyInstructionBuilder() *Buy {
 	nd := &Buy{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 19),
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 21),
 	}
 	nd.AccountMetaSlice[13] = ag_solanago.Meta(SystemProgram)
 	nd.AccountMetaSlice[14] = ag_solanago.Meta(AssociatedTokenProgram)
 	nd.AccountMetaSlice[15] = ag_solanago.Meta(EventAuthorityPDA)
 	nd.AccountMetaSlice[16] = ag_solanago.Meta(ProgramID)
+	nd.AccountMetaSlice[19] = ag_solanago.Meta(GlobalVolumeAccumulatorPDA).WRITE()
 	return nd
 }
 
@@ -288,18 +293,40 @@ func (inst *Buy) GetCoinCreatorVaultAuthorityAccount() *ag_solanago.AccountMeta 
 	return inst.AccountMetaSlice.Get(18)
 }
 
+// SetGlobalVolumeAccumulatorAccount sets the "global_volume_accumulator" account.
+func (inst *Buy) SetGlobalVolumeAccumulatorAccount(globalVolumeAccumulator ag_solanago.PublicKey) *Buy {
+	inst.AccountMetaSlice[19] = ag_solanago.Meta(globalVolumeAccumulator).WRITE()
+	return inst
+}
+
+// GetGlobalVolumeAccumulatorAccount gets the "global_volume_accumulator" account.
+func (inst *Buy) GetGlobalVolumeAccumulatorAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(19)
+}
+
+// SetUserVolumeAccumulatorAccount sets the "user_volume_accumulator" account.
+func (inst *Buy) SetUserVolumeAccumulatorAccount(userVolumeAccumulator ag_solanago.PublicKey) *Buy {
+	inst.AccountMetaSlice[20] = ag_solanago.Meta(userVolumeAccumulator).WRITE()
+	return inst
+}
+
+// GetUserVolumeAccumulatorAccount gets the "user_volume_accumulator" account.
+func (inst *Buy) GetUserVolumeAccumulatorAccount() *ag_solanago.AccountMeta {
+	return inst.AccountMetaSlice.Get(20)
+}
+
 func (inst *Buy) SetAccounts(accounts []*ag_solanago.AccountMeta) error {
 	inst.AccountMetaSlice = accounts
 	return inst.Validate()
 }
 
 func (inst *Buy) SetRemainingAccounts(metas []*ag_solanago.AccountMeta) *Buy {
-	inst.AccountMetaSlice = append(inst.AccountMetaSlice[0:19], metas...)
+	inst.AccountMetaSlice = append(inst.AccountMetaSlice[0:21], metas...)
 	return inst
 }
 
 func (inst *Buy) GetRemainingAccounts() []*ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice[19:]
+	return inst.AccountMetaSlice[21:]
 }
 
 func (inst Buy) Build() *Instruction {
@@ -330,8 +357,8 @@ func (inst *Buy) Validate() error {
 		}
 	}
 
-	if len(inst.AccountMetaSlice) < 19 {
-		return errors.New("accounts slice has wrong length: expected 19 accounts")
+	if len(inst.AccountMetaSlice) < 21 {
+		return errors.New("accounts slice has wrong length: expected 21 accounts")
 	}
 
 	// Check whether all (required) accounts are set:
@@ -393,6 +420,12 @@ func (inst *Buy) Validate() error {
 		if inst.AccountMetaSlice[18] == nil {
 			return errors.New("accounts.CoinCreatorVaultAuthority is not set")
 		}
+		if inst.AccountMetaSlice[19] == nil {
+			return errors.New("accounts.GlobalVolumeAccumulator is not set")
+		}
+		if inst.AccountMetaSlice[20] == nil {
+			return errors.New("accounts.UserVolumeAccumulator is not set")
+		}
 	}
 	return nil
 }
@@ -412,7 +445,7 @@ func (inst *Buy) EncodeToTree(parent ag_treeout.Branches) {
 					})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=19]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+					instructionBranch.Child("Accounts[len=21]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
 						accountsBranch.Child(ag_format.Meta("                         pool", inst.AccountMetaSlice.Get(0)))
 						accountsBranch.Child(ag_format.Meta("                         user", inst.AccountMetaSlice.Get(1)))
 						accountsBranch.Child(ag_format.Meta("                global_config", inst.AccountMetaSlice.Get(2)))
@@ -432,6 +465,8 @@ func (inst *Buy) EncodeToTree(parent ag_treeout.Branches) {
 						accountsBranch.Child(ag_format.Meta("                      program", inst.AccountMetaSlice.Get(16)))
 						accountsBranch.Child(ag_format.Meta("       coin_creator_vault_ata", inst.AccountMetaSlice.Get(17)))
 						accountsBranch.Child(ag_format.Meta(" coin_creator_vault_authority", inst.AccountMetaSlice.Get(18)))
+						accountsBranch.Child(ag_format.Meta("    global_volume_accumulator", inst.AccountMetaSlice.Get(19)))
+						accountsBranch.Child(ag_format.Meta("      user_volume_accumulator", inst.AccountMetaSlice.Get(20)))
 					})
 				})
 		})
@@ -484,7 +519,8 @@ func NewBuyInstruction(
 	baseTokenProgram ag_solanago.PublicKey,
 	quoteTokenProgram ag_solanago.PublicKey,
 	coinCreatorVaultAta ag_solanago.PublicKey,
-	coinCreatorVaultAuthority ag_solanago.PublicKey) *Buy {
+	coinCreatorVaultAuthority ag_solanago.PublicKey,
+	userVolumeAccumulator ag_solanago.PublicKey) *Buy {
 	return NewBuyInstructionBuilder().
 		SetBaseAmountOut(base_amount_out).
 		SetMaxQuoteAmountIn(max_quote_amount_in).
@@ -502,7 +538,8 @@ func NewBuyInstruction(
 		SetBaseTokenProgramAccount(baseTokenProgram).
 		SetQuoteTokenProgramAccount(quoteTokenProgram).
 		SetCoinCreatorVaultAtaAccount(coinCreatorVaultAta).
-		SetCoinCreatorVaultAuthorityAccount(coinCreatorVaultAuthority)
+		SetCoinCreatorVaultAuthorityAccount(coinCreatorVaultAuthority).
+		SetUserVolumeAccumulatorAccount(userVolumeAccumulator)
 }
 
 // NewSimpleBuyInstruction declares a new Buy instruction with the provided parameters and accounts.
@@ -526,6 +563,7 @@ func NewSimpleBuyInstruction(
 	quoteTokenProgram ag_solanago.PublicKey,
 	coinCreatorVaultAta ag_solanago.PublicKey,
 	coinCreatorVaultAuthority ag_solanago.PublicKey) *Buy {
+	userVolumeAccumulator := MustFindUserVolumeAccumulatorAddress(user)
 	return NewBuyInstructionBuilder().
 		SetBaseAmountOut(base_amount_out).
 		SetMaxQuoteAmountIn(max_quote_amount_in).
@@ -543,5 +581,6 @@ func NewSimpleBuyInstruction(
 		SetBaseTokenProgramAccount(baseTokenProgram).
 		SetQuoteTokenProgramAccount(quoteTokenProgram).
 		SetCoinCreatorVaultAtaAccount(coinCreatorVaultAta).
-		SetCoinCreatorVaultAuthorityAccount(coinCreatorVaultAuthority)
+		SetCoinCreatorVaultAuthorityAccount(coinCreatorVaultAuthority).
+		SetUserVolumeAccumulatorAccount(userVolumeAccumulator)
 }
