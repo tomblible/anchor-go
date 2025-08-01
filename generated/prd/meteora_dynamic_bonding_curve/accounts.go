@@ -755,8 +755,8 @@ type PoolConfigAccount struct {
 	// creator migration fee percentage
 	CreatorMigrationFeePercentage uint8
 
-	// padding 1
-	_padding_1 [7]uint8
+	// padding 0
+	_padding_0 [7]uint8
 
 	// swap base amount
 	SwapBaseAmount uint64
@@ -779,8 +779,20 @@ type PoolConfigAccount struct {
 	// post migration token supply
 	PostMigrationTokenSupply uint64
 
+	// migrated pool collect fee mode
+	MigratedCollectFeeMode uint8
+
+	// migrated dynamic fee option.
+	MigratedDynamicFee uint8
+
+	// migrated pool fee in bps
+	MigratedPoolFeeBps uint16
+
+	// padding 1
+	_padding_1 [12]uint8
+
 	// padding 2
-	_padding_2 [2]ag_binary.Uint128
+	_padding_2 ag_binary.Uint128
 
 	// minimum price
 	SqrtStartPrice ag_binary.Uint128
@@ -902,8 +914,8 @@ func (obj PoolConfigAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err
 	if err != nil {
 		return err
 	}
-	// Serialize `_padding_1` param:
-	err = encoder.Encode(obj._padding_1)
+	// Serialize `_padding_0` param:
+	err = encoder.Encode(obj._padding_0)
 	if err != nil {
 		return err
 	}
@@ -939,6 +951,26 @@ func (obj PoolConfigAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err
 	}
 	// Serialize `PostMigrationTokenSupply` param:
 	err = encoder.Encode(obj.PostMigrationTokenSupply)
+	if err != nil {
+		return err
+	}
+	// Serialize `MigratedCollectFeeMode` param:
+	err = encoder.Encode(obj.MigratedCollectFeeMode)
+	if err != nil {
+		return err
+	}
+	// Serialize `MigratedDynamicFee` param:
+	err = encoder.Encode(obj.MigratedDynamicFee)
+	if err != nil {
+		return err
+	}
+	// Serialize `MigratedPoolFeeBps` param:
+	err = encoder.Encode(obj.MigratedPoolFeeBps)
+	if err != nil {
+		return err
+	}
+	// Serialize `_padding_1` param:
+	err = encoder.Encode(obj._padding_1)
 	if err != nil {
 		return err
 	}
@@ -1079,8 +1111,8 @@ func (obj *PoolConfigAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 	if err != nil {
 		return err
 	}
-	// Deserialize `_padding_1`:
-	err = decoder.Decode(&obj._padding_1)
+	// Deserialize `_padding_0`:
+	err = decoder.Decode(&obj._padding_0)
 	if err != nil {
 		return err
 	}
@@ -1116,6 +1148,26 @@ func (obj *PoolConfigAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 	}
 	// Deserialize `PostMigrationTokenSupply`:
 	err = decoder.Decode(&obj.PostMigrationTokenSupply)
+	if err != nil {
+		return err
+	}
+	// Deserialize `MigratedCollectFeeMode`:
+	err = decoder.Decode(&obj.MigratedCollectFeeMode)
+	if err != nil {
+		return err
+	}
+	// Deserialize `MigratedDynamicFee`:
+	err = decoder.Decode(&obj.MigratedDynamicFee)
+	if err != nil {
+		return err
+	}
+	// Deserialize `MigratedPoolFeeBps`:
+	err = decoder.Decode(&obj.MigratedPoolFeeBps)
+	if err != nil {
+		return err
+	}
+	// Deserialize `_padding_1`:
+	err = decoder.Decode(&obj._padding_1)
 	if err != nil {
 		return err
 	}

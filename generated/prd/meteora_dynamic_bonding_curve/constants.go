@@ -4,58 +4,6 @@ package meteora_curve
 
 import ag_solanago "github.com/gagliardetto/solana-go"
 
-func FindVirtualPoolMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x7669727475616c5f706f6f6c5f6d65746164617461
-	seeds = append(seeds, []byte{byte(0x76), byte(0x69), byte(0x72), byte(0x74), byte(0x75), byte(0x61), byte(0x6c), byte(0x5f), byte(0x70), byte(0x6f), byte(0x6f), byte(0x6c), byte(0x5f), byte(0x6d), byte(0x65), byte(0x74), byte(0x61), byte(0x64), byte(0x61), byte(0x74), byte(0x61)})
-	// path: virtualPool
-	seeds = append(seeds, virtualPool.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindVirtualPoolMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindVirtualPoolMetadataAddress(virtualPool)
-	return
-}
-
-func FindBaseVaultAddress(baseMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x746f6b656e5f7661756c74
-	seeds = append(seeds, []byte{byte(0x74), byte(0x6f), byte(0x6b), byte(0x65), byte(0x6e), byte(0x5f), byte(0x76), byte(0x61), byte(0x75), byte(0x6c), byte(0x74)})
-	// path: baseMint
-	seeds = append(seeds, baseMint.Bytes())
-	// path: pool
-	seeds = append(seeds, pool.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindBaseVaultAddress(baseMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindBaseVaultAddress(baseMint, pool)
-	return
-}
-
-func FindQuoteVaultAddress(quoteMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
-	var seeds [][]byte
-	// const: 0x746f6b656e5f7661756c74
-	seeds = append(seeds, []byte{byte(0x74), byte(0x6f), byte(0x6b), byte(0x65), byte(0x6e), byte(0x5f), byte(0x76), byte(0x61), byte(0x75), byte(0x6c), byte(0x74)})
-	// path: quoteMint
-	seeds = append(seeds, quoteMint.Bytes())
-	// path: pool
-	seeds = append(seeds, pool.Bytes())
-
-	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
-	return
-}
-
-func MustFindQuoteVaultAddress(quoteMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
-	pda, _, _ = FindQuoteVaultAddress(quoteMint, pool)
-	return
-}
-
 func FindMigrationMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// const: 0x64616d6d5f7632
@@ -117,5 +65,57 @@ func FindPartnerMetadataAddress(feeClaimer ag_solanago.PublicKey) (pda ag_solana
 
 func MustFindPartnerMetadataAddress(feeClaimer ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
 	pda, _, _ = FindPartnerMetadataAddress(feeClaimer)
+	return
+}
+
+func FindVirtualPoolMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x7669727475616c5f706f6f6c5f6d65746164617461
+	seeds = append(seeds, []byte{byte(0x76), byte(0x69), byte(0x72), byte(0x74), byte(0x75), byte(0x61), byte(0x6c), byte(0x5f), byte(0x70), byte(0x6f), byte(0x6f), byte(0x6c), byte(0x5f), byte(0x6d), byte(0x65), byte(0x74), byte(0x61), byte(0x64), byte(0x61), byte(0x74), byte(0x61)})
+	// path: virtualPool
+	seeds = append(seeds, virtualPool.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindVirtualPoolMetadataAddress(virtualPool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindVirtualPoolMetadataAddress(virtualPool)
+	return
+}
+
+func FindBaseVaultAddress(baseMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x746f6b656e5f7661756c74
+	seeds = append(seeds, []byte{byte(0x74), byte(0x6f), byte(0x6b), byte(0x65), byte(0x6e), byte(0x5f), byte(0x76), byte(0x61), byte(0x75), byte(0x6c), byte(0x74)})
+	// path: baseMint
+	seeds = append(seeds, baseMint.Bytes())
+	// path: pool
+	seeds = append(seeds, pool.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindBaseVaultAddress(baseMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindBaseVaultAddress(baseMint, pool)
+	return
+}
+
+func FindQuoteVaultAddress(quoteMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: 0x746f6b656e5f7661756c74
+	seeds = append(seeds, []byte{byte(0x74), byte(0x6f), byte(0x6b), byte(0x65), byte(0x6e), byte(0x5f), byte(0x76), byte(0x61), byte(0x75), byte(0x6c), byte(0x74)})
+	// path: quoteMint
+	seeds = append(seeds, quoteMint.Bytes())
+	// path: pool
+	seeds = append(seeds, pool.Bytes())
+
+	pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	return
+}
+
+func MustFindQuoteVaultAddress(quoteMint ag_solanago.PublicKey, pool ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, _ = FindQuoteVaultAddress(quoteMint, pool)
 	return
 }

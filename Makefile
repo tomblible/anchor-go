@@ -26,8 +26,8 @@ whirlpool:build
 meteora_dynamic_bonding_curve:build
 	./anchor-go -src=./idl/dex/meteora_dynamic_bonding_curve.json -pkg=meteora_curve -dst=./generated/prd/meteora_dynamic_bonding_curve
 
-meteora_damm_v2:build
-	./anchor-go -src=./idl/dex/meteora_damm_v2.json -pkg=meteora_damm_v2 -dst=./generated/prd/meteora_damm_v2
+meteora_damm:build
+	./anchor-go -src=./idl/dex/meteora_damm_v2.json -pkg=meteora_damm -dst=./generated/prd/meteora_damm
 
 meteora_dlmm:build
 	anchor idl convert ./idl/dex/meteora_dlmm.json >./idl/dex/meteora_dlmm_new.json
@@ -66,6 +66,9 @@ saros_dlmm:build
 
 7HrX:build
 	./anchor-go -src=./idl/dex/hrx.json -pkg=hrx -dst=./generated/prd/hrx
+
+wavebreak:build
+	./anchor-go -type-id=uint8 -src=./idl/dex/wavebreak.json -pkg=wavebreak -dst=./generated/prd/wavebreak
 
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 
