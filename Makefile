@@ -77,6 +77,10 @@ wavebreak:build
 mastermind:build
 	./anchor-go -src=./idl/dex/mastermind.json -pkg=mastermind -dst=./generated/prd/mastermind
 
+heaven:build
+	./anchor-go -src=./idl/dex/heaven.json -pkg=heaven -dst=./generated/prd/heaven
+
+
 upgrade-anchor:
 	avm install 0.30.1 && anchor --version 
 	
